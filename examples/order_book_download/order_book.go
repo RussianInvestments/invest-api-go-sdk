@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -375,15 +376,13 @@ func storeOrderBooksInDB(db *sqlx.DB, obooks []*OrderBook) error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		if err := tx.Commit(); err != nil {
-			log.Printf(err.Error())
-		}
-	}()
 
 	insertOB, err := tx.Prepare(`insert into orderbooks (figi, instrument_uid, depth, is_consistent, time_unix, limit_up, limit_down) 
 		values (?, ?, ?, ?, ?, ?, ?) `)
 	if err != nil {
+		if errRb := tx.Rollback(); errRb != nil {
+			return errors.Join(err, errRb)
+		}
 		return err
 	}
 	defer func() {
@@ -394,6 +393,9 @@ func storeOrderBooksInDB(db *sqlx.DB, obooks []*OrderBook) error {
 
 	insertBid, err := tx.Prepare(`insert into bids (orderbook_id, price, quantity) values (?, ?, ?)`)
 	if err != nil {
+		if errRb := tx.Rollback(); errRb != nil {
+			return errors.Join(err, errRb)
+		}
 		return err
 	}
 	defer func() {
@@ -404,6 +406,9 @@ func storeOrderBooksInDB(db *sqlx.DB, obooks []*OrderBook) error {
 
 	insertAsk, err := tx.Prepare(`insert into asks (orderbook_id, price, quantity) values (?, ?, ?)`)
 	if err != nil {
+		if errRb := tx.Rollback(); errRb != nil {
+			return errors.Join(err, errRb)
+		}
 		return err
 	}
 	defer func() {
@@ -415,26 +420,37 @@ func storeOrderBooksInDB(db *sqlx.DB, obooks []*OrderBook) error {
 	for _, ob := range obooks {
 		result, err := insertOB.Exec(ob.Figi, ob.InstrumentUid, ob.Depth, ob.IsConsistent, ob.TimeUnix, ob.LimitUp, ob.LimitDown)
 		if err != nil {
+			if errRb := tx.Rollback(); errRb != nil {
+				return errors.Join(err, errRb)
+			}
 			return err
 		}
 
 		lastId, err := result.LastInsertId()
 		if err != nil {
+			if errRb := tx.Rollback(); errRb != nil {
+				return errors.Join(err, errRb)
+			}
 			return err
 		}
 
 		for _, bid := range ob.Bids {
 			if _, err := insertBid.Exec(lastId, bid.Price, bid.Quantity); err != nil {
+				if errRb := tx.Rollback(); errRb != nil {
+					return errors.Join(err, errRb)
+				}
 				return err
 			}
 		}
 
 		for _, ask := range ob.Asks {
 			if _, err := insertAsk.Exec(lastId, ask.Price, ask.Quantity); err != nil {
+				if errRb := tx.Rollback(); errRb != nil {
+					return errors.Join(err, errRb)
+				}
 				return err
 			}
 		}
 	}
-
-	return nil
+	return tx.Commit()
 }

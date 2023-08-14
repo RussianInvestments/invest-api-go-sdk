@@ -225,15 +225,12 @@ func storeCandlesInDB(db *sqlx.DB, uid string, first, last time.Time, hc []*pb.H
 			return err
 		}
 
-		defer func() {
-			if err = tx.Commit(); err != nil {
-				log.Printf(err.Error())
-			}
-		}()
-
 		insertCandle, err := tx.Prepare(`insert into candles (instrument_uid, open, close, high, low, volume, time, is_complete) 
 		values (?, ?, ?, ?, ?, ?, ?, ?) `)
 		if err != nil {
+			if errRb := tx.Rollback(); errRb != nil {
+				return errors.Join(err, errRb)
+			}
 			return err
 		}
 		defer func() {
@@ -255,11 +252,14 @@ func storeCandlesInDB(db *sqlx.DB, uid string, first, last time.Time, hc []*pb.H
 				if errors.As(err, &sqlite3.Error{}) {
 					continue
 				} else {
+					if errRb := tx.Rollback(); errRb != nil {
+						return errors.Join(err, errRb)
+					}
 					return err
 				}
 			}
 		}
-		return nil
+		return tx.Commit()
 	}()
 	if err != nil {
 		return err

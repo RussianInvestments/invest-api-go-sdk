@@ -376,14 +376,17 @@ func (c *CandlesStorage) storeCandlesInDB(uid string, update time.Time, hc []*pb
 		if err != nil {
 			return err
 		}
-		defer func() {
-			if err := tx.Commit(); err != nil {
-				c.logger.Errorf(err.Error())
-			}
-		}()
+		//defer func() {
+		//	if err := tx.Commit(); err != nil {
+		//		c.logger.Errorf(err.Error())
+		//	}
+		//}()
 		insertCandle, err := tx.Prepare(`insert into candles (instrument_uid, open, close, high, low, volume, time, is_complete) 
 		values (?, ?, ?, ?, ?, ?, ?, ?) `)
 		if err != nil {
+			if errRb := tx.Rollback(); errRb != nil {
+				return errors.Join(err, errRb)
+			}
 			return err
 		}
 		defer func() {
@@ -405,11 +408,14 @@ func (c *CandlesStorage) storeCandlesInDB(uid string, update time.Time, hc []*pb
 				if errors.As(err, &sqlite3.Error{}) {
 					continue
 				} else {
+					if errRb := tx.Rollback(); errRb != nil {
+						return errors.Join(err, errRb)
+					}
 					return err
 				}
 			}
 		}
-		return nil
+		return tx.Commit()
 	}()
 	if err != nil {
 		return err

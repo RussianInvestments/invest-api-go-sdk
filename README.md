@@ -1,6 +1,6 @@
 # INVEST API Go SDK
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/tinkoff/invest-api-go-sdk.svg)](https://pkg.go.dev/github.com/tinkoff/invest-api-go-sdk)
+[![Go Reference](https://pkg.go.dev/badge/github.com/russianinvestments/invest-api-go-sdk.svg)](https://pkg.go.dev/github.com/russianinvestments/invest-api-go-sdk)
 
 SDK предназначен для упрощения работы с API Инвестиций.
 

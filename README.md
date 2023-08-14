@@ -30,7 +30,7 @@ SDK предназначен для упрощения работы с API Ин�
 
 #### 1. Клонирование репозитория
 
-    git clone https://github.com/tinkoff/invest-api-go-sdk
+    git clone https://github.com/russianinvestments/invest-api-go-sdk
 
 #### 2. Конфигурация SDK
 Перейдите в директорию с примерами
@@ -64,7 +64,7 @@ type Config struct {
 // По умолчанию = sandbox-invest-public-api.tinkoff.ru:443
 // https://tinkoff.github.io/investAPI/url_difference/
 EndPoint string `yaml:"EndPoint"`
-// Token - Ваш токен для Tinkoff InvestAPI
+// Token - Ваш токен для InvestAPI
 Token string `yaml:"APIToken"`
 // AppName - Название вашего приложения, по умолчанию = tinkoff-api-go-sdk
 AppName string `yaml:"AppName"`
@@ -121,8 +121,8 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/tinkoff/invest-api-go-sdk/investgo"
-	pb "github.com/tinkoff/invest-api-go-sdk/proto"
+	"github.com/russianinvestments/invest-api-go-sdk/investgo"
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"go.uber.org/zap"
 )
 

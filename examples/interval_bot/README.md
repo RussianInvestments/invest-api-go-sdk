@@ -116,7 +116,7 @@ const (
 
 Клонируйте репозиторий
 
-    git clone https://github.com/tinkoff/invest-api-go-sdk
+    git clone https://github.com/russianinvestments/invest-api-go-sdk
 
 Перейдите в папку с ботом
 

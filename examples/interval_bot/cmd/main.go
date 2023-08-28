@@ -236,6 +236,9 @@ func main() {
 	}
 	// меняем инструменты в конфиге
 	intervalConfig.Instruments = preferredInstruments
+
+	from, to := bot.TimeIntervalByDays(intervalConfig.DaysToCalculateInterval, now)
+
 	// создаем хранилище для свечей
 	storage, err := bot.NewCandlesStorage(bot.NewCandlesStorageRequest{
 		DBPath:              intervalConfig.StorageDBPath,
@@ -243,8 +246,8 @@ func main() {
 		RequiredInstruments: instrumentsForStorage,
 		Logger:              client.Logger,
 		MarketDataService:   marketDataService,
-		From:                now.Add(-time.Hour * 24 * time.Duration(intervalConfig.DaysToCalculateInterval)),
-		To:                  now,
+		From:                from,
+		To:                  to,
 	})
 	if err != nil {
 		cancel()

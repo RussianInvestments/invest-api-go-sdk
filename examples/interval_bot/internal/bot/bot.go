@@ -125,7 +125,7 @@ func (b *Bot) Run() error {
 
 	// интервал запроса свечей по инструментам для нахождения интервала
 	// далее раз в IntervalUpdateDelay будут запрашиваться новые свечи
-	from, to := timeIntervalByDays(b.StrategyConfig.DaysToCalculateInterval, time.Now())
+	from, to := TimeIntervalByDays(b.StrategyConfig.DaysToCalculateInterval, time.Now())
 
 	// запуск анализа инструментов по их историческим свечам
 	for _, id := range b.StrategyConfig.Instruments {
@@ -549,8 +549,8 @@ func crosses(price float64, candles []*pb.HistoricCandle) int64 {
 	return count
 }
 
-// timeIntervalByDays - Функция возвращает ближайший временной интервал до now, в котором содержится reqDays рабочих дней
-func timeIntervalByDays(reqDays int, now time.Time) (from time.Time, to time.Time) {
+// TimeIntervalByDays - Функция возвращает ближайший временной интервал до now, в котором содержится reqDays рабочих дней
+func TimeIntervalByDays(reqDays int, now time.Time) (from time.Time, to time.Time) {
 	y, m, d := now.Date()
 	daysFromMonday := int(now.Weekday() - time.Monday)
 	// если на этой неделе хватает торговых дней
@@ -634,7 +634,7 @@ func (b *Bot) BackTest(start time.Time, bc BacktestConfig) (float64, float64, er
 	}
 
 	// загружаем минутные свечи по всем инструментам для анализа волатильности
-	from, to := timeIntervalByDays(b.StrategyConfig.DaysToCalculateInterval, start)
+	from, to := TimeIntervalByDays(b.StrategyConfig.DaysToCalculateInterval, start)
 	b.Client.Logger.Infof("Start backtest day =%v from = %v to = %v", start, from, to)
 	// считаем на DaysToCalculateInterval днях
 	// отбор топ инструментов по волатильности

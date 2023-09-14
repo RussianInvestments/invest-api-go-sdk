@@ -98,8 +98,8 @@ func (mds *MarketDataStream) SubscribeOrderBook(ids []string, depth int32) (<-ch
 }
 
 // UnSubscribeOrderBook - метод отдписки от стаканов инструментов
-func (mds *MarketDataStream) UnSubscribeOrderBook(ids []string) error {
-	err := mds.sendOrderBookReq(ids, 0, pb.SubscriptionAction_SUBSCRIPTION_ACTION_UNSUBSCRIBE)
+func (mds *MarketDataStream) UnSubscribeOrderBook(ids []string, depth int32) error {
+	err := mds.sendOrderBookReq(ids, depth, pb.SubscriptionAction_SUBSCRIPTION_ACTION_UNSUBSCRIBE)
 	if err != nil {
 		return err
 	}
@@ -362,13 +362,18 @@ func (mds *MarketDataStream) UnSubscribeAll() error {
 	}
 
 	if len(mds.subs.orderBooks) > 0 {
-		for id := range mds.subs.orderBooks {
-			ids = append(ids, id)
+		orderBooks := make(map[int32][]string, 0)
+
+		for id, d := range mds.subs.orderBooks {
+			orderBooks[d] = append(orderBooks[d], id)
 			delete(mds.subs.orderBooks, id)
 		}
-		err := mds.UnSubscribeOrderBook(ids)
-		if err != nil {
-			return err
+
+		for depth, ids := range orderBooks {
+			err := mds.UnSubscribeOrderBook(ids, depth)
+			if err != nil {
+				return err
+			}
 		}
 	}
 

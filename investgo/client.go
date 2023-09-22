@@ -39,7 +39,7 @@ func NewClient(ctx context.Context, conf Config, l Logger) (*Client, error) {
 	ctx = metadata.AppendToOutgoingContext(ctx, "x-app-name", conf.AppName)
 
 	opts := []retry.CallOption{
-		retry.WithCodes(codes.Unavailable, codes.Internal),
+		retry.WithCodes(codes.Unavailable, codes.Internal, codes.Canceled),
 		retry.WithBackoff(retry.BackoffLinear(WAIT_BETWEEN)),
 		retry.WithMax(conf.MaxRetries),
 	}

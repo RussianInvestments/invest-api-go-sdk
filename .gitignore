@@ -16,3 +16,4 @@ main
 *.db
 *_test.go
 .golangci.yaml
+/proto/google/

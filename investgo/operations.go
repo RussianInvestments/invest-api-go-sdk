@@ -4,9 +4,10 @@ import (
 	"context"
 	"time"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 type OperationsServiceClient struct {
@@ -24,8 +25,8 @@ func (os *OperationsServiceClient) GetOperations(req *GetOperationsRequest) (*Op
 		AccountId: req.AccountId,
 		From:      TimeToTimestamp(req.From),
 		To:        TimeToTimestamp(req.To),
-		State:     req.State,
-		Figi:      req.Figi,
+		State:     &req.State,
+		Figi:      &req.Figi,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -41,7 +42,7 @@ func (os *OperationsServiceClient) GetPortfolio(accountId string, currency pb.Po
 	var header, trailer metadata.MD
 	resp, err := os.pbClient.GetPortfolio(os.ctx, &pb.PortfolioRequest{
 		AccountId: accountId,
-		Currency:  currency,
+		Currency:  &currency,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -89,7 +90,7 @@ func (os *OperationsServiceClient) GetBrokerReport(taskId string, page int32) (*
 		Payload: &pb.BrokerReportRequest_GetBrokerReportRequest{
 			GetBrokerReportRequest: &pb.GetBrokerReportRequest{
 				TaskId: taskId,
-				Page:   page,
+				Page:   &page,
 			},
 		},
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
@@ -130,7 +131,7 @@ func (os *OperationsServiceClient) GetDividentsForeignIssuer(taskId string, page
 		Payload: &pb.GetDividendsForeignIssuerRequest_GetDivForeignIssuerReport{
 			GetDivForeignIssuerReport: &pb.GetDividendsForeignIssuerReportRequest{
 				TaskId: taskId,
-				Page:   page,
+				Page:   &page,
 			},
 		},
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
@@ -176,16 +177,16 @@ func (os *OperationsServiceClient) GetOperationsByCursor(req *GetOperationsByCur
 	var header, trailer metadata.MD
 	resp, err := os.pbClient.GetOperationsByCursor(os.ctx, &pb.GetOperationsByCursorRequest{
 		AccountId:          req.AccountId,
-		InstrumentId:       req.InstrumentId,
+		InstrumentId:       &req.InstrumentId,
 		From:               TimeToTimestamp(req.From),
 		To:                 TimeToTimestamp(req.To),
-		Cursor:             req.Cursor,
-		Limit:              req.Limit,
+		Cursor:             &req.Cursor,
+		Limit:              &req.Limit,
 		OperationTypes:     req.OperationTypes,
-		State:              req.State,
-		WithoutCommissions: req.WithoutCommissions,
-		WithoutTrades:      req.WithoutTrades,
-		WithoutOvernights:  req.WithoutOvernights,
+		State:              &req.State,
+		WithoutCommissions: &req.WithoutCommissions,
+		WithoutTrades:      &req.WithoutTrades,
+		WithoutOvernights:  &req.WithoutOvernights,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer

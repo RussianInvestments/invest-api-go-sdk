@@ -3,9 +3,10 @@ package investgo
 import (
 	"context"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 type SandboxServiceClient struct {
@@ -87,7 +88,7 @@ func (s *SandboxServiceClient) ReplaceSandboxOrder(req *ReplaceOrderRequest) (*P
 		IdempotencyKey: req.NewOrderId,
 		Quantity:       req.Quantity,
 		Price:          req.Price,
-		PriceType:      req.PriceType,
+		PriceType:      &req.PriceType,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -167,8 +168,8 @@ func (s *SandboxServiceClient) GetSandboxOperations(req *GetOperationsRequest) (
 		AccountId: req.AccountId,
 		From:      TimeToTimestamp(req.From),
 		To:        TimeToTimestamp(req.To),
-		State:     req.State,
-		Figi:      req.Figi,
+		State:     &req.State,
+		Figi:      &req.Figi,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -184,16 +185,16 @@ func (s *SandboxServiceClient) GetSandboxOperationsByCursor(req *GetOperationsBy
 	var header, trailer metadata.MD
 	resp, err := s.pbClient.GetSandboxOperationsByCursor(s.ctx, &pb.GetOperationsByCursorRequest{
 		AccountId:          req.AccountId,
-		InstrumentId:       req.InstrumentId,
+		InstrumentId:       &req.InstrumentId,
 		From:               TimeToTimestamp(req.From),
 		To:                 TimeToTimestamp(req.To),
-		Cursor:             req.Cursor,
-		Limit:              req.Limit,
+		Cursor:             &req.Cursor,
+		Limit:              &req.Limit,
 		OperationTypes:     req.OperationTypes,
-		State:              req.State,
-		WithoutCommissions: req.WithoutCommissions,
-		WithoutTrades:      req.WithoutTrades,
-		WithoutOvernights:  req.WithoutOvernights,
+		State:              &req.State,
+		WithoutCommissions: &req.WithoutCommissions,
+		WithoutTrades:      &req.WithoutTrades,
+		WithoutOvernights:  &req.WithoutOvernights,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -209,7 +210,7 @@ func (s *SandboxServiceClient) GetSandboxPortfolio(accountId string, currency pb
 	var header, trailer metadata.MD
 	resp, err := s.pbClient.GetSandboxPortfolio(s.ctx, &pb.PortfolioRequest{
 		AccountId: accountId,
-		Currency:  currency,
+		Currency:  &currency,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer

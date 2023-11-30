@@ -3,10 +3,11 @@ package investgo
 import (
 	"time"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 type InstrumentsServiceClient struct {
@@ -21,7 +22,7 @@ type InstrumentsServiceClient struct {
 func (is *InstrumentsServiceClient) TradingSchedules(exchange string, from, to time.Time) (*TradingSchedulesResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.TradingSchedules(is.ctx, &pb.TradingSchedulesRequest{
-		Exchange: exchange,
+		Exchange: &exchange,
 		From:     TimeToTimestamp(from),
 		To:       TimeToTimestamp(to),
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
@@ -58,7 +59,7 @@ func (is *InstrumentsServiceClient) bondBy(id string, idType pb.InstrumentIdType
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.BondBy(is.ctx, &pb.InstrumentRequest{
 		IdType:    idType,
-		ClassCode: classCode,
+		ClassCode: &classCode,
 		Id:        id,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
@@ -74,7 +75,7 @@ func (is *InstrumentsServiceClient) bondBy(id string, idType pb.InstrumentIdType
 func (is *InstrumentsServiceClient) Bonds(status pb.InstrumentStatus) (*BondsResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.Bonds(is.ctx, &pb.InstrumentsRequest{
-		InstrumentStatus: status,
+		InstrumentStatus: &status,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -86,12 +87,12 @@ func (is *InstrumentsServiceClient) Bonds(status pb.InstrumentStatus) (*BondsRes
 }
 
 // GetBondCoupons - Метод получения графика выплат купонов по облигации
-func (is *InstrumentsServiceClient) GetBondCoupons(figi string, from, to time.Time) (*GetBondCouponsResponse, error) {
+func (is *InstrumentsServiceClient) GetBondCoupons(instrumentID string, from, to time.Time) (*GetBondCouponsResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.GetBondCoupons(is.ctx, &pb.GetBondCouponsRequest{
-		Figi: figi,
-		From: TimeToTimestamp(from),
-		To:   TimeToTimestamp(to),
+		InstrumentId: instrumentID,
+		From:         TimeToTimestamp(from),
+		To:           TimeToTimestamp(to),
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -126,7 +127,7 @@ func (is *InstrumentsServiceClient) currenceBy(id string, idType pb.InstrumentId
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.CurrencyBy(is.ctx, &pb.InstrumentRequest{
 		IdType:    idType,
-		ClassCode: classCode,
+		ClassCode: &classCode,
 		Id:        id,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
@@ -142,7 +143,7 @@ func (is *InstrumentsServiceClient) currenceBy(id string, idType pb.InstrumentId
 func (is *InstrumentsServiceClient) Currencies(status pb.InstrumentStatus) (*CurrenciesResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.Currencies(is.ctx, &pb.InstrumentsRequest{
-		InstrumentStatus: status,
+		InstrumentStatus: &status,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -177,7 +178,7 @@ func (is *InstrumentsServiceClient) etfBy(id string, idType pb.InstrumentIdType,
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.EtfBy(is.ctx, &pb.InstrumentRequest{
 		IdType:    idType,
-		ClassCode: classCode,
+		ClassCode: &classCode,
 		Id:        id,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
@@ -193,7 +194,7 @@ func (is *InstrumentsServiceClient) etfBy(id string, idType pb.InstrumentIdType,
 func (is *InstrumentsServiceClient) Etfs(status pb.InstrumentStatus) (*EtfsResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.Etfs(is.ctx, &pb.InstrumentsRequest{
-		InstrumentStatus: status,
+		InstrumentStatus: &status,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -228,7 +229,7 @@ func (is *InstrumentsServiceClient) futureBy(id string, idType pb.InstrumentIdTy
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.FutureBy(is.ctx, &pb.InstrumentRequest{
 		IdType:    idType,
-		ClassCode: classCode,
+		ClassCode: &classCode,
 		Id:        id,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
@@ -244,7 +245,7 @@ func (is *InstrumentsServiceClient) futureBy(id string, idType pb.InstrumentIdTy
 func (is *InstrumentsServiceClient) Futures(status pb.InstrumentStatus) (*FuturesResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.Futures(is.ctx, &pb.InstrumentsRequest{
-		InstrumentStatus: status,
+		InstrumentStatus: &status,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -274,7 +275,7 @@ func (is *InstrumentsServiceClient) optionBy(id string, idType pb.InstrumentIdTy
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.OptionBy(is.ctx, &pb.InstrumentRequest{
 		IdType:    idType,
-		ClassCode: classCode,
+		ClassCode: &classCode,
 		Id:        id,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
@@ -292,7 +293,7 @@ func (is *InstrumentsServiceClient) optionBy(id string, idType pb.InstrumentIdTy
 func (is *InstrumentsServiceClient) Options(status pb.InstrumentStatus) (*OptionsResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.Options(is.ctx, &pb.InstrumentsRequest{
-		InstrumentStatus: status,
+		InstrumentStatus: &status,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -327,7 +328,7 @@ func (is *InstrumentsServiceClient) shareBy(id string, idType pb.InstrumentIdTyp
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.ShareBy(is.ctx, &pb.InstrumentRequest{
 		IdType:    idType,
-		ClassCode: classCode,
+		ClassCode: &classCode,
 		Id:        id,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
@@ -343,7 +344,7 @@ func (is *InstrumentsServiceClient) shareBy(id string, idType pb.InstrumentIdTyp
 func (is *InstrumentsServiceClient) Shares(status pb.InstrumentStatus) (*SharesResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.Shares(is.ctx, &pb.InstrumentsRequest{
-		InstrumentStatus: status,
+		InstrumentStatus: &status,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -396,7 +397,7 @@ func (is *InstrumentsServiceClient) instrumentBy(id string, idType pb.Instrument
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.GetInstrumentBy(is.ctx, &pb.InstrumentRequest{
 		IdType:    idType,
-		ClassCode: classCode,
+		ClassCode: &classCode,
 		Id:        id,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
@@ -409,12 +410,12 @@ func (is *InstrumentsServiceClient) instrumentBy(id string, idType pb.Instrument
 }
 
 // GetAccruedInterests - Метод получения накопленного купонного дохода по облигации
-func (is *InstrumentsServiceClient) GetAccruedInterests(figi string, from, to time.Time) (*GetAccruedInterestsResponse, error) {
+func (is *InstrumentsServiceClient) GetAccruedInterests(instrumentID string, from, to time.Time) (*GetAccruedInterestsResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.GetAccruedInterests(is.ctx, &pb.GetAccruedInterestsRequest{
-		Figi: figi,
-		From: TimeToTimestamp(from),
-		To:   TimeToTimestamp(to),
+		InstrumentId: instrumentID,
+		From:         TimeToTimestamp(from),
+		To:           TimeToTimestamp(to),
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -426,10 +427,10 @@ func (is *InstrumentsServiceClient) GetAccruedInterests(figi string, from, to ti
 }
 
 // GetFuturesMargin - Метод получения размера гарантийного обеспечения по фьючерсам
-func (is *InstrumentsServiceClient) GetFuturesMargin(figi string) (*GetFuturesMarginResponse, error) {
+func (is *InstrumentsServiceClient) GetFuturesMargin(instrumentID string) (*GetFuturesMarginResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.GetFuturesMargin(is.ctx, &pb.GetFuturesMarginRequest{
-		Figi: figi,
+		InstrumentId: instrumentID,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -441,12 +442,12 @@ func (is *InstrumentsServiceClient) GetFuturesMargin(figi string) (*GetFuturesMa
 }
 
 // GetDividents - Метод для получения событий выплаты дивидендов по инструменту
-func (is *InstrumentsServiceClient) GetDividents(figi string, from, to time.Time) (*GetDividendsResponse, error) {
+func (is *InstrumentsServiceClient) GetDividents(instrumentID string, from, to time.Time) (*GetDividendsResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := is.pbClient.GetDividends(is.ctx, &pb.GetDividendsRequest{
-		Figi: figi,
-		From: TimeToTimestamp(from),
-		To:   TimeToTimestamp(to),
+		InstrumentId: instrumentID,
+		From:         TimeToTimestamp(from),
+		To:           TimeToTimestamp(to),
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -571,5 +572,20 @@ func (is *InstrumentsServiceClient) FindInstrument(query string) (*FindInstrumen
 	return &FindInstrumentResponse{
 		FindInstrumentResponse: resp,
 		Header:                 header,
+	}, err
+}
+
+// GetAssetFundamentals - Метод получения фундаментальных показателей по активу
+func (is *InstrumentsServiceClient) GetAssetFundamentals(assets []string) (*GetAssetFundamentalsResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := is.pbClient.GetAssetFundamentals(is.ctx, &pb.GetAssetFundamentalsRequest{
+		Assets: assets,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetAssetFundamentalsResponse{
+		GetAssetFundamentalsResponse: resp,
+		Header:                       header,
 	}, err
 }

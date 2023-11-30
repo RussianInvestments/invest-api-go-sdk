@@ -8,10 +8,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/russianinvestments/invest-api-go-sdk/investgo"
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/russianinvestments/invest-api-go-sdk/investgo"
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 func main() {
@@ -116,7 +117,7 @@ func main() {
 		fmt.Printf("bond by figi = %v\n", bond.GetInstrument().String())
 	}
 
-	interestsResp, err := instrumentsService.GetAccruedInterests("BBG00QXGFHS6", time.Now().Add(-72*time.Hour), time.Now())
+	interestsResp, err := instrumentsService.GetAccruedInterests("6afa6f80-03a7-4d83-9cf0-c19d7d021f76", time.Now().Add(-72*time.Hour), time.Now())
 	if err != nil {
 		logger.Errorf(err.Error())
 	} else {
@@ -126,7 +127,7 @@ func main() {
 		}
 	}
 
-	bondCouponsResp, err := instrumentsService.GetBondCoupons("BBG00QXGFHS6", time.Now(), time.Now().Add(time.Hour*10000))
+	bondCouponsResp, err := instrumentsService.GetBondCoupons("6afa6f80-03a7-4d83-9cf0-c19d7d021f76", time.Now(), time.Now().Add(time.Hour*10000))
 	if err != nil {
 		logger.Errorf(err.Error())
 	} else {
@@ -136,7 +137,7 @@ func main() {
 		}
 	}
 
-	dividentsResp, err := instrumentsService.GetDividents("BBG004730N88", time.Now().Add(-1000*time.Hour), time.Now())
+	dividentsResp, err := instrumentsService.GetDividents("6afa6f80-03a7-4d83-9cf0-c19d7d021f76", time.Now().Add(-1000*time.Hour), time.Now())
 	if err != nil {
 		logger.Errorf(err.Error())
 		fmt.Printf("header msg = %v\n", dividentsResp.GetHeader().Get("message"))

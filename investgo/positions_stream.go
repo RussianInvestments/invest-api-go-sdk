@@ -3,9 +3,10 @@ package investgo
 import (
 	"context"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 type PositionsStream struct {
@@ -18,7 +19,7 @@ type PositionsStream struct {
 	positions chan *pb.PositionData
 }
 
-// Positions -  Метод возвращает канал для чтения обновлений информации по изменению позиций портфеля
+// Positions - Метод возвращает канал для чтения обновлений информации по изменению позиций портфеля
 func (p *PositionsStream) Positions() <-chan *pb.PositionData {
 	return p.positions
 }

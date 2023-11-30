@@ -6,9 +6,10 @@ import (
 	"os"
 	"time"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 type MarketDataServiceClient struct {
@@ -26,7 +27,7 @@ func (md *MarketDataServiceClient) GetCandles(instrumentId string, interval pb.C
 		From:         TimeToTimestamp(from),
 		To:           TimeToTimestamp(to),
 		Interval:     interval,
-		InstrumentId: instrumentId,
+		InstrumentId: &instrumentId,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -57,7 +58,7 @@ func (md *MarketDataServiceClient) GetOrderBook(instrumentId string, depth int32
 	var header, trailer metadata.MD
 	resp, err := md.pbClient.GetOrderBook(md.ctx, &pb.GetOrderBookRequest{
 		Depth:        depth,
-		InstrumentId: instrumentId,
+		InstrumentId: &instrumentId,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -72,7 +73,7 @@ func (md *MarketDataServiceClient) GetOrderBook(instrumentId string, depth int32
 func (md *MarketDataServiceClient) GetTradingStatus(instrumentId string) (*GetTradingStatusResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := md.pbClient.GetTradingStatus(md.ctx, &pb.GetTradingStatusRequest{
-		InstrumentId: instrumentId,
+		InstrumentId: &instrumentId,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -104,7 +105,7 @@ func (md *MarketDataServiceClient) GetLastTrades(instrumentId string, from, to t
 	resp, err := md.pbClient.GetLastTrades(md.ctx, &pb.GetLastTradesRequest{
 		From:         TimeToTimestamp(from),
 		To:           TimeToTimestamp(to),
-		InstrumentId: instrumentId,
+		InstrumentId: &instrumentId,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer

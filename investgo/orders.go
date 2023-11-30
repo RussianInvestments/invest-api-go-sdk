@@ -3,9 +3,10 @@ package investgo
 import (
 	"context"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 type OrdersServiceClient struct {
@@ -135,7 +136,7 @@ func (os *OrdersServiceClient) ReplaceOrder(req *ReplaceOrderRequest) (*PostOrde
 		IdempotencyKey: req.NewOrderId,
 		Quantity:       req.Quantity,
 		Price:          req.Price,
-		PriceType:      req.PriceType,
+		PriceType:      &req.PriceType,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -143,5 +144,42 @@ func (os *OrdersServiceClient) ReplaceOrder(req *ReplaceOrderRequest) (*PostOrde
 	return &PostOrderResponse{
 		PostOrderResponse: resp,
 		Header:            header,
+	}, err
+}
+
+// GetMaxLots - Расчет количества доступных для покупки/продажи лотов
+func (os *OrdersServiceClient) GetMaxLots(accountID, instrumentID string, price *pb.Quotation) (*GetMaxLotsResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := os.pbClient.GetMaxLots(os.ctx, &pb.GetMaxLotsRequest{
+		AccountId:    accountID,
+		InstrumentId: instrumentID,
+		Price:        price,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetMaxLotsResponse{
+		GetMaxLotsResponse: resp,
+		Header:             header,
+	}, err
+}
+
+// GetOrderPrice - Метод получения предварительной стоимости для лимитной заявки
+func (os *OrdersServiceClient) GetOrderPrice(accountID, instrumentID string, price *pb.Quotation,
+	direction pb.OrderDirection, quantity int64) (*GetOrderPriceResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := os.pbClient.GetOrderPrice(os.ctx, &pb.GetOrderPriceRequest{
+		AccountId:    accountID,
+		InstrumentId: instrumentID,
+		Price:        price,
+		Direction:    direction,
+		Quantity:     quantity,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetOrderPriceResponse{
+		GetOrderPriceResponse: resp,
+		Header:                header,
 	}, err
 }

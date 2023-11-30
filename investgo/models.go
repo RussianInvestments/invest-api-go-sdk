@@ -3,8 +3,9 @@ package investgo
 import (
 	"time"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"google.golang.org/grpc/metadata"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 // Orders Service
@@ -541,6 +542,33 @@ type SandboxPayInResponse struct {
 }
 
 func (p *SandboxPayInResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
+type GetAssetFundamentalsResponse struct {
+	*pb.GetAssetFundamentalsResponse
+	Header metadata.MD
+}
+
+func (p *GetAssetFundamentalsResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
+type GetMaxLotsResponse struct {
+	*pb.GetMaxLotsResponse
+	Header metadata.MD
+}
+
+func (p *GetMaxLotsResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
+type GetOrderPriceResponse struct {
+	*pb.GetOrderPriceResponse
+	Header metadata.MD
+}
+
+func (p *GetOrderPriceResponse) GetHeader() metadata.MD {
 	return p.Header
 }
 

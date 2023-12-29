@@ -500,11 +500,13 @@ func (is *InstrumentsServiceClient) GetFavorites() (*GetFavoritesResponse, error
 }
 
 // EditFavorites - Метод редактирования списка избранных инструментов
-func (is *InstrumentsServiceClient) EditFavorites(instruments []string, actionType pb.EditFavoritesActionType) (*EditFavoritesResponse, error) {
+func (is *InstrumentsServiceClient) EditFavorites(instrumentIDs []string, actionType pb.EditFavoritesActionType) (*EditFavoritesResponse, error) {
 	var header, trailer metadata.MD
-	ids := make([]*pb.EditFavoritesRequestInstrument, 0, len(instruments))
-	for _, id := range instruments {
-		ids = append(ids, &pb.EditFavoritesRequestInstrument{Figi: id})
+	ids := make([]*pb.EditFavoritesRequestInstrument, 0, len(instrumentIDs))
+	for _, id := range instrumentIDs {
+		ids = append(ids, &pb.EditFavoritesRequestInstrument{
+			InstrumentId: id,
+		})
 	}
 	resp, err := is.pbClient.EditFavorites(is.ctx, &pb.EditFavoritesRequest{
 		Instruments: ids,
@@ -587,5 +589,87 @@ func (is *InstrumentsServiceClient) GetAssetFundamentals(assets []string) (*GetA
 	return &GetAssetFundamentalsResponse{
 		GetAssetFundamentalsResponse: resp,
 		Header:                       header,
+	}, err
+}
+
+// GetBondEvents - Метод получения событий по облигации
+func (is *InstrumentsServiceClient) GetBondEvents(instrumentID string,
+	eventType pb.GetBondEventsRequest_EventType, from, to time.Time) (*GetBondEventsResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := is.pbClient.GetBondEvents(is.ctx, &pb.GetBondEventsRequest{
+		From:         TimeToTimestamp(from),
+		To:           TimeToTimestamp(to),
+		InstrumentId: instrumentID,
+		Type:         eventType,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetBondEventsResponse{
+		GetBondEventsResponse: resp,
+		Header:                header,
+	}, err
+}
+
+// Indicatives - Метод получения индикативных инструментов (индексов, товаров и др.)
+func (is *InstrumentsServiceClient) Indicatives() (*IndicativesResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := is.pbClient.Indicatives(is.ctx, &pb.IndicativesRequest{}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &IndicativesResponse{
+		IndicativesResponse: resp,
+		Header:              header,
+	}, err
+}
+
+// GetAssetReports - Метод получения расписания выхода отчетностей эмитентов
+func (is *InstrumentsServiceClient) GetAssetReports(instrumentID string, from, to time.Time) (*GetAssetReportsResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := is.pbClient.GetAssetReports(is.ctx, &pb.GetAssetReportsRequest{
+		InstrumentId: instrumentID,
+		From:         TimeToTimestamp(from),
+		To:           TimeToTimestamp(to),
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetAssetReportsResponse{
+		GetAssetReportsResponse: resp,
+		Header:                  header,
+	}, err
+}
+
+// GetConsensusForecasts - Метод получения мнения аналитиков по инструменту
+func (is *InstrumentsServiceClient) GetConsensusForecasts(limit, pageNumber int32) (*GetConsensusForecastsResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := is.pbClient.GetConsensusForecasts(is.ctx, &pb.GetConsensusForecastsRequest{
+		Paging: &pb.Page{
+			Limit:      limit,
+			PageNumber: pageNumber,
+		},
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetConsensusForecastsResponse{
+		GetConsensusForecastsResponse: resp,
+		Header:                        header,
+	}, err
+}
+
+// GetForecastBy - Метод получения прогнозов инвестдомов по инструменту
+func (is *InstrumentsServiceClient) GetForecastBy(instrumentID string) (*GetForecastResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := is.pbClient.GetForecastBy(is.ctx, &pb.GetForecastRequest{
+		InstrumentId: instrumentID,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetForecastResponse{
+		GetForecastResponse: resp,
+		Header:              header,
 	}, err
 }

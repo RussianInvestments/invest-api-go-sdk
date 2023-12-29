@@ -19,34 +19,39 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	InstrumentsService_TradingSchedules_FullMethodName     = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/TradingSchedules"
-	InstrumentsService_BondBy_FullMethodName               = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/BondBy"
-	InstrumentsService_Bonds_FullMethodName                = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Bonds"
-	InstrumentsService_GetBondCoupons_FullMethodName       = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetBondCoupons"
-	InstrumentsService_CurrencyBy_FullMethodName           = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/CurrencyBy"
-	InstrumentsService_Currencies_FullMethodName           = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Currencies"
-	InstrumentsService_EtfBy_FullMethodName                = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/EtfBy"
-	InstrumentsService_Etfs_FullMethodName                 = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Etfs"
-	InstrumentsService_FutureBy_FullMethodName             = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/FutureBy"
-	InstrumentsService_Futures_FullMethodName              = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Futures"
-	InstrumentsService_OptionBy_FullMethodName             = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/OptionBy"
-	InstrumentsService_Options_FullMethodName              = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Options"
-	InstrumentsService_OptionsBy_FullMethodName            = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/OptionsBy"
-	InstrumentsService_ShareBy_FullMethodName              = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/ShareBy"
-	InstrumentsService_Shares_FullMethodName               = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Shares"
-	InstrumentsService_GetAccruedInterests_FullMethodName  = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAccruedInterests"
-	InstrumentsService_GetFuturesMargin_FullMethodName     = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetFuturesMargin"
-	InstrumentsService_GetInstrumentBy_FullMethodName      = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetInstrumentBy"
-	InstrumentsService_GetDividends_FullMethodName         = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetDividends"
-	InstrumentsService_GetAssetBy_FullMethodName           = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAssetBy"
-	InstrumentsService_GetAssets_FullMethodName            = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAssets"
-	InstrumentsService_GetFavorites_FullMethodName         = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetFavorites"
-	InstrumentsService_EditFavorites_FullMethodName        = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/EditFavorites"
-	InstrumentsService_GetCountries_FullMethodName         = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetCountries"
-	InstrumentsService_FindInstrument_FullMethodName       = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/FindInstrument"
-	InstrumentsService_GetBrands_FullMethodName            = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetBrands"
-	InstrumentsService_GetBrandBy_FullMethodName           = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetBrandBy"
-	InstrumentsService_GetAssetFundamentals_FullMethodName = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAssetFundamentals"
+	InstrumentsService_TradingSchedules_FullMethodName      = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/TradingSchedules"
+	InstrumentsService_BondBy_FullMethodName                = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/BondBy"
+	InstrumentsService_Bonds_FullMethodName                 = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Bonds"
+	InstrumentsService_GetBondCoupons_FullMethodName        = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetBondCoupons"
+	InstrumentsService_GetBondEvents_FullMethodName         = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetBondEvents"
+	InstrumentsService_CurrencyBy_FullMethodName            = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/CurrencyBy"
+	InstrumentsService_Currencies_FullMethodName            = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Currencies"
+	InstrumentsService_EtfBy_FullMethodName                 = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/EtfBy"
+	InstrumentsService_Etfs_FullMethodName                  = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Etfs"
+	InstrumentsService_FutureBy_FullMethodName              = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/FutureBy"
+	InstrumentsService_Futures_FullMethodName               = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Futures"
+	InstrumentsService_OptionBy_FullMethodName              = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/OptionBy"
+	InstrumentsService_Options_FullMethodName               = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Options"
+	InstrumentsService_OptionsBy_FullMethodName             = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/OptionsBy"
+	InstrumentsService_ShareBy_FullMethodName               = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/ShareBy"
+	InstrumentsService_Shares_FullMethodName                = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Shares"
+	InstrumentsService_Indicatives_FullMethodName           = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/Indicatives"
+	InstrumentsService_GetAccruedInterests_FullMethodName   = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAccruedInterests"
+	InstrumentsService_GetFuturesMargin_FullMethodName      = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetFuturesMargin"
+	InstrumentsService_GetInstrumentBy_FullMethodName       = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetInstrumentBy"
+	InstrumentsService_GetDividends_FullMethodName          = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetDividends"
+	InstrumentsService_GetAssetBy_FullMethodName            = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAssetBy"
+	InstrumentsService_GetAssets_FullMethodName             = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAssets"
+	InstrumentsService_GetFavorites_FullMethodName          = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetFavorites"
+	InstrumentsService_EditFavorites_FullMethodName         = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/EditFavorites"
+	InstrumentsService_GetCountries_FullMethodName          = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetCountries"
+	InstrumentsService_FindInstrument_FullMethodName        = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/FindInstrument"
+	InstrumentsService_GetBrands_FullMethodName             = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetBrands"
+	InstrumentsService_GetBrandBy_FullMethodName            = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetBrandBy"
+	InstrumentsService_GetAssetFundamentals_FullMethodName  = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAssetFundamentals"
+	InstrumentsService_GetAssetReports_FullMethodName       = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAssetReports"
+	InstrumentsService_GetConsensusForecasts_FullMethodName = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetConsensusForecasts"
+	InstrumentsService_GetForecastBy_FullMethodName         = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetForecastBy"
 )
 
 // InstrumentsServiceClient is the client API for InstrumentsService service.
@@ -61,6 +66,8 @@ type InstrumentsServiceClient interface {
 	Bonds(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*BondsResponse, error)
 	// Метод получения графика выплат купонов по облигации.
 	GetBondCoupons(ctx context.Context, in *GetBondCouponsRequest, opts ...grpc.CallOption) (*GetBondCouponsResponse, error)
+	// Метод получения событий по облигации
+	GetBondEvents(ctx context.Context, in *GetBondEventsRequest, opts ...grpc.CallOption) (*GetBondEventsResponse, error)
 	// Метод получения валюты по её идентификатору.
 	CurrencyBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*CurrencyResponse, error)
 	// Метод получения списка валют.
@@ -84,6 +91,8 @@ type InstrumentsServiceClient interface {
 	ShareBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*ShareResponse, error)
 	// Метод получения списка акций.
 	Shares(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*SharesResponse, error)
+	// Метод получения индикативных инструментов (индексов, товаров и др.)
+	Indicatives(ctx context.Context, in *IndicativesRequest, opts ...grpc.CallOption) (*IndicativesResponse, error)
 	// Метод получения накопленного купонного дохода по облигации.
 	GetAccruedInterests(ctx context.Context, in *GetAccruedInterestsRequest, opts ...grpc.CallOption) (*GetAccruedInterestsResponse, error)
 	// Метод получения размера гарантийного обеспечения по фьючерсам.
@@ -110,6 +119,12 @@ type InstrumentsServiceClient interface {
 	GetBrandBy(ctx context.Context, in *GetBrandRequest, opts ...grpc.CallOption) (*Brand, error)
 	// Метод получения фундаментальных показателей по активу
 	GetAssetFundamentals(ctx context.Context, in *GetAssetFundamentalsRequest, opts ...grpc.CallOption) (*GetAssetFundamentalsResponse, error)
+	// Метод получения расписания выхода отчетностей эмитентов
+	GetAssetReports(ctx context.Context, in *GetAssetReportsRequest, opts ...grpc.CallOption) (*GetAssetReportsResponse, error)
+	// Метод получения мнения аналитиков по инструменту
+	GetConsensusForecasts(ctx context.Context, in *GetConsensusForecastsRequest, opts ...grpc.CallOption) (*GetConsensusForecastsResponse, error)
+	// Метод получения прогнозов инвестдомов по инструменту
+	GetForecastBy(ctx context.Context, in *GetForecastRequest, opts ...grpc.CallOption) (*GetForecastResponse, error)
 }
 
 type instrumentsServiceClient struct {
@@ -150,6 +165,15 @@ func (c *instrumentsServiceClient) Bonds(ctx context.Context, in *InstrumentsReq
 func (c *instrumentsServiceClient) GetBondCoupons(ctx context.Context, in *GetBondCouponsRequest, opts ...grpc.CallOption) (*GetBondCouponsResponse, error) {
 	out := new(GetBondCouponsResponse)
 	err := c.cc.Invoke(ctx, InstrumentsService_GetBondCoupons_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instrumentsServiceClient) GetBondEvents(ctx context.Context, in *GetBondEventsRequest, opts ...grpc.CallOption) (*GetBondEventsResponse, error) {
+	out := new(GetBondEventsResponse)
+	err := c.cc.Invoke(ctx, InstrumentsService_GetBondEvents_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -250,6 +274,15 @@ func (c *instrumentsServiceClient) ShareBy(ctx context.Context, in *InstrumentRe
 func (c *instrumentsServiceClient) Shares(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*SharesResponse, error) {
 	out := new(SharesResponse)
 	err := c.cc.Invoke(ctx, InstrumentsService_Shares_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instrumentsServiceClient) Indicatives(ctx context.Context, in *IndicativesRequest, opts ...grpc.CallOption) (*IndicativesResponse, error) {
+	out := new(IndicativesResponse)
+	err := c.cc.Invoke(ctx, InstrumentsService_Indicatives_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -373,6 +406,33 @@ func (c *instrumentsServiceClient) GetAssetFundamentals(ctx context.Context, in 
 	return out, nil
 }
 
+func (c *instrumentsServiceClient) GetAssetReports(ctx context.Context, in *GetAssetReportsRequest, opts ...grpc.CallOption) (*GetAssetReportsResponse, error) {
+	out := new(GetAssetReportsResponse)
+	err := c.cc.Invoke(ctx, InstrumentsService_GetAssetReports_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instrumentsServiceClient) GetConsensusForecasts(ctx context.Context, in *GetConsensusForecastsRequest, opts ...grpc.CallOption) (*GetConsensusForecastsResponse, error) {
+	out := new(GetConsensusForecastsResponse)
+	err := c.cc.Invoke(ctx, InstrumentsService_GetConsensusForecasts_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instrumentsServiceClient) GetForecastBy(ctx context.Context, in *GetForecastRequest, opts ...grpc.CallOption) (*GetForecastResponse, error) {
+	out := new(GetForecastResponse)
+	err := c.cc.Invoke(ctx, InstrumentsService_GetForecastBy_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // InstrumentsServiceServer is the server API for InstrumentsService service.
 // All implementations must embed UnimplementedInstrumentsServiceServer
 // for forward compatibility
@@ -385,6 +445,8 @@ type InstrumentsServiceServer interface {
 	Bonds(context.Context, *InstrumentsRequest) (*BondsResponse, error)
 	// Метод получения графика выплат купонов по облигации.
 	GetBondCoupons(context.Context, *GetBondCouponsRequest) (*GetBondCouponsResponse, error)
+	// Метод получения событий по облигации
+	GetBondEvents(context.Context, *GetBondEventsRequest) (*GetBondEventsResponse, error)
 	// Метод получения валюты по её идентификатору.
 	CurrencyBy(context.Context, *InstrumentRequest) (*CurrencyResponse, error)
 	// Метод получения списка валют.
@@ -408,6 +470,8 @@ type InstrumentsServiceServer interface {
 	ShareBy(context.Context, *InstrumentRequest) (*ShareResponse, error)
 	// Метод получения списка акций.
 	Shares(context.Context, *InstrumentsRequest) (*SharesResponse, error)
+	// Метод получения индикативных инструментов (индексов, товаров и др.)
+	Indicatives(context.Context, *IndicativesRequest) (*IndicativesResponse, error)
 	// Метод получения накопленного купонного дохода по облигации.
 	GetAccruedInterests(context.Context, *GetAccruedInterestsRequest) (*GetAccruedInterestsResponse, error)
 	// Метод получения размера гарантийного обеспечения по фьючерсам.
@@ -434,6 +498,12 @@ type InstrumentsServiceServer interface {
 	GetBrandBy(context.Context, *GetBrandRequest) (*Brand, error)
 	// Метод получения фундаментальных показателей по активу
 	GetAssetFundamentals(context.Context, *GetAssetFundamentalsRequest) (*GetAssetFundamentalsResponse, error)
+	// Метод получения расписания выхода отчетностей эмитентов
+	GetAssetReports(context.Context, *GetAssetReportsRequest) (*GetAssetReportsResponse, error)
+	// Метод получения мнения аналитиков по инструменту
+	GetConsensusForecasts(context.Context, *GetConsensusForecastsRequest) (*GetConsensusForecastsResponse, error)
+	// Метод получения прогнозов инвестдомов по инструменту
+	GetForecastBy(context.Context, *GetForecastRequest) (*GetForecastResponse, error)
 	mustEmbedUnimplementedInstrumentsServiceServer()
 }
 
@@ -452,6 +522,9 @@ func (UnimplementedInstrumentsServiceServer) Bonds(context.Context, *Instruments
 }
 func (UnimplementedInstrumentsServiceServer) GetBondCoupons(context.Context, *GetBondCouponsRequest) (*GetBondCouponsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBondCoupons not implemented")
+}
+func (UnimplementedInstrumentsServiceServer) GetBondEvents(context.Context, *GetBondEventsRequest) (*GetBondEventsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBondEvents not implemented")
 }
 func (UnimplementedInstrumentsServiceServer) CurrencyBy(context.Context, *InstrumentRequest) (*CurrencyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CurrencyBy not implemented")
@@ -485,6 +558,9 @@ func (UnimplementedInstrumentsServiceServer) ShareBy(context.Context, *Instrumen
 }
 func (UnimplementedInstrumentsServiceServer) Shares(context.Context, *InstrumentsRequest) (*SharesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Shares not implemented")
+}
+func (UnimplementedInstrumentsServiceServer) Indicatives(context.Context, *IndicativesRequest) (*IndicativesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Indicatives not implemented")
 }
 func (UnimplementedInstrumentsServiceServer) GetAccruedInterests(context.Context, *GetAccruedInterestsRequest) (*GetAccruedInterestsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAccruedInterests not implemented")
@@ -524,6 +600,15 @@ func (UnimplementedInstrumentsServiceServer) GetBrandBy(context.Context, *GetBra
 }
 func (UnimplementedInstrumentsServiceServer) GetAssetFundamentals(context.Context, *GetAssetFundamentalsRequest) (*GetAssetFundamentalsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAssetFundamentals not implemented")
+}
+func (UnimplementedInstrumentsServiceServer) GetAssetReports(context.Context, *GetAssetReportsRequest) (*GetAssetReportsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAssetReports not implemented")
+}
+func (UnimplementedInstrumentsServiceServer) GetConsensusForecasts(context.Context, *GetConsensusForecastsRequest) (*GetConsensusForecastsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetConsensusForecasts not implemented")
+}
+func (UnimplementedInstrumentsServiceServer) GetForecastBy(context.Context, *GetForecastRequest) (*GetForecastResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetForecastBy not implemented")
 }
 func (UnimplementedInstrumentsServiceServer) mustEmbedUnimplementedInstrumentsServiceServer() {}
 
@@ -606,6 +691,24 @@ func _InstrumentsService_GetBondCoupons_Handler(srv interface{}, ctx context.Con
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InstrumentsServiceServer).GetBondCoupons(ctx, req.(*GetBondCouponsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstrumentsService_GetBondEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBondEventsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstrumentsServiceServer).GetBondEvents(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstrumentsService_GetBondEvents_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstrumentsServiceServer).GetBondEvents(ctx, req.(*GetBondEventsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -804,6 +907,24 @@ func _InstrumentsService_Shares_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InstrumentsServiceServer).Shares(ctx, req.(*InstrumentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstrumentsService_Indicatives_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IndicativesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstrumentsServiceServer).Indicatives(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstrumentsService_Indicatives_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstrumentsServiceServer).Indicatives(ctx, req.(*IndicativesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1042,6 +1163,60 @@ func _InstrumentsService_GetAssetFundamentals_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _InstrumentsService_GetAssetReports_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAssetReportsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstrumentsServiceServer).GetAssetReports(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstrumentsService_GetAssetReports_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstrumentsServiceServer).GetAssetReports(ctx, req.(*GetAssetReportsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstrumentsService_GetConsensusForecasts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetConsensusForecastsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstrumentsServiceServer).GetConsensusForecasts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstrumentsService_GetConsensusForecasts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstrumentsServiceServer).GetConsensusForecasts(ctx, req.(*GetConsensusForecastsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstrumentsService_GetForecastBy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetForecastRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstrumentsServiceServer).GetForecastBy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstrumentsService_GetForecastBy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstrumentsServiceServer).GetForecastBy(ctx, req.(*GetForecastRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // InstrumentsService_ServiceDesc is the grpc.ServiceDesc for InstrumentsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1064,6 +1239,10 @@ var InstrumentsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBondCoupons",
 			Handler:    _InstrumentsService_GetBondCoupons_Handler,
+		},
+		{
+			MethodName: "GetBondEvents",
+			Handler:    _InstrumentsService_GetBondEvents_Handler,
 		},
 		{
 			MethodName: "CurrencyBy",
@@ -1108,6 +1287,10 @@ var InstrumentsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Shares",
 			Handler:    _InstrumentsService_Shares_Handler,
+		},
+		{
+			MethodName: "Indicatives",
+			Handler:    _InstrumentsService_Indicatives_Handler,
 		},
 		{
 			MethodName: "GetAccruedInterests",
@@ -1160,6 +1343,18 @@ var InstrumentsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAssetFundamentals",
 			Handler:    _InstrumentsService_GetAssetFundamentals_Handler,
+		},
+		{
+			MethodName: "GetAssetReports",
+			Handler:    _InstrumentsService_GetAssetReports_Handler,
+		},
+		{
+			MethodName: "GetConsensusForecasts",
+			Handler:    _InstrumentsService_GetConsensusForecasts_Handler,
+		},
+		{
+			MethodName: "GetForecastBy",
+			Handler:    _InstrumentsService_GetForecastBy_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

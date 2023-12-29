@@ -572,6 +572,51 @@ func (p *GetOrderPriceResponse) GetHeader() metadata.MD {
 	return p.Header
 }
 
+type GetBondEventsResponse struct {
+	*pb.GetBondEventsResponse
+	Header metadata.MD
+}
+
+func (p *GetBondEventsResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
+type IndicativesResponse struct {
+	*pb.IndicativesResponse
+	Header metadata.MD
+}
+
+func (p *IndicativesResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
+type GetAssetReportsResponse struct {
+	*pb.GetAssetReportsResponse
+	Header metadata.MD
+}
+
+func (p *GetAssetReportsResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
+type GetConsensusForecastsResponse struct {
+	*pb.GetConsensusForecastsResponse
+	Header metadata.MD
+}
+
+func (p *GetConsensusForecastsResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
+type GetForecastResponse struct {
+	*pb.GetForecastResponse
+	Header metadata.MD
+}
+
+func (p *GetForecastResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
 // custom request models
 
 type GetOperationsRequest struct {

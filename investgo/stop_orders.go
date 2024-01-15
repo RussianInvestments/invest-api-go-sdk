@@ -3,9 +3,10 @@ package investgo
 import (
 	"context"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 type StopOrdersServiceClient struct {
@@ -20,15 +21,19 @@ type StopOrdersServiceClient struct {
 func (s *StopOrdersServiceClient) PostStopOrder(req *PostStopOrderRequest) (*PostStopOrderResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := s.pbClient.PostStopOrder(s.ctx, &pb.PostStopOrderRequest{
-		Quantity:       req.Quantity,
-		Price:          req.Price,
-		StopPrice:      req.StopPrice,
-		Direction:      req.Direction,
-		AccountId:      req.AccountId,
-		ExpirationType: req.ExpirationType,
-		StopOrderType:  req.StopOrderType,
-		ExpireDate:     TimeToTimestamp(req.ExpireDate),
-		InstrumentId:   req.InstrumentId,
+		Quantity:          req.Quantity,
+		Price:             req.Price,
+		StopPrice:         req.StopPrice,
+		Direction:         req.Direction,
+		AccountId:         req.AccountId,
+		ExpirationType:    req.ExpirationType,
+		StopOrderType:     req.StopOrderType,
+		ExpireDate:        TimeToTimestamp(req.ExpireDate),
+		InstrumentId:      req.InstrumentId,
+		ExchangeOrderType: req.ExchangeOrderType,
+		TakeProfitType:    req.TakeProfitType,
+		TrailingData:      req.TrailingData,
+		PriceType:         req.PriceType,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer

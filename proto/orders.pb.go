@@ -188,9 +188,9 @@ type TimeInForceType int32
 
 const (
 	TimeInForceType_TIME_IN_FORCE_UNSPECIFIED   TimeInForceType = 0 //Значение не определено см. TIME_IN_FORCE_DAY
-	TimeInForceType_TIME_IN_FORCE_DAY           TimeInForceType = 1 //Заявка действует до конца торгового дня. значение по умолчанию
-	TimeInForceType_TIME_IN_FORCE_FILL_AND_KILL TimeInForceType = 2 //Заявка исполнена(возможно частично) и уничтожена
-	TimeInForceType_TIME_IN_FORCE_FILL_OR_KILL  TimeInForceType = 3 //Заявка исполнена полностью или уничтожена, недоступно для срочного рынка
+	TimeInForceType_TIME_IN_FORCE_DAY           TimeInForceType = 1 //Заявка действует до конца торгового дня. Значение по умолчанию
+	TimeInForceType_TIME_IN_FORCE_FILL_AND_KILL TimeInForceType = 2 //Если в момент выставления возможно исполнение заявки(в т.ч. частичное), заявка будет исполнена или отменена сразу после выставления
+	TimeInForceType_TIME_IN_FORCE_FILL_OR_KILL  TimeInForceType = 3 //Если в момент выставления возможно полное исполнение заявки, заявка будет исполнена или отменена сразу после выставления, недоступно для срочного рынка и торговли по выходным
 )
 
 // Enum value maps for TimeInForceType.

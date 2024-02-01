@@ -27,7 +27,7 @@ type OperationState int32
 
 const (
 	OperationState_OPERATION_STATE_UNSPECIFIED OperationState = 0 //Статус операции не определён
-	OperationState_OPERATION_STATE_EXECUTED    OperationState = 1 //Исполнена.
+	OperationState_OPERATION_STATE_EXECUTED    OperationState = 1 //Исполнена частично или полностью.
 	OperationState_OPERATION_STATE_CANCELED    OperationState = 2 //Отменена.
 	OperationState_OPERATION_STATE_PROGRESS    OperationState = 3 //Исполняется.
 )

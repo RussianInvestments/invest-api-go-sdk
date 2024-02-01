@@ -655,6 +655,7 @@ type PostStopOrderRequest struct {
 	TakeProfitType    pb.TakeProfitType
 	TrailingData      *pb.PostStopOrderRequest_TrailingData
 	PriceType         pb.PriceType
+	OrderID           string
 }
 
 type SandboxPayInRequest struct {

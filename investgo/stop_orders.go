@@ -34,6 +34,7 @@ func (s *StopOrdersServiceClient) PostStopOrder(req *PostStopOrderRequest) (*Pos
 		TakeProfitType:    req.TakeProfitType,
 		TrailingData:      req.TrailingData,
 		PriceType:         req.PriceType,
+		OrderId:           req.OrderID,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer

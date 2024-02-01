@@ -8,10 +8,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/russianinvestments/invest-api-go-sdk/investgo"
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/russianinvestments/invest-api-go-sdk/investgo"
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 func main() {
@@ -84,6 +85,7 @@ func main() {
 		ExpirationType: pb.StopOrderExpirationType_STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_CANCEL,
 		StopOrderType:  pb.StopOrderType_STOP_ORDER_TYPE_TAKE_PROFIT,
 		ExpireDate:     time.Time{},
+		OrderID:        investgo.CreateUid(),
 	})
 	if err != nil {
 		logger.Errorf(err.Error())

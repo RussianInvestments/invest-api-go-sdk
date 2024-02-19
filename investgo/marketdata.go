@@ -135,6 +135,29 @@ func (md *MarketDataServiceClient) GetClosePrices(instrumentIds []string) (*GetC
 	}, err
 }
 
+// GetTechAnalysis - Метод получения индикаторов технического анализа
+func (md *MarketDataServiceClient) GetTechAnalysis(req *GetTechAnalysisRequest) (*GetTechAnalysisResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := md.pbClient.GetTechAnalysis(md.ctx, &pb.GetTechAnalysisRequest{
+		IndicatorType: req.IndicatorType,
+		InstrumentUid: req.InstrumentUID,
+		From:          TimeToTimestamp(req.From),
+		To:            TimeToTimestamp(req.To),
+		Interval:      req.Interval,
+		TypeOfPrice:   req.TypeOfPrice,
+		Length:        req.Length,
+		Deviation:     req.Deviation,
+		Smoothing:     req.Smoothing,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetTechAnalysisResponse{
+		GetTechAnalysisResponse: resp,
+		Header:                  header,
+	}, err
+}
+
 // GetHistoricCandles - Метод загрузки исторических свечей.
 // Если указать File = true, то создастся .csv файл с записями
 // свечей в формате: instrumentId;time;open;close;high;low;volume.

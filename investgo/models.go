@@ -139,6 +139,15 @@ func (p *GetClosePricesResponse) GetHeader() metadata.MD {
 	return p.Header
 }
 
+type GetTechAnalysisResponse struct {
+	*pb.GetTechAnalysisResponse
+	Header metadata.MD
+}
+
+func (p *GetTechAnalysisResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
 // Users service
 
 type GetAccountsResponse struct {
@@ -672,4 +681,16 @@ type GetHistoricCandlesRequest struct {
 	To         time.Time
 	File       bool
 	FileName   string
+}
+
+type GetTechAnalysisRequest struct {
+	IndicatorType pb.GetTechAnalysisRequest_IndicatorType
+	InstrumentUID string
+	From          time.Time
+	To            time.Time
+	Interval      pb.GetTechAnalysisRequest_IndicatorInterval
+	TypeOfPrice   pb.GetTechAnalysisRequest_TypeOfPrice
+	Length        int32
+	Deviation     *pb.GetTechAnalysisRequest_Deviation
+	Smoothing     *pb.GetTechAnalysisRequest_Smoothing
 }

@@ -26,6 +26,7 @@ const (
 	MarketDataService_GetTradingStatuses_FullMethodName = "/tinkoff.public.invest.api.contract.v1.MarketDataService/GetTradingStatuses"
 	MarketDataService_GetLastTrades_FullMethodName      = "/tinkoff.public.invest.api.contract.v1.MarketDataService/GetLastTrades"
 	MarketDataService_GetClosePrices_FullMethodName     = "/tinkoff.public.invest.api.contract.v1.MarketDataService/GetClosePrices"
+	MarketDataService_GetTechAnalysis_FullMethodName    = "/tinkoff.public.invest.api.contract.v1.MarketDataService/GetTechAnalysis"
 )
 
 // MarketDataServiceClient is the client API for MarketDataService service.
@@ -46,6 +47,7 @@ type MarketDataServiceClient interface {
 	GetLastTrades(ctx context.Context, in *GetLastTradesRequest, opts ...grpc.CallOption) (*GetLastTradesResponse, error)
 	// Метод запроса цен закрытия торговой сессии по инструментам.
 	GetClosePrices(ctx context.Context, in *GetClosePricesRequest, opts ...grpc.CallOption) (*GetClosePricesResponse, error)
+	GetTechAnalysis(ctx context.Context, in *GetTechAnalysisRequest, opts ...grpc.CallOption) (*GetTechAnalysisResponse, error)
 }
 
 type marketDataServiceClient struct {
@@ -119,6 +121,15 @@ func (c *marketDataServiceClient) GetClosePrices(ctx context.Context, in *GetClo
 	return out, nil
 }
 
+func (c *marketDataServiceClient) GetTechAnalysis(ctx context.Context, in *GetTechAnalysisRequest, opts ...grpc.CallOption) (*GetTechAnalysisResponse, error) {
+	out := new(GetTechAnalysisResponse)
+	err := c.cc.Invoke(ctx, MarketDataService_GetTechAnalysis_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MarketDataServiceServer is the server API for MarketDataService service.
 // All implementations must embed UnimplementedMarketDataServiceServer
 // for forward compatibility
@@ -137,6 +148,7 @@ type MarketDataServiceServer interface {
 	GetLastTrades(context.Context, *GetLastTradesRequest) (*GetLastTradesResponse, error)
 	// Метод запроса цен закрытия торговой сессии по инструментам.
 	GetClosePrices(context.Context, *GetClosePricesRequest) (*GetClosePricesResponse, error)
+	GetTechAnalysis(context.Context, *GetTechAnalysisRequest) (*GetTechAnalysisResponse, error)
 	mustEmbedUnimplementedMarketDataServiceServer()
 }
 
@@ -164,6 +176,9 @@ func (UnimplementedMarketDataServiceServer) GetLastTrades(context.Context, *GetL
 }
 func (UnimplementedMarketDataServiceServer) GetClosePrices(context.Context, *GetClosePricesRequest) (*GetClosePricesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClosePrices not implemented")
+}
+func (UnimplementedMarketDataServiceServer) GetTechAnalysis(context.Context, *GetTechAnalysisRequest) (*GetTechAnalysisResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTechAnalysis not implemented")
 }
 func (UnimplementedMarketDataServiceServer) mustEmbedUnimplementedMarketDataServiceServer() {}
 
@@ -304,6 +319,24 @@ func _MarketDataService_GetClosePrices_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MarketDataService_GetTechAnalysis_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTechAnalysisRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MarketDataServiceServer).GetTechAnalysis(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MarketDataService_GetTechAnalysis_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MarketDataServiceServer).GetTechAnalysis(ctx, req.(*GetTechAnalysisRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MarketDataService_ServiceDesc is the grpc.ServiceDesc for MarketDataService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -338,6 +371,10 @@ var MarketDataService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetClosePrices",
 			Handler:    _MarketDataService_GetClosePrices_Handler,
+		},
+		{
+			MethodName: "GetTechAnalysis",
+			Handler:    _MarketDataService_GetTechAnalysis_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -681,6 +681,7 @@ type GetHistoricCandlesRequest struct {
 	To         time.Time
 	File       bool
 	FileName   string
+	Source     pb.GetCandlesRequest_CandleSource
 }
 
 type GetTechAnalysisRequest struct {

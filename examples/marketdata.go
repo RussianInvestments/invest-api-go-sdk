@@ -8,10 +8,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/russianinvestments/invest-api-go-sdk/investgo"
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/russianinvestments/invest-api-go-sdk/investgo"
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 func main() {
@@ -61,7 +62,13 @@ func main() {
 	from := time.Date(2023, time.April, 18, 0, 0, 0, 0, time.UTC)
 	to := time.Date(2023, time.April, 19, 0, 0, 0, 0, time.UTC)
 
-	candlesResp, err := MarketDataService.GetCandles(instruments[0], pb.CandleInterval_CANDLE_INTERVAL_HOUR, from, to)
+	candlesResp, err := MarketDataService.GetCandles(
+		instruments[0],
+		pb.CandleInterval_CANDLE_INTERVAL_HOUR,
+		from,
+		to,
+		pb.GetCandlesRequest_CANDLE_SOURCE_EXCHANGE,
+	)
 	if err != nil {
 		logger.Errorf(err.Error())
 	} else {
@@ -155,6 +162,7 @@ func main() {
 		To:         time.Now(),
 		File:       true,
 		FileName:   "",
+		Source:     pb.GetCandlesRequest_CANDLE_SOURCE_UNSPECIFIED,
 	})
 	if err != nil {
 		logger.Errorf(err.Error())

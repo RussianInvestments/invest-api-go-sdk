@@ -21,13 +21,19 @@ type MarketDataServiceClient struct {
 }
 
 // GetCandles - Метод запроса исторических свечей по инструменту
-func (md *MarketDataServiceClient) GetCandles(instrumentId string, interval pb.CandleInterval, from, to time.Time) (*GetCandlesResponse, error) {
+func (md *MarketDataServiceClient) GetCandles(
+	instrumentId string,
+	interval pb.CandleInterval,
+	from, to time.Time,
+	source pb.GetCandlesRequest_CandleSource,
+) (*GetCandlesResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := md.pbClient.GetCandles(md.ctx, &pb.GetCandlesRequest{
-		From:         TimeToTimestamp(from),
-		To:           TimeToTimestamp(to),
-		Interval:     interval,
-		InstrumentId: &instrumentId,
+		From:             TimeToTimestamp(from),
+		To:               TimeToTimestamp(to),
+		Interval:         interval,
+		InstrumentId:     &instrumentId,
+		CandleSourceType: &source,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -189,7 +195,13 @@ func (md *MarketDataServiceClient) GetHistoricCandles(req *GetHistoricCandlesReq
 		// from - i элемент
 		// to - i-1 элемент
 		requests++
-		resp, err := md.GetCandles(req.Instrument, req.Interval, intervals[i], intervals[i-1])
+		resp, err := md.GetCandles(
+			req.Instrument,
+			req.Interval,
+			intervals[i],
+			intervals[i-1],
+			req.Source,
+		)
 		if err != nil {
 			return nil, err
 		}

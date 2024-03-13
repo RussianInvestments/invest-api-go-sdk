@@ -47,6 +47,7 @@ type MarketDataServiceClient interface {
 	GetLastTrades(ctx context.Context, in *GetLastTradesRequest, opts ...grpc.CallOption) (*GetLastTradesResponse, error)
 	// Метод запроса цен закрытия торговой сессии по инструментам.
 	GetClosePrices(ctx context.Context, in *GetClosePricesRequest, opts ...grpc.CallOption) (*GetClosePricesResponse, error)
+	// Метод получения технических индикаторов по инструменту
 	GetTechAnalysis(ctx context.Context, in *GetTechAnalysisRequest, opts ...grpc.CallOption) (*GetTechAnalysisResponse, error)
 }
 
@@ -148,6 +149,7 @@ type MarketDataServiceServer interface {
 	GetLastTrades(context.Context, *GetLastTradesRequest) (*GetLastTradesResponse, error)
 	// Метод запроса цен закрытия торговой сессии по инструментам.
 	GetClosePrices(context.Context, *GetClosePricesRequest) (*GetClosePricesResponse, error)
+	// Метод получения технических индикаторов по инструменту
 	GetTechAnalysis(context.Context, *GetTechAnalysisRequest) (*GetTechAnalysisResponse, error)
 	mustEmbedUnimplementedMarketDataServiceServer()
 }

@@ -89,12 +89,12 @@ func (t *Timer) Start(ctx context.Context) error {
 			// если торги еще не начались
 			case time.Now().Before(today.GetStartTime().AsTime()):
 				t.client.Logger.Infof("%v is closed yet, wait for start %v", t.exchange, time.Until(today.GetStartTime().AsTime().Local()))
-				if stop := t.wait(ctxTimer, time.Until(today.GetStartTime().AsTime().Local())); stop {
+				if stop := t.waitUntil(ctxTimer, today.GetStartTime().AsTime().Local()); stop {
 					return nil
 				}
 				t.events <- START
 				t.client.Logger.Infof("start trading session, remaining time = %v", time.Until(today.GetEndTime().AsTime().Local()))
-				if stop := t.wait(ctxTimer, time.Until(today.GetEndTime().AsTime().Local())-t.cancelAhead); stop {
+				if stop := t.waitUntil(ctxTimer, today.GetEndTime().AsTime().Local().Add(-t.cancelAhead)); stop {
 					return nil
 				}
 				t.events <- STOP
@@ -102,7 +102,7 @@ func (t *Timer) Start(ctx context.Context) error {
 			case time.Now().After(today.GetStartTime().AsTime()) && time.Now().Before(today.GetEndTime().AsTime().Local().Add(-t.cancelAhead)):
 				t.client.Logger.Infof("start trading session, remaining time = %v", time.Until(today.GetEndTime().AsTime().Local()))
 				t.events <- START
-				if stop := t.wait(ctxTimer, time.Until(today.GetEndTime().AsTime().Local())-t.cancelAhead); stop {
+				if stop := t.waitUntil(ctxTimer, today.GetEndTime().AsTime().Local().Add(-t.cancelAhead)); stop {
 					return nil
 				}
 				t.events <- STOP
@@ -140,6 +140,25 @@ func (t *Timer) wait(ctx context.Context, dur time.Duration) bool {
 			return false
 		}
 	}
+}
+
+// waitUntil - Ожидание до времени finish, с возможностью отмены по контексту
+func (t *Timer) waitUntil(ctx context.Context, finish time.Time) bool {
+	// ожидаем интервалами по полчаса для устранения эффекта неточности локальных часов
+	const MAX_WAIT_INTERVAL = 30 * time.Minute
+
+	for dur := time.Until(finish); dur > 0; dur = time.Until(finish) {
+		if dur > MAX_WAIT_INTERVAL {
+			if stop := t.wait(ctx, MAX_WAIT_INTERVAL); stop {
+				return true
+			}
+		} else {
+			if stop := t.wait(ctx, dur); stop {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // findTradingDay - Поиск ближайшего торгового дня

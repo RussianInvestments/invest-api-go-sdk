@@ -9,10 +9,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/russianinvestments/invest-api-go-sdk/investgo"
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/russianinvestments/invest-api-go-sdk/investgo"
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 func main() {
@@ -73,7 +74,7 @@ func main() {
 		logger.Errorf(err.Error())
 	}
 
-	tradesChan, err := firstMDStream.SubscribeTrade(firstInstrumetsGroup)
+	tradesChan, err := firstMDStream.SubscribeTrade(firstInstrumetsGroup, pb.TradeSourceType_TRADE_SOURCE_EXCHANGE)
 	if err != nil {
 		logger.Errorf(err.Error())
 	}

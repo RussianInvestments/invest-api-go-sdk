@@ -9,9 +9,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/russianinvestments/invest-api-go-sdk/investgo"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/russianinvestments/invest-api-go-sdk/investgo"
 )
 
 func main() {
@@ -82,6 +83,30 @@ func main() {
 		}
 	}(ctx)
 
+	orderStateStream, err := ordersStreamClient.OrderStateStream([]string{config.AccountId}, 5000)
+	if err != nil {
+		logger.Fatalf(err.Error())
+	}
+
+	// получаем канал для чтения
+	states := orderStateStream.OrderState()
+
+	wg.Add(1)
+	go func(ctx context.Context) {
+		defer wg.Done()
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case state, ok := <-states:
+				if !ok {
+					return
+				}
+				fmt.Printf("state: %s\n", state.String())
+			}
+		}
+	}(ctx)
+
 	// функцию Listen нужно вызвать один раз для каждого стрима и в отдельной горутине
 	// для остановки стрима можно использовать метод Stop, он отменяет контекст внутри стрима
 	// после вызова Stop закрываются каналы и завершается функция Listen
@@ -89,6 +114,15 @@ func main() {
 	go func() {
 		defer wg.Done()
 		err := tradesStream.Listen()
+		if err != nil {
+			logger.Fatalf(err.Error())
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		err := orderStateStream.Listen()
 		if err != nil {
 			logger.Fatalf(err.Error())
 		}

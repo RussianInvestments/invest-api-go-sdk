@@ -3,9 +3,10 @@ package investgo
 import (
 	"context"
 
+	"google.golang.org/grpc"
+
 	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"github.com/russianinvestments/invest-api-go-sdk/retry"
-	"google.golang.org/grpc"
 )
 
 type MarketDataStreamClient struct {
@@ -32,7 +33,7 @@ func (c *MarketDataStreamClient) MarketDataStream() (*MarketDataStream, error) {
 		subs: subscriptions{
 			candles:         make(map[string]candleSub, 0),
 			orderBooks:      make(map[string]int32, 0),
-			trades:          make(map[string]struct{}, 0),
+			trades:          make(map[string]pb.TradeSourceType, 0),
 			tradingStatuses: make(map[string]struct{}, 0),
 			lastPrices:      make(map[string]struct{}, 0),
 		},

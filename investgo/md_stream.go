@@ -3,9 +3,10 @@ package investgo
 import (
 	"context"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 // Deprecated: Use MarketDataStream
@@ -38,7 +39,7 @@ type candleSub struct {
 type subscriptions struct {
 	candles         map[string]candleSub
 	orderBooks      map[string]int32
-	trades          map[string]struct{}
+	trades          map[string]pb.TradeSourceType
 	tradingStatuses map[string]struct{}
 	lastPrices      map[string]struct{}
 }
@@ -97,7 +98,7 @@ func (mds *MarketDataStream) SubscribeOrderBook(ids []string, depth int32) (<-ch
 	return mds.orderBook, nil
 }
 
-// UnSubscribeOrderBook - метод отдписки от стаканов инструментов
+// UnSubscribeOrderBook - метод отписки от стаканов инструментов
 func (mds *MarketDataStream) UnSubscribeOrderBook(ids []string, depth int32) error {
 	err := mds.sendOrderBookReq(ids, depth, pb.SubscriptionAction_SUBSCRIPTION_ACTION_UNSUBSCRIBE)
 	if err != nil {
@@ -126,20 +127,20 @@ func (mds *MarketDataStream) sendOrderBookReq(ids []string, depth int32, act pb.
 }
 
 // SubscribeTrade - метод подписки на ленту обезличенных сделок
-func (mds *MarketDataStream) SubscribeTrade(ids []string) (<-chan *pb.Trade, error) {
-	err := mds.sendTradesReq(ids, pb.SubscriptionAction_SUBSCRIPTION_ACTION_SUBSCRIBE)
+func (mds *MarketDataStream) SubscribeTrade(ids []string, tradeSrc pb.TradeSourceType) (<-chan *pb.Trade, error) {
+	err := mds.sendTradesReq(ids, pb.SubscriptionAction_SUBSCRIPTION_ACTION_SUBSCRIBE, tradeSrc)
 	if err != nil {
 		return nil, err
 	}
 	for _, id := range ids {
-		mds.subs.trades[id] = struct{}{}
+		mds.subs.trades[id] = tradeSrc
 	}
 	return mds.trade, nil
 }
 
 // UnSubscribeTrade - метод отписки от ленты обезличенных сделок
-func (mds *MarketDataStream) UnSubscribeTrade(ids []string) error {
-	err := mds.sendTradesReq(ids, pb.SubscriptionAction_SUBSCRIPTION_ACTION_UNSUBSCRIBE)
+func (mds *MarketDataStream) UnSubscribeTrade(ids []string, tradeSrc pb.TradeSourceType) error {
+	err := mds.sendTradesReq(ids, pb.SubscriptionAction_SUBSCRIPTION_ACTION_UNSUBSCRIBE, tradeSrc)
 	if err != nil {
 		return err
 	}
@@ -149,7 +150,7 @@ func (mds *MarketDataStream) UnSubscribeTrade(ids []string) error {
 	return nil
 }
 
-func (mds *MarketDataStream) sendTradesReq(ids []string, act pb.SubscriptionAction) error {
+func (mds *MarketDataStream) sendTradesReq(ids []string, act pb.SubscriptionAction, tradeSrc pb.TradeSourceType) error {
 	instruments := make([]*pb.TradeInstrument, 0, len(ids))
 	for _, id := range ids {
 		instruments = append(instruments, &pb.TradeInstrument{
@@ -161,6 +162,7 @@ func (mds *MarketDataStream) sendTradesReq(ids []string, act pb.SubscriptionActi
 			SubscribeTradesRequest: &pb.SubscribeTradesRequest{
 				SubscriptionAction: act,
 				Instruments:        instruments,
+				TradeType:          tradeSrc,
 			}}})
 }
 
@@ -326,13 +328,17 @@ func (mds *MarketDataStream) UnSubscribeAll() error {
 	}
 
 	if len(mds.subs.trades) > 0 {
-		for id := range mds.subs.trades {
-			ids = append(ids, id)
+		srcs := make(map[pb.TradeSourceType][]string, 0)
+
+		for id, src := range mds.subs.trades {
+			srcs[src] = append(srcs[src], id)
 			delete(mds.subs.trades, id)
 		}
-		err := mds.UnSubscribeTrade(ids)
-		if err != nil {
-			return err
+		for src, ids := range srcs {
+			err := mds.UnSubscribeTrade(ids, src)
+			if err != nil {
+				return err
+			}
 		}
 		ids = nil
 	}

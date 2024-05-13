@@ -255,3 +255,20 @@ func (s *SandboxServiceClient) SandboxPayIn(req *SandboxPayInRequest) (*SandboxP
 		Header:               header,
 	}, err
 }
+
+// GetSandboxMaxLots - Метод расчёта количества доступных для покупки/продажи лотов в песочнице.
+func (s *SandboxServiceClient) GetSandboxMaxLots(accID, instrumentID string, price *pb.Quotation) (*GetMaxLotsResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := s.pbClient.GetSandboxMaxLots(s.ctx, &pb.GetMaxLotsRequest{
+		AccountId:    accID,
+		InstrumentId: instrumentID,
+		Price:        price,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetMaxLotsResponse{
+		GetMaxLotsResponse: resp,
+		Header:             header,
+	}, err
+}

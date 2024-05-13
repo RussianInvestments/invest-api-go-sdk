@@ -3,9 +3,10 @@ package investgo
 import (
 	"context"
 
+	"google.golang.org/grpc"
+
 	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"github.com/russianinvestments/invest-api-go-sdk/retry"
-	"google.golang.org/grpc"
 )
 
 type OrdersStreamClient struct {
@@ -35,4 +36,26 @@ func (o *OrdersStreamClient) TradesStream(accounts []string) (*TradesStream, err
 	}
 	ts.stream = stream
 	return ts, nil
+}
+
+// OrderStateStream - Стрим информации по заявкам
+func (o *OrdersStreamClient) OrderStateStream(accounts []string, pingDelayMills int32) (*OrderStateStream, error) {
+	ctx, cancel := context.WithCancel(o.ctx)
+	os := &OrderStateStream{
+		stream:       nil,
+		ordersClient: o,
+		states:       make(chan *pb.OrderStateStreamResponse_OrderState),
+		ctx:          ctx,
+		cancel:       cancel,
+	}
+	stream, err := o.pbClient.OrderStateStream(ctx, &pb.OrderStateStreamRequest{
+		Accounts:        accounts,
+		PingDelayMillis: &pingDelayMills,
+	}, retry.WithOnRetryCallback(os.restart))
+	if err != nil {
+		cancel()
+		return nil, err
+	}
+	os.stream = stream
+	return os, nil
 }

@@ -32,21 +32,21 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OperationsServiceClient interface {
-	// Метод получения списка операций по счёту.При работе с данным методом необходимо учитывать
-	// [особенности взаимодействия](/investAPI/operations_problems) с данным методом.
+	// Получить список операций по счёту. При работе с методом учитывайте
+	// [особенности взаимодействия](/investAPI/operations_problems).
 	GetOperations(ctx context.Context, in *OperationsRequest, opts ...grpc.CallOption) (*OperationsResponse, error)
-	// Метод получения портфеля по счёту.
+	// Получить портфель по счёту.
 	GetPortfolio(ctx context.Context, in *PortfolioRequest, opts ...grpc.CallOption) (*PortfolioResponse, error)
-	// Метод получения списка позиций по счёту.
+	// Получить список позиций по счёту.
 	GetPositions(ctx context.Context, in *PositionsRequest, opts ...grpc.CallOption) (*PositionsResponse, error)
-	// Метод получения доступного остатка для вывода средств.
+	// Получить доступный остаток для вывода средств.
 	GetWithdrawLimits(ctx context.Context, in *WithdrawLimitsRequest, opts ...grpc.CallOption) (*WithdrawLimitsResponse, error)
-	// Метод получения брокерского отчёта.
+	// Получить брокерский отчёт.
 	GetBrokerReport(ctx context.Context, in *BrokerReportRequest, opts ...grpc.CallOption) (*BrokerReportResponse, error)
-	// Метод получения отчёта "Справка о доходах за пределами РФ".
+	// Получить отчёт «Справка о доходах за пределами РФ».
 	GetDividendsForeignIssuer(ctx context.Context, in *GetDividendsForeignIssuerRequest, opts ...grpc.CallOption) (*GetDividendsForeignIssuerResponse, error)
-	// Метод получения списка операций по счёту с пагинацией. При работе с данным методом необходимо учитывать
-	// [особенности взаимодействия](/investAPI/operations_problems) с данным методом.
+	// Получить список операций по счёту с пагинацией. При работе с методом учитывайте
+	// [особенности взаимодействия](/investAPI/operations_problems).
 	GetOperationsByCursor(ctx context.Context, in *GetOperationsByCursorRequest, opts ...grpc.CallOption) (*GetOperationsByCursorResponse, error)
 }
 
@@ -125,21 +125,21 @@ func (c *operationsServiceClient) GetOperationsByCursor(ctx context.Context, in 
 // All implementations must embed UnimplementedOperationsServiceServer
 // for forward compatibility
 type OperationsServiceServer interface {
-	// Метод получения списка операций по счёту.При работе с данным методом необходимо учитывать
-	// [особенности взаимодействия](/investAPI/operations_problems) с данным методом.
+	// Получить список операций по счёту. При работе с методом учитывайте
+	// [особенности взаимодействия](/investAPI/operations_problems).
 	GetOperations(context.Context, *OperationsRequest) (*OperationsResponse, error)
-	// Метод получения портфеля по счёту.
+	// Получить портфель по счёту.
 	GetPortfolio(context.Context, *PortfolioRequest) (*PortfolioResponse, error)
-	// Метод получения списка позиций по счёту.
+	// Получить список позиций по счёту.
 	GetPositions(context.Context, *PositionsRequest) (*PositionsResponse, error)
-	// Метод получения доступного остатка для вывода средств.
+	// Получить доступный остаток для вывода средств.
 	GetWithdrawLimits(context.Context, *WithdrawLimitsRequest) (*WithdrawLimitsResponse, error)
-	// Метод получения брокерского отчёта.
+	// Получить брокерский отчёт.
 	GetBrokerReport(context.Context, *BrokerReportRequest) (*BrokerReportResponse, error)
-	// Метод получения отчёта "Справка о доходах за пределами РФ".
+	// Получить отчёт «Справка о доходах за пределами РФ».
 	GetDividendsForeignIssuer(context.Context, *GetDividendsForeignIssuerRequest) (*GetDividendsForeignIssuerResponse, error)
-	// Метод получения списка операций по счёту с пагинацией. При работе с данным методом необходимо учитывать
-	// [особенности взаимодействия](/investAPI/operations_problems) с данным методом.
+	// Получить список операций по счёту с пагинацией. При работе с методом учитывайте
+	// [особенности взаимодействия](/investAPI/operations_problems).
 	GetOperationsByCursor(context.Context, *GetOperationsByCursorRequest) (*GetOperationsByCursorResponse, error)
 	mustEmbedUnimplementedOperationsServiceServer()
 }
@@ -357,9 +357,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OperationsStreamServiceClient interface {
-	// Server-side stream обновлений портфеля
+	// Server-side stream обновлений портфеля.
 	PortfolioStream(ctx context.Context, in *PortfolioStreamRequest, opts ...grpc.CallOption) (OperationsStreamService_PortfolioStreamClient, error)
-	// Server-side stream обновлений информации по изменению позиций портфеля
+	// Server-side stream обновлений информации по изменению позиций портфеля.
 	PositionsStream(ctx context.Context, in *PositionsStreamRequest, opts ...grpc.CallOption) (OperationsStreamService_PositionsStreamClient, error)
 }
 
@@ -439,9 +439,9 @@ func (x *operationsStreamServicePositionsStreamClient) Recv() (*PositionsStreamR
 // All implementations must embed UnimplementedOperationsStreamServiceServer
 // for forward compatibility
 type OperationsStreamServiceServer interface {
-	// Server-side stream обновлений портфеля
+	// Server-side stream обновлений портфеля.
 	PortfolioStream(*PortfolioStreamRequest, OperationsStreamService_PortfolioStreamServer) error
-	// Server-side stream обновлений информации по изменению позиций портфеля
+	// Server-side stream обновлений информации по изменению позиций портфеля.
 	PositionsStream(*PositionsStreamRequest, OperationsStreamService_PositionsStreamServer) error
 	mustEmbedUnimplementedOperationsStreamServiceServer()
 }

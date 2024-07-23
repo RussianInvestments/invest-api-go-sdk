@@ -204,13 +204,14 @@ var OrdersStreamService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	OrdersService_PostOrder_FullMethodName     = "/tinkoff.public.invest.api.contract.v1.OrdersService/PostOrder"
-	OrdersService_CancelOrder_FullMethodName   = "/tinkoff.public.invest.api.contract.v1.OrdersService/CancelOrder"
-	OrdersService_GetOrderState_FullMethodName = "/tinkoff.public.invest.api.contract.v1.OrdersService/GetOrderState"
-	OrdersService_GetOrders_FullMethodName     = "/tinkoff.public.invest.api.contract.v1.OrdersService/GetOrders"
-	OrdersService_ReplaceOrder_FullMethodName  = "/tinkoff.public.invest.api.contract.v1.OrdersService/ReplaceOrder"
-	OrdersService_GetMaxLots_FullMethodName    = "/tinkoff.public.invest.api.contract.v1.OrdersService/GetMaxLots"
-	OrdersService_GetOrderPrice_FullMethodName = "/tinkoff.public.invest.api.contract.v1.OrdersService/GetOrderPrice"
+	OrdersService_PostOrder_FullMethodName      = "/tinkoff.public.invest.api.contract.v1.OrdersService/PostOrder"
+	OrdersService_PostOrderAsync_FullMethodName = "/tinkoff.public.invest.api.contract.v1.OrdersService/PostOrderAsync"
+	OrdersService_CancelOrder_FullMethodName    = "/tinkoff.public.invest.api.contract.v1.OrdersService/CancelOrder"
+	OrdersService_GetOrderState_FullMethodName  = "/tinkoff.public.invest.api.contract.v1.OrdersService/GetOrderState"
+	OrdersService_GetOrders_FullMethodName      = "/tinkoff.public.invest.api.contract.v1.OrdersService/GetOrders"
+	OrdersService_ReplaceOrder_FullMethodName   = "/tinkoff.public.invest.api.contract.v1.OrdersService/ReplaceOrder"
+	OrdersService_GetMaxLots_FullMethodName     = "/tinkoff.public.invest.api.contract.v1.OrdersService/GetMaxLots"
+	OrdersService_GetOrderPrice_FullMethodName  = "/tinkoff.public.invest.api.contract.v1.OrdersService/GetOrderPrice"
 )
 
 // OrdersServiceClient is the client API for OrdersService service.
@@ -219,6 +220,7 @@ const (
 type OrdersServiceClient interface {
 	// Метод выставления заявки.
 	PostOrder(ctx context.Context, in *PostOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error)
+	PostOrderAsync(ctx context.Context, in *PostOrderAsyncRequest, opts ...grpc.CallOption) (*PostOrderAsyncResponse, error)
 	// Метод отмены биржевой заявки.
 	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*CancelOrderResponse, error)
 	// Метод получения статуса торгового поручения.
@@ -244,6 +246,15 @@ func NewOrdersServiceClient(cc grpc.ClientConnInterface) OrdersServiceClient {
 func (c *ordersServiceClient) PostOrder(ctx context.Context, in *PostOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error) {
 	out := new(PostOrderResponse)
 	err := c.cc.Invoke(ctx, OrdersService_PostOrder_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ordersServiceClient) PostOrderAsync(ctx context.Context, in *PostOrderAsyncRequest, opts ...grpc.CallOption) (*PostOrderAsyncResponse, error) {
+	out := new(PostOrderAsyncResponse)
+	err := c.cc.Invoke(ctx, OrdersService_PostOrderAsync_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -310,6 +321,7 @@ func (c *ordersServiceClient) GetOrderPrice(ctx context.Context, in *GetOrderPri
 type OrdersServiceServer interface {
 	// Метод выставления заявки.
 	PostOrder(context.Context, *PostOrderRequest) (*PostOrderResponse, error)
+	PostOrderAsync(context.Context, *PostOrderAsyncRequest) (*PostOrderAsyncResponse, error)
 	// Метод отмены биржевой заявки.
 	CancelOrder(context.Context, *CancelOrderRequest) (*CancelOrderResponse, error)
 	// Метод получения статуса торгового поручения.
@@ -331,6 +343,9 @@ type UnimplementedOrdersServiceServer struct {
 
 func (UnimplementedOrdersServiceServer) PostOrder(context.Context, *PostOrderRequest) (*PostOrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostOrder not implemented")
+}
+func (UnimplementedOrdersServiceServer) PostOrderAsync(context.Context, *PostOrderAsyncRequest) (*PostOrderAsyncResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostOrderAsync not implemented")
 }
 func (UnimplementedOrdersServiceServer) CancelOrder(context.Context, *CancelOrderRequest) (*CancelOrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CancelOrder not implemented")
@@ -377,6 +392,24 @@ func _OrdersService_PostOrder_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrdersServiceServer).PostOrder(ctx, req.(*PostOrderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrdersService_PostOrderAsync_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostOrderAsyncRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrdersServiceServer).PostOrderAsync(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrdersService_PostOrderAsync_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrdersServiceServer).PostOrderAsync(ctx, req.(*PostOrderAsyncRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -499,6 +532,10 @@ var OrdersService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PostOrder",
 			Handler:    _OrdersService_PostOrder_Handler,
+		},
+		{
+			MethodName: "PostOrderAsync",
+			Handler:    _OrdersService_PostOrderAsync_Handler,
 		},
 		{
 			MethodName: "CancelOrder",

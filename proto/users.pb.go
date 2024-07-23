@@ -27,7 +27,7 @@ type AccountType int32
 
 const (
 	AccountType_ACCOUNT_TYPE_UNSPECIFIED AccountType = 0 //Тип аккаунта не определён.
-	AccountType_ACCOUNT_TYPE_TINKOFF     AccountType = 1 //Брокерский счёт Тинькофф.
+	AccountType_ACCOUNT_TYPE_TINKOFF     AccountType = 1 //Брокерский счёт Т-Инвестиций.
 	AccountType_ACCOUNT_TYPE_TINKOFF_IIS AccountType = 2 //ИИС.
 	AccountType_ACCOUNT_TYPE_INVEST_BOX  AccountType = 3 //Инвесткопилка.
 	AccountType_ACCOUNT_TYPE_INVEST_FUND AccountType = 4 //Фонд денежного рынка.
@@ -430,11 +430,11 @@ type GetMarginAttributesResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Ликвидная стоимость портфеля. [Подробнее про ликвидный портфель](https://help.tinkoff.ru/margin-trade/short/liquid-portfolio/).
+	// Ликвидная стоимость портфеля. [Подробнее про ликвидный портфель](https://help.tbank.ru/margin-trade/short/liquid-portfolio/).
 	LiquidPortfolio *MoneyValue `protobuf:"bytes,1,opt,name=liquid_portfolio,json=liquidPortfolio,proto3" json:"liquid_portfolio,omitempty"`
-	// Начальная маржа — начальное обеспечение для совершения новой сделки. [Подробнее про начальную и минимальную маржу](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/).
+	// Начальная маржа — начальное обеспечение для совершения новой сделки. [Подробнее про начальную и минимальную маржу](https://help.tbank.ru/margin-trade/short/initial-and-maintenance-margin/).
 	StartingMargin *MoneyValue `protobuf:"bytes,2,opt,name=starting_margin,json=startingMargin,proto3" json:"starting_margin,omitempty"`
-	// Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. [Подробнее про начальную и минимальную маржу](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/).
+	// Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. [Подробнее про начальную и минимальную маржу](https://help.tbank.ru/margin-trade/short/initial-and-maintenance-margin/).
 	MinimalMargin *MoneyValue `protobuf:"bytes,3,opt,name=minimal_margin,json=minimalMargin,proto3" json:"minimal_margin,omitempty"`
 	// Уровень достаточности средств. Соотношение стоимости ликвидного портфеля к начальной марже.
 	FundsSufficiencyLevel *Quotation `protobuf:"bytes,4,opt,name=funds_sufficiency_level,json=fundsSufficiencyLevel,proto3" json:"funds_sufficiency_level,omitempty"`

@@ -18,6 +18,8 @@ type PostOrderRequest struct {
 	AccountId    string
 	OrderType    pb.OrderType
 	OrderId      string
+	TimeInForce  pb.TimeInForceType
+	PriceType    pb.PriceType
 }
 
 type PostOrderRequestShort struct {
@@ -38,12 +40,33 @@ type ReplaceOrderRequest struct {
 	PriceType  pb.PriceType
 }
 
+type PostOrderAsyncRequest struct {
+	InstrumentId string
+	Quantity     int64
+	Price        *pb.Quotation
+	Direction    pb.OrderDirection
+	AccountId    string
+	OrderType    pb.OrderType
+	OrderId      string
+	TimeInForce  pb.TimeInForceType
+	PriceType    pb.PriceType
+}
+
 type PostOrderResponse struct {
 	*pb.PostOrderResponse
 	Header metadata.MD
 }
 
 func (p *PostOrderResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
+type PostOrderAsyncResponse struct {
+	*pb.PostOrderAsyncResponse
+	Header metadata.MD
+}
+
+func (p *PostOrderAsyncResponse) GetHeader() metadata.MD {
 	return p.Header
 }
 

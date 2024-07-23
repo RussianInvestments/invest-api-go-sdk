@@ -28,6 +28,8 @@ func (os *OrdersServiceClient) PostOrder(req *PostOrderRequest) (*PostOrderRespo
 		OrderType:    req.OrderType,
 		OrderId:      req.OrderId,
 		InstrumentId: req.InstrumentId,
+		TimeInForce:  req.TimeInForce,
+		PriceType:    req.PriceType,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -181,5 +183,28 @@ func (os *OrdersServiceClient) GetOrderPrice(accountID, instrumentID string, pri
 	return &GetOrderPriceResponse{
 		GetOrderPriceResponse: resp,
 		Header:                header,
+	}, err
+}
+
+// PostOrderAsync - Метод выставления биржевой заявки асинхронно
+func (os *OrdersServiceClient) PostOrderAsync(req *PostOrderRequest) (*PostOrderAsyncResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := os.pbClient.PostOrderAsync(os.ctx, &pb.PostOrderAsyncRequest{
+		Quantity:     req.Quantity,
+		Price:        req.Price,
+		Direction:    req.Direction,
+		AccountId:    req.AccountId,
+		OrderType:    req.OrderType,
+		OrderId:      req.OrderId,
+		InstrumentId: req.InstrumentId,
+		TimeInForce:  &req.TimeInForce,
+		PriceType:    &req.PriceType,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &PostOrderAsyncResponse{
+		PostOrderAsyncResponse: resp,
+		Header:                 header,
 	}, err
 }

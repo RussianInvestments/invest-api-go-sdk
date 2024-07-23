@@ -8,10 +8,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/russianinvestments/invest-api-go-sdk/investgo"
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/russianinvestments/invest-api-go-sdk/investgo"
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 func main() {
@@ -109,7 +110,7 @@ func main() {
 		fmt.Printf("post order resp = %v\n", postResp.GetExecutionReportStatus().String())
 	}
 
-	orderResp, err := OrdersService.GetOrderState(config.AccountId, postResp.GetOrderId())
+	orderResp, err := OrdersService.GetOrderState(config.AccountId, postResp.GetOrderId(), pb.PriceType_PRICE_TYPE_CURRENCY)
 	if err != nil {
 		logger.Errorf(err.Error())
 	} else {

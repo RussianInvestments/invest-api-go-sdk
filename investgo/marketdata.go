@@ -26,14 +26,20 @@ func (md *MarketDataServiceClient) GetCandles(
 	interval pb.CandleInterval,
 	from, to time.Time,
 	source pb.GetCandlesRequest_CandleSource,
+	limit int32,
 ) (*GetCandlesResponse, error) {
 	var header, trailer metadata.MD
+	var limitp *int32
+	if limit != 0 {
+		limitp = &limit
+	}
 	resp, err := md.pbClient.GetCandles(md.ctx, &pb.GetCandlesRequest{
 		From:             TimeToTimestamp(from),
 		To:               TimeToTimestamp(to),
 		Interval:         interval,
 		InstrumentId:     &instrumentId,
 		CandleSourceType: &source,
+		Limit:            limitp,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -201,6 +207,7 @@ func (md *MarketDataServiceClient) GetHistoricCandles(req *GetHistoricCandlesReq
 			intervals[i],
 			intervals[i-1],
 			req.Source,
+			0,
 		)
 		if err != nil {
 			return nil, err

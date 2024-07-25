@@ -68,6 +68,7 @@ func main() {
 		from,
 		to,
 		pb.GetCandlesRequest_CANDLE_SOURCE_EXCHANGE,
+		0,
 	)
 	if err != nil {
 		logger.Errorf(err.Error())

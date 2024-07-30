@@ -324,7 +324,7 @@ func (e *Executor) CancelLimit(id string) error {
 		e.client.Logger.Infof("cancel limit order, instrument uid = %v", id)
 		return nil
 	}
-	_, err := e.ordersService.CancelOrder(e.client.Config.AccountId, state.orderId)
+	_, err := e.ordersService.CancelOrder(e.client.Config.AccountId, state.orderId, nil)
 	if err != nil {
 		return err
 	}

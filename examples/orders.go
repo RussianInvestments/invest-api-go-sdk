@@ -110,7 +110,7 @@ func main() {
 		fmt.Printf("post order resp = %v\n", postResp.GetExecutionReportStatus().String())
 	}
 
-	orderResp, err := OrdersService.GetOrderState(config.AccountId, postResp.GetOrderId(), pb.PriceType_PRICE_TYPE_CURRENCY)
+	orderResp, err := OrdersService.GetOrderState(config.AccountId, postResp.GetOrderId(), pb.PriceType_PRICE_TYPE_CURRENCY, nil)
 	if err != nil {
 		logger.Errorf(err.Error())
 	} else {

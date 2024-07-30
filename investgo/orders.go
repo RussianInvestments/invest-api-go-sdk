@@ -83,11 +83,12 @@ func (os *OrdersServiceClient) Sell(req *PostOrderRequestShort) (*PostOrderRespo
 }
 
 // CancelOrder - Метод отмены биржевой заявки
-func (os *OrdersServiceClient) CancelOrder(accountId, orderId string) (*CancelOrderResponse, error) {
+func (os *OrdersServiceClient) CancelOrder(accountId, orderId string, idType *pb.OrderIdType) (*CancelOrderResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := os.pbClient.CancelOrder(os.ctx, &pb.CancelOrderRequest{
-		AccountId: accountId,
-		OrderId:   orderId,
+		AccountId:   accountId,
+		OrderId:     orderId,
+		OrderIdType: idType,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
@@ -99,12 +100,13 @@ func (os *OrdersServiceClient) CancelOrder(accountId, orderId string) (*CancelOr
 }
 
 // GetOrderState - Метод получения статуса торгового поручения
-func (os *OrdersServiceClient) GetOrderState(accountId, orderId string, priceType pb.PriceType) (*GetOrderStateResponse, error) {
+func (os *OrdersServiceClient) GetOrderState(accountId, orderId string, priceType pb.PriceType, orderIDType *pb.OrderIdType) (*GetOrderStateResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := os.pbClient.GetOrderState(os.ctx, &pb.GetOrderStateRequest{
-		AccountId: accountId,
-		OrderId:   orderId,
-		PriceType: priceType,
+		AccountId:   accountId,
+		OrderId:     orderId,
+		PriceType:   priceType,
+		OrderIdType: orderIDType,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer

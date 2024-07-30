@@ -3,9 +3,10 @@ package investgo
 import (
 	"context"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 type UsersServiceClient struct {
@@ -17,9 +18,11 @@ type UsersServiceClient struct {
 }
 
 // GetAccounts - Метод получения счетов пользователя
-func (us *UsersServiceClient) GetAccounts() (*GetAccountsResponse, error) {
+func (us *UsersServiceClient) GetAccounts(status *pb.AccountStatus) (*GetAccountsResponse, error) {
 	var header, trailer metadata.MD
-	resp, err := us.pbClient.GetAccounts(us.ctx, &pb.GetAccountsRequest{}, grpc.Header(&header), grpc.Trailer(&trailer))
+	resp, err := us.pbClient.GetAccounts(us.ctx, &pb.GetAccountsRequest{
+		Status: status,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer
 	}

@@ -8,9 +8,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/russianinvestments/invest-api-go-sdk/investgo"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/russianinvestments/invest-api-go-sdk/investgo"
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 func main() {
@@ -56,7 +58,8 @@ func main() {
 	usersService := client.NewUsersServiceClient()
 
 	var accId string
-	accsResp, err := usersService.GetAccounts()
+	status := pb.AccountStatus_ACCOUNT_STATUS_ALL
+	accsResp, err := usersService.GetAccounts(&status)
 	if err != nil {
 		logger.Errorf(err.Error())
 	} else {

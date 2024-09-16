@@ -42,6 +42,9 @@ func main() {
 	}
 	// создаем клиента для investAPI, он позволяет создавать нужные сервисы и уже
 	// через них вызывать нужные методы
+
+	// если вы хотите передать опции для создания соединения grpc.ClientConnOption, то передайте их в NewClient
+	// client, err := investgo.NewClient(ctx, config, logger, grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(1e6)))
 	client, err := investgo.NewClient(ctx, config, logger)
 	if err != nil {
 		logger.Fatalf("client creating error %v", err.Error())

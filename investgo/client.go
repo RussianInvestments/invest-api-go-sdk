@@ -6,14 +6,15 @@ import (
 	"fmt"
 	"time"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
-	"github.com/russianinvestments/invest-api-go-sdk/retry"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/oauth"
 	"google.golang.org/grpc/metadata"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
+	"github.com/russianinvestments/invest-api-go-sdk/retry"
 )
 
 const (
@@ -31,7 +32,7 @@ type Client struct {
 }
 
 // NewClient - создание клиента для API Тинькофф инвестиций
-func NewClient(ctx context.Context, conf Config, l Logger) (*Client, error) {
+func NewClient(ctx context.Context, conf Config, l Logger, dialOpts ...grpc.DialOption) (*Client, error) {
 	setDefaultConfig(&conf)
 
 	var authKey ctxKey = "authorization"
@@ -69,13 +70,16 @@ func NewClient(ctx context.Context, conf Config, l Logger) (*Client, error) {
 		}
 	}
 
-	conn, err := grpc.Dial(conf.EndPoint,
+	dialOpts = append(
+		dialOpts,
 		grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{})),
 		grpc.WithPerRPCCredentials(oauth.TokenSource{
 			TokenSource: oauth2.StaticTokenSource(&oauth2.Token{AccessToken: conf.Token}),
 		}),
 		grpc.WithChainUnaryInterceptor(unaryInterceptors...),
-		grpc.WithChainStreamInterceptor(streamInterceptors...))
+		grpc.WithChainStreamInterceptor(streamInterceptors...),
+	)
+	conn, err := grpc.Dial(conf.EndPoint, dialOpts...)
 	if err != nil {
 		return nil, err
 	}

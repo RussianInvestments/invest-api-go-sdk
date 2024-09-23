@@ -3,6 +3,7 @@ package investgo
 import (
 	"context"
 	"crypto/tls"
+	"fmt"
 	"time"
 
 	"golang.org/x/oauth2"
@@ -35,6 +36,9 @@ type Client struct {
 // NewClient - создание клиента для API Тинькофф инвестиций
 func NewClient(ctx context.Context, conf Config, l Logger, dialOpts ...grpc.DialOption) (*Client, error) {
 	setDefaultConfig(&conf)
+
+	var authKey ctxKey = "authorization"
+	ctx = context.WithValue(ctx, authKey, fmt.Sprintf("Bearer %s", conf.Token))
 
 	opts := []retry.CallOption{
 		retry.WithCodes(codes.Unavailable, codes.Internal, codes.Canceled),

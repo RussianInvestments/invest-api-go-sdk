@@ -20,12 +20,14 @@ import (
 const (
 	// WAIT_BETWEEN - Время ожидания между ретраями
 	WAIT_BETWEEN time.Duration = 500 * time.Millisecond
+
+	headerAppName = "x-app-name"
 )
 
 type ctxKey string
 
 type Client struct {
-	conn   *grpc.ClientConn
+	Conn   *grpc.ClientConn
 	Config Config
 	Logger Logger
 	ctx    context.Context
@@ -37,7 +39,6 @@ func NewClient(ctx context.Context, conf Config, l Logger, dialOpts ...grpc.Dial
 
 	var authKey ctxKey = "authorization"
 	ctx = context.WithValue(ctx, authKey, fmt.Sprintf("Bearer %s", conf.Token))
-	ctx = metadata.AppendToOutgoingContext(ctx, "x-app-name", conf.AppName)
 
 	opts := []retry.CallOption{
 		retry.WithCodes(codes.Unavailable, codes.Internal, codes.Canceled),
@@ -56,17 +57,20 @@ func NewClient(ctx context.Context, conf Config, l Logger, dialOpts ...grpc.Dial
 
 	streamInterceptors := []grpc.StreamClientInterceptor{
 		retry.StreamClientInterceptor(opts...),
+		outgoingAppNameStreamInterceptor(conf.AppName),
 	}
 
 	var unaryInterceptors []grpc.UnaryClientInterceptor
 	if conf.DisableResourceExhaustedRetry {
 		unaryInterceptors = []grpc.UnaryClientInterceptor{
 			retry.UnaryClientInterceptor(opts...),
+			outgoingAppNameUnaryInterceptor(conf.AppName),
 		}
 	} else {
 		unaryInterceptors = []grpc.UnaryClientInterceptor{
 			retry.UnaryClientInterceptor(opts...),
 			retry.UnaryClientInterceptorRE(exhaustedOpts...),
+			outgoingAppNameUnaryInterceptor(conf.AppName),
 		}
 	}
 
@@ -85,7 +89,7 @@ func NewClient(ctx context.Context, conf Config, l Logger, dialOpts ...grpc.Dial
 	}
 
 	client := &Client{
-		conn:   conn,
+		Conn:   conn,
 		Config: conf,
 		Logger: l,
 		ctx:    ctx,
@@ -139,9 +143,9 @@ type Logger interface {
 
 // NewMarketDataStreamClient - создание клиента для сервиса стримов маркетадаты
 func (c *Client) NewMarketDataStreamClient() *MarketDataStreamClient {
-	pbClient := pb.NewMarketDataStreamServiceClient(c.conn)
+	pbClient := pb.NewMarketDataStreamServiceClient(c.Conn)
 	return &MarketDataStreamClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -153,9 +157,9 @@ func (c *Client) NewMarketDataStreamClient() *MarketDataStreamClient {
 //
 // Deprecated: Use NewMarketDataStreamClient
 func (c *Client) NewMDStreamClient() *MDStreamClient {
-	pbClient := pb.NewMarketDataStreamServiceClient(c.conn)
+	pbClient := pb.NewMarketDataStreamServiceClient(c.Conn)
 	return &MDStreamClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -165,9 +169,9 @@ func (c *Client) NewMDStreamClient() *MDStreamClient {
 
 // NewOrdersServiceClient - создание клиента сервиса ордеров
 func (c *Client) NewOrdersServiceClient() *OrdersServiceClient {
-	pbClient := pb.NewOrdersServiceClient(c.conn)
+	pbClient := pb.NewOrdersServiceClient(c.Conn)
 	return &OrdersServiceClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -177,9 +181,9 @@ func (c *Client) NewOrdersServiceClient() *OrdersServiceClient {
 
 // NewMarketDataServiceClient - создание клиента сервиса маркетдаты
 func (c *Client) NewMarketDataServiceClient() *MarketDataServiceClient {
-	pbClient := pb.NewMarketDataServiceClient(c.conn)
+	pbClient := pb.NewMarketDataServiceClient(c.Conn)
 	return &MarketDataServiceClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -189,9 +193,9 @@ func (c *Client) NewMarketDataServiceClient() *MarketDataServiceClient {
 
 // NewInstrumentsServiceClient - создание клиента сервиса инструментов
 func (c *Client) NewInstrumentsServiceClient() *InstrumentsServiceClient {
-	pbClient := pb.NewInstrumentsServiceClient(c.conn)
+	pbClient := pb.NewInstrumentsServiceClient(c.Conn)
 	return &InstrumentsServiceClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -201,9 +205,9 @@ func (c *Client) NewInstrumentsServiceClient() *InstrumentsServiceClient {
 
 // NewUsersServiceClient - создание клиента сервиса счетов
 func (c *Client) NewUsersServiceClient() *UsersServiceClient {
-	pbClient := pb.NewUsersServiceClient(c.conn)
+	pbClient := pb.NewUsersServiceClient(c.Conn)
 	return &UsersServiceClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -213,9 +217,9 @@ func (c *Client) NewUsersServiceClient() *UsersServiceClient {
 
 // NewOperationsServiceClient - создание клиента сервиса операций
 func (c *Client) NewOperationsServiceClient() *OperationsServiceClient {
-	pbClient := pb.NewOperationsServiceClient(c.conn)
+	pbClient := pb.NewOperationsServiceClient(c.Conn)
 	return &OperationsServiceClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -225,9 +229,9 @@ func (c *Client) NewOperationsServiceClient() *OperationsServiceClient {
 
 // NewStopOrdersServiceClient - создание клиента сервиса стоп-ордеров
 func (c *Client) NewStopOrdersServiceClient() *StopOrdersServiceClient {
-	pbClient := pb.NewStopOrdersServiceClient(c.conn)
+	pbClient := pb.NewStopOrdersServiceClient(c.Conn)
 	return &StopOrdersServiceClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -237,9 +241,9 @@ func (c *Client) NewStopOrdersServiceClient() *StopOrdersServiceClient {
 
 // NewSandboxServiceClient - создание клиента для работы с песочницей
 func (c *Client) NewSandboxServiceClient() *SandboxServiceClient {
-	pbClient := pb.NewSandboxServiceClient(c.conn)
+	pbClient := pb.NewSandboxServiceClient(c.Conn)
 	return &SandboxServiceClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -249,9 +253,9 @@ func (c *Client) NewSandboxServiceClient() *SandboxServiceClient {
 
 // NewOrdersStreamClient - создание клиента стримов сделок
 func (c *Client) NewOrdersStreamClient() *OrdersStreamClient {
-	pbClient := pb.NewOrdersStreamServiceClient(c.conn)
+	pbClient := pb.NewOrdersStreamServiceClient(c.Conn)
 	return &OrdersStreamClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -261,9 +265,9 @@ func (c *Client) NewOrdersStreamClient() *OrdersStreamClient {
 
 // NewOperationsStreamClient - создание клиента стримов обновлений портфеля
 func (c *Client) NewOperationsStreamClient() *OperationsStreamClient {
-	pbClient := pb.NewOperationsStreamServiceClient(c.conn)
+	pbClient := pb.NewOperationsStreamServiceClient(c.Conn)
 	return &OperationsStreamClient{
-		conn:     c.conn,
+		conn:     c.Conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
@@ -274,5 +278,19 @@ func (c *Client) NewOperationsStreamClient() *OperationsStreamClient {
 // Stop - корректное завершение работы клиента
 func (c *Client) Stop() error {
 	c.Logger.Infof("stop client")
-	return c.conn.Close()
+	return c.Conn.Close()
+}
+
+func outgoingAppNameUnaryInterceptor(appName string) grpc.UnaryClientInterceptor {
+	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+		ctx = metadata.AppendToOutgoingContext(ctx, headerAppName, appName)
+		return invoker(ctx, method, req, reply, cc, opts...)
+	}
+}
+
+func outgoingAppNameStreamInterceptor(appName string) grpc.StreamClientInterceptor {
+	return func(ctx context.Context, desc *grpc.StreamDesc, cc *grpc.ClientConn, method string, streamer grpc.Streamer, opts ...grpc.CallOption) (grpc.ClientStream, error) {
+		ctx = metadata.AppendToOutgoingContext(ctx, headerAppName, appName)
+		return streamer(ctx, desc, cc, method, opts...)
+	}
 }

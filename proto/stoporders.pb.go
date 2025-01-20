@@ -183,8 +183,8 @@ const (
 	StopOrderStatusOption_STOP_ORDER_STATUS_ALL         StopOrderStatusOption = 1 //Все заявки.
 	StopOrderStatusOption_STOP_ORDER_STATUS_ACTIVE      StopOrderStatusOption = 2 //Активные заявки.
 	StopOrderStatusOption_STOP_ORDER_STATUS_EXECUTED    StopOrderStatusOption = 3 //Исполненные заявки.
-	StopOrderStatusOption_STOP_ORDER_STATUS_CANCELED    StopOrderStatusOption = 4 //Отменённые заявки.
-	StopOrderStatusOption_STOP_ORDER_STATUS_EXPIRED     StopOrderStatusOption = 5 //Истёкшие заявки.
+	StopOrderStatusOption_STOP_ORDER_STATUS_CANCELED    StopOrderStatusOption = 4 //Отмененные заявки.
+	StopOrderStatusOption_STOP_ORDER_STATUS_EXPIRED     StopOrderStatusOption = 5 //Истекшие заявки.
 )
 
 // Enum value maps for StopOrderStatusOption.
@@ -443,15 +443,15 @@ type PostStopOrderRequest struct {
 	// Deprecated: Marked as deprecated in stoporders.proto.
 	Figi              *string                            `protobuf:"bytes,1,opt,name=figi,proto3,oneof" json:"figi,omitempty"`                                                                                                               //Deprecated FIGI-идентификатор инструмента. Используйте `instrument_id`.
 	Quantity          int64                              `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`                                                                                                            //Количество лотов.
-	Price             *Quotation                         `protobuf:"bytes,3,opt,name=price,proto3,oneof" json:"price,omitempty"`                                                                                                             //Цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента.
-	StopPrice         *Quotation                         `protobuf:"bytes,4,opt,name=stop_price,json=stopPrice,proto3,oneof" json:"stop_price,omitempty"`                                                                                    //Стоп-цена заявки за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента.
+	Price             *Quotation                         `protobuf:"bytes,3,opt,name=price,proto3,oneof" json:"price,omitempty"`                                                                                                             //Цена за 1 инструмент биржевой заявки, которая будет выставлена при срабатывании по достижению `stop_price`. Чтобы получить стоимость лота, нужно умножить на лотность инструмента.
+	StopPrice         *Quotation                         `protobuf:"bytes,4,opt,name=stop_price,json=stopPrice,proto3,oneof" json:"stop_price,omitempty"`                                                                                    //Стоп-цена заявки за 1 инструмент. При достижении стоп-цены происходит активация стоп-заявки, в результате чего выставляется биржевая заявка. Чтобы получить стоимость лота, нужно умножить на лотность инструмента.
 	Direction         StopOrderDirection                 `protobuf:"varint,5,opt,name=direction,proto3,enum=tinkoff.public.invest.api.contract.v1.StopOrderDirection" json:"direction,omitempty"`                                            //Направление операции.
-	AccountId         string                             `protobuf:"bytes,6,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`                                                                                          //Номер счёта.
+	AccountId         string                             `protobuf:"bytes,6,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`                                                                                          //Номер счета.
 	ExpirationType    StopOrderExpirationType            `protobuf:"varint,7,opt,name=expiration_type,json=expirationType,proto3,enum=tinkoff.public.invest.api.contract.v1.StopOrderExpirationType" json:"expiration_type,omitempty"`       //Тип экспирации заявки.
 	StopOrderType     StopOrderType                      `protobuf:"varint,8,opt,name=stop_order_type,json=stopOrderType,proto3,enum=tinkoff.public.invest.api.contract.v1.StopOrderType" json:"stop_order_type,omitempty"`                  //Тип заявки.
 	ExpireDate        *timestamppb.Timestamp             `protobuf:"bytes,9,opt,name=expire_date,json=expireDate,proto3,oneof" json:"expire_date,omitempty"`                                                                                 //Дата и время окончания действия стоп-заявки по UTC. Для `ExpirationType = GoodTillDate` заполнение обязательно, для `GoodTillCancel` игнорируется.
 	InstrumentId      string                             `protobuf:"bytes,10,opt,name=instrument_id,json=instrumentId,proto3" json:"instrument_id,omitempty"`                                                                                //Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`.
-	ExchangeOrderType ExchangeOrderType                  `protobuf:"varint,11,opt,name=exchange_order_type,json=exchangeOrderType,proto3,enum=tinkoff.public.invest.api.contract.v1.ExchangeOrderType" json:"exchange_order_type,omitempty"` //Тип дочерней биржевой заявки для тейкпрофита.
+	ExchangeOrderType ExchangeOrderType                  `protobuf:"varint,11,opt,name=exchange_order_type,json=exchangeOrderType,proto3,enum=tinkoff.public.invest.api.contract.v1.ExchangeOrderType" json:"exchange_order_type,omitempty"` //Тип дочерней биржевой заявки.
 	TakeProfitType    TakeProfitType                     `protobuf:"varint,12,opt,name=take_profit_type,json=takeProfitType,proto3,enum=tinkoff.public.invest.api.contract.v1.TakeProfitType" json:"take_profit_type,omitempty"`             //Подтип стоп-заявки — `TakeProfit`.
 	TrailingData      *PostStopOrderRequest_TrailingData `protobuf:"bytes,13,opt,name=trailing_data,json=trailingData,proto3" json:"trailing_data,omitempty"`                                                                                //Массив с параметрами трейлинг-стопа.
 	PriceType         PriceType                          `protobuf:"varint,14,opt,name=price_type,json=priceType,proto3,enum=tinkoff.public.invest.api.contract.v1.PriceType" json:"price_type,omitempty"`                                   //Тип цены.
@@ -666,7 +666,7 @@ type GetStopOrdersRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AccountId string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`                                            //Идентификатор счёта клиента.
+	AccountId string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`                                            //Идентификатор счета клиента.
 	Status    StopOrderStatusOption  `protobuf:"varint,2,opt,name=status,proto3,enum=tinkoff.public.invest.api.contract.v1.StopOrderStatusOption" json:"status,omitempty"` //Статус заявок.
 	From      *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=from,proto3" json:"from,omitempty"`                                                                       //Левая граница.
 	To        *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=to,proto3" json:"to,omitempty"`                                                                           //Правая граница.
@@ -738,7 +738,7 @@ type GetStopOrdersResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	StopOrders []*StopOrder `protobuf:"bytes,1,rep,name=stop_orders,json=stopOrders,proto3" json:"stop_orders,omitempty"` //Массив стоп-заявок по счёту.
+	StopOrders []*StopOrder `protobuf:"bytes,1,rep,name=stop_orders,json=stopOrders,proto3" json:"stop_orders,omitempty"` //Массив стоп-заявок по счету.
 }
 
 func (x *GetStopOrdersResponse) Reset() {
@@ -786,7 +786,7 @@ type CancelStopOrderRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AccountId   string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`         //Идентификатор счёта клиента.
+	AccountId   string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`         //Идентификатор счета клиента.
 	StopOrderId string `protobuf:"bytes,2,opt,name=stop_order_id,json=stopOrderId,proto3" json:"stop_order_id,omitempty"` //Уникальный идентификатор стоп-заявки.
 }
 
@@ -890,7 +890,7 @@ type StopOrder struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	StopOrderId        string                  `protobuf:"bytes,1,opt,name=stop_order_id,json=stopOrderId,proto3" json:"stop_order_id,omitempty"`                                                                                  //Идентификатор-идентификатор стоп-заявки.
+	StopOrderId        string                  `protobuf:"bytes,1,opt,name=stop_order_id,json=stopOrderId,proto3" json:"stop_order_id,omitempty"`                                                                                  //Уникальный идентификатор стоп-заявки.
 	LotsRequested      int64                   `protobuf:"varint,2,opt,name=lots_requested,json=lotsRequested,proto3" json:"lots_requested,omitempty"`                                                                             //Запрошено лотов.
 	Figi               string                  `protobuf:"bytes,3,opt,name=figi,proto3" json:"figi,omitempty"`                                                                                                                     //FIGI-идентификатор инструмента.
 	Direction          StopOrderDirection      `protobuf:"varint,4,opt,name=direction,proto3,enum=tinkoff.public.invest.api.contract.v1.StopOrderDirection" json:"direction,omitempty"`                                            //Направление операции.

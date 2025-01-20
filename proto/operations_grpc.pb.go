@@ -32,20 +32,20 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OperationsServiceClient interface {
-	// Получить список операций по счёту. При работе с методом учитывайте
+	// Получить список операций по счету. При работе с методом учитывайте
 	// [особенности взаимодействия](/investAPI/operations_problems).
 	GetOperations(ctx context.Context, in *OperationsRequest, opts ...grpc.CallOption) (*OperationsResponse, error)
-	// Получить портфель по счёту.
+	// Получить портфель по счету.
 	GetPortfolio(ctx context.Context, in *PortfolioRequest, opts ...grpc.CallOption) (*PortfolioResponse, error)
-	// Получить список позиций по счёту.
+	// Получить список позиций по счету.
 	GetPositions(ctx context.Context, in *PositionsRequest, opts ...grpc.CallOption) (*PositionsResponse, error)
 	// Получить доступный остаток для вывода средств.
 	GetWithdrawLimits(ctx context.Context, in *WithdrawLimitsRequest, opts ...grpc.CallOption) (*WithdrawLimitsResponse, error)
-	// Получить брокерский отчёт.
+	// Получить брокерский отчет.
 	GetBrokerReport(ctx context.Context, in *BrokerReportRequest, opts ...grpc.CallOption) (*BrokerReportResponse, error)
-	// Получить отчёт «Справка о доходах за пределами РФ».
+	// Получить отчет «Справка о доходах за пределами РФ».
 	GetDividendsForeignIssuer(ctx context.Context, in *GetDividendsForeignIssuerRequest, opts ...grpc.CallOption) (*GetDividendsForeignIssuerResponse, error)
-	// Получить список операций по счёту с пагинацией. При работе с методом учитывайте
+	// Получить список операций по счету с пагинацией. При работе с методом учитывайте
 	// [особенности взаимодействия](/investAPI/operations_problems).
 	GetOperationsByCursor(ctx context.Context, in *GetOperationsByCursorRequest, opts ...grpc.CallOption) (*GetOperationsByCursorResponse, error)
 }
@@ -125,20 +125,20 @@ func (c *operationsServiceClient) GetOperationsByCursor(ctx context.Context, in 
 // All implementations must embed UnimplementedOperationsServiceServer
 // for forward compatibility
 type OperationsServiceServer interface {
-	// Получить список операций по счёту. При работе с методом учитывайте
+	// Получить список операций по счету. При работе с методом учитывайте
 	// [особенности взаимодействия](/investAPI/operations_problems).
 	GetOperations(context.Context, *OperationsRequest) (*OperationsResponse, error)
-	// Получить портфель по счёту.
+	// Получить портфель по счету.
 	GetPortfolio(context.Context, *PortfolioRequest) (*PortfolioResponse, error)
-	// Получить список позиций по счёту.
+	// Получить список позиций по счету.
 	GetPositions(context.Context, *PositionsRequest) (*PositionsResponse, error)
 	// Получить доступный остаток для вывода средств.
 	GetWithdrawLimits(context.Context, *WithdrawLimitsRequest) (*WithdrawLimitsResponse, error)
-	// Получить брокерский отчёт.
+	// Получить брокерский отчет.
 	GetBrokerReport(context.Context, *BrokerReportRequest) (*BrokerReportResponse, error)
-	// Получить отчёт «Справка о доходах за пределами РФ».
+	// Получить отчет «Справка о доходах за пределами РФ».
 	GetDividendsForeignIssuer(context.Context, *GetDividendsForeignIssuerRequest) (*GetDividendsForeignIssuerResponse, error)
-	// Получить список операций по счёту с пагинацией. При работе с методом учитывайте
+	// Получить список операций по счету с пагинацией. При работе с методом учитывайте
 	// [особенности взаимодействия](/investAPI/operations_problems).
 	GetOperationsByCursor(context.Context, *GetOperationsByCursorRequest) (*GetOperationsByCursorResponse, error)
 	mustEmbedUnimplementedOperationsServiceServer()

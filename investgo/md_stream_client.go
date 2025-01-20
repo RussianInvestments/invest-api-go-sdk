@@ -30,6 +30,7 @@ func (c *MarketDataStreamClient) MarketDataStream() (*MarketDataStream, error) {
 		orderBook:     make(chan *pb.OrderBook, 1),
 		lastPrice:     make(chan *pb.LastPrice, 1),
 		tradingStatus: make(chan *pb.TradingStatus, 1),
+		tech:          make(chan *pb.MarketDataResponse, 1),
 		subs: subscriptions{
 			candles:         make(map[string]candleSub, 0),
 			orderBooks:      make(map[string]int32, 0),

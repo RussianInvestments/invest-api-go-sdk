@@ -69,7 +69,12 @@ func main() {
 	// результат подписки на инструменты это канал с определенным типом информации, при повторном вызове функции
 	// подписки(например на свечи), возвращаемый канал можно игнорировать, так как при первом вызове он уже был получен
 	firstInstrumetsGroup := []string{"BBG004730N88", "BBG00475KKY8", "BBG004RVFCY3"}
-	candleChan, err := firstMDStream.SubscribeCandle(firstInstrumetsGroup, pb.SubscriptionInterval_SUBSCRIPTION_INTERVAL_ONE_MINUTE, true)
+	candleChan, err := firstMDStream.SubscribeCandle(
+		firstInstrumetsGroup,
+		pb.SubscriptionInterval_SUBSCRIPTION_INTERVAL_ONE_MINUTE,
+		true,
+		nil,
+	)
 	if err != nil {
 		logger.Errorf(err.Error())
 	}

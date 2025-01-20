@@ -21,13 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Запрос открытия счёта в песочнице.
+// Запрос открытия счета в песочнице.
 type OpenSandboxAccountRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name *string `protobuf:"bytes,1,opt,name=name,proto3,oneof" json:"name,omitempty"` // Название счёта
+	Name *string `protobuf:"bytes,1,opt,name=name,proto3,oneof" json:"name,omitempty"` // Название счета
 }
 
 func (x *OpenSandboxAccountRequest) Reset() {
@@ -69,13 +69,13 @@ func (x *OpenSandboxAccountRequest) GetName() string {
 	return ""
 }
 
-// Номер открытого счёта в песочнице.
+// Номер открытого счета в песочнице.
 type OpenSandboxAccountResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"` //Номер счёта
+	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"` //Номер счета
 }
 
 func (x *OpenSandboxAccountResponse) Reset() {
@@ -117,13 +117,13 @@ func (x *OpenSandboxAccountResponse) GetAccountId() string {
 	return ""
 }
 
-// Запрос закрытия счёта в песочнице.
+// Запрос закрытия счета в песочнице.
 type CloseSandboxAccountRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"` //Номер счёта
+	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"` //Номер счета
 }
 
 func (x *CloseSandboxAccountRequest) Reset() {
@@ -165,7 +165,7 @@ func (x *CloseSandboxAccountRequest) GetAccountId() string {
 	return ""
 }
 
-// Результат закрытия счёта в песочнице.
+// Результат закрытия счета в песочнице.
 type CloseSandboxAccountResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -204,14 +204,14 @@ func (*CloseSandboxAccountResponse) Descriptor() ([]byte, []int) {
 	return file_sandbox_proto_rawDescGZIP(), []int{3}
 }
 
-// Запрос пополнения счёта в песочнице.
+// Запрос пополнения счета в песочнице.
 type SandboxPayInRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AccountId string      `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"` //Номер счёта
-	Amount    *MoneyValue `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`                        //Сумма пополнения счёта в рублях
+	AccountId string      `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"` //Номер счета
+	Amount    *MoneyValue `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`                        //Сумма пополнения счета в рублях
 }
 
 func (x *SandboxPayInRequest) Reset() {
@@ -260,13 +260,13 @@ func (x *SandboxPayInRequest) GetAmount() *MoneyValue {
 	return nil
 }
 
-// Результат пополнения счёта, текущий баланс.
+// Результат пополнения счета, текущий баланс.
 type SandboxPayInResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Balance *MoneyValue `protobuf:"bytes,1,opt,name=balance,proto3" json:"balance,omitempty"` //Текущий баланс счёта
+	Balance *MoneyValue `protobuf:"bytes,1,opt,name=balance,proto3" json:"balance,omitempty"` //Текущий баланс счета
 }
 
 func (x *SandboxPayInResponse) Reset() {

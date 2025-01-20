@@ -58,72 +58,72 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type InstrumentsServiceClient interface {
-	// Получить расписания торгов торговых площадок.
+	// Получить расписания торгов торговых площадок
 	TradingSchedules(ctx context.Context, in *TradingSchedulesRequest, opts ...grpc.CallOption) (*TradingSchedulesResponse, error)
-	// Получить облигации по её идентификатору.
+	// Получить облигации по ее идентификатору
 	BondBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*BondResponse, error)
-	// Получить список облигаций.
+	// Получить список облигаций
 	Bonds(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*BondsResponse, error)
-	// Получить график выплат купонов по облигации.
+	// Получить график выплат купонов по облигации
 	GetBondCoupons(ctx context.Context, in *GetBondCouponsRequest, opts ...grpc.CallOption) (*GetBondCouponsResponse, error)
 	// Получить события по облигации
 	GetBondEvents(ctx context.Context, in *GetBondEventsRequest, opts ...grpc.CallOption) (*GetBondEventsResponse, error)
-	// Получить валюту по её идентификатору.
+	// Получить валюту по ее идентификатору
 	CurrencyBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*CurrencyResponse, error)
-	// Получить список валют.
+	// Получить список валют
 	Currencies(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*CurrenciesResponse, error)
-	// Получить инвестиционный фонд по его идентификатору.
+	// Получить инвестиционный фонд по его идентификатору
 	EtfBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*EtfResponse, error)
-	// Получить список инвестиционных фондов.
+	// Получить список инвестиционных фондов
 	Etfs(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*EtfsResponse, error)
-	// Получить фьючерс по его идентификатору.
+	// Получить фьючерс по его идентификатору
 	FutureBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*FutureResponse, error)
-	// Получить список фьючерсов.
+	// Получить список фьючерсов
 	Futures(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*FuturesResponse, error)
-	// Получить опцион по его идентификатору.
+	// Получить опцион по его идентификатору
 	OptionBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*OptionResponse, error)
 	// Deprecated: Do not use.
-	// Deprecated Получить списка опционов.
+	// Deprecated Получить список опционов
 	Options(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*OptionsResponse, error)
-	// Получить список опционов.
+	// Получить список опционов
 	OptionsBy(ctx context.Context, in *FilterOptionsRequest, opts ...grpc.CallOption) (*OptionsResponse, error)
-	// Получить акцию по её идентификатору.
+	// Получить акцию по ее идентификатору
 	ShareBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*ShareResponse, error)
-	// Получить список акций.
+	// Получить список акций
 	Shares(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*SharesResponse, error)
-	// Получить индикативные инструменты — индексы, товары и другие.
+	// Получить индикативные инструменты — индексы, товары и другие
 	Indicatives(ctx context.Context, in *IndicativesRequest, opts ...grpc.CallOption) (*IndicativesResponse, error)
-	// Получить накопленный купонный доход по облигации.
+	// Получить накопленный купонный доход по облигации
 	GetAccruedInterests(ctx context.Context, in *GetAccruedInterestsRequest, opts ...grpc.CallOption) (*GetAccruedInterestsResponse, error)
-	// Получить размера гарантийного обеспечения по фьючерсам.
+	// Получить размера гарантийного обеспечения по фьючерсам
 	GetFuturesMargin(ctx context.Context, in *GetFuturesMarginRequest, opts ...grpc.CallOption) (*GetFuturesMarginResponse, error)
-	// Получить основную информацию об инструменте.
+	// Получить основную информацию об инструменте
 	GetInstrumentBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*InstrumentResponse, error)
-	// Получить события выплаты дивидендов по инструменту.
+	// Получить события выплаты дивидендов по инструменту
 	GetDividends(ctx context.Context, in *GetDividendsRequest, opts ...grpc.CallOption) (*GetDividendsResponse, error)
-	// Получить актив по его идентификатору.
+	// Получить актив по его идентификатору
 	GetAssetBy(ctx context.Context, in *AssetRequest, opts ...grpc.CallOption) (*AssetResponse, error)
-	// Получить список активов. Метод работает для всех инструментов, кроме срочных — опционов и фьючерсов.
+	// Получить список активов. Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов
 	GetAssets(ctx context.Context, in *AssetsRequest, opts ...grpc.CallOption) (*AssetsResponse, error)
-	// Получить список избранных инструментов.
+	// Получить список избранных инструментов
 	GetFavorites(ctx context.Context, in *GetFavoritesRequest, opts ...grpc.CallOption) (*GetFavoritesResponse, error)
-	// Отредактировать список избранных инструментов.
+	// Отредактировать список избранных инструментов
 	EditFavorites(ctx context.Context, in *EditFavoritesRequest, opts ...grpc.CallOption) (*EditFavoritesResponse, error)
-	// Получить список стран.
+	// Получить список стран
 	GetCountries(ctx context.Context, in *GetCountriesRequest, opts ...grpc.CallOption) (*GetCountriesResponse, error)
-	// Найти инструмент.
+	// Найти инструмент
 	FindInstrument(ctx context.Context, in *FindInstrumentRequest, opts ...grpc.CallOption) (*FindInstrumentResponse, error)
-	// Получить список брендов.
+	// Получить список брендов
 	GetBrands(ctx context.Context, in *GetBrandsRequest, opts ...grpc.CallOption) (*GetBrandsResponse, error)
-	// Получить бренд по его идентификатору.
+	// Получить бренд по его идентификатору
 	GetBrandBy(ctx context.Context, in *GetBrandRequest, opts ...grpc.CallOption) (*Brand, error)
-	// Получить фундаментальные показатели по активу.
+	// Получить фундаментальные показатели по активу
 	GetAssetFundamentals(ctx context.Context, in *GetAssetFundamentalsRequest, opts ...grpc.CallOption) (*GetAssetFundamentalsResponse, error)
-	// Получить расписания выхода отчётностей эмитентов.
+	// Получить расписания выхода отчетностей эмитентов
 	GetAssetReports(ctx context.Context, in *GetAssetReportsRequest, opts ...grpc.CallOption) (*GetAssetReportsResponse, error)
-	// Получить мнения аналитиков по инструменту.
+	// Получить мнения аналитиков по инструменту
 	GetConsensusForecasts(ctx context.Context, in *GetConsensusForecastsRequest, opts ...grpc.CallOption) (*GetConsensusForecastsResponse, error)
-	// Получить прогнозов инвестдомов по инструменту.
+	// Получить прогнозов инвестдомов по инструменту
 	GetForecastBy(ctx context.Context, in *GetForecastRequest, opts ...grpc.CallOption) (*GetForecastResponse, error)
 }
 
@@ -437,72 +437,72 @@ func (c *instrumentsServiceClient) GetForecastBy(ctx context.Context, in *GetFor
 // All implementations must embed UnimplementedInstrumentsServiceServer
 // for forward compatibility
 type InstrumentsServiceServer interface {
-	// Получить расписания торгов торговых площадок.
+	// Получить расписания торгов торговых площадок
 	TradingSchedules(context.Context, *TradingSchedulesRequest) (*TradingSchedulesResponse, error)
-	// Получить облигации по её идентификатору.
+	// Получить облигации по ее идентификатору
 	BondBy(context.Context, *InstrumentRequest) (*BondResponse, error)
-	// Получить список облигаций.
+	// Получить список облигаций
 	Bonds(context.Context, *InstrumentsRequest) (*BondsResponse, error)
-	// Получить график выплат купонов по облигации.
+	// Получить график выплат купонов по облигации
 	GetBondCoupons(context.Context, *GetBondCouponsRequest) (*GetBondCouponsResponse, error)
 	// Получить события по облигации
 	GetBondEvents(context.Context, *GetBondEventsRequest) (*GetBondEventsResponse, error)
-	// Получить валюту по её идентификатору.
+	// Получить валюту по ее идентификатору
 	CurrencyBy(context.Context, *InstrumentRequest) (*CurrencyResponse, error)
-	// Получить список валют.
+	// Получить список валют
 	Currencies(context.Context, *InstrumentsRequest) (*CurrenciesResponse, error)
-	// Получить инвестиционный фонд по его идентификатору.
+	// Получить инвестиционный фонд по его идентификатору
 	EtfBy(context.Context, *InstrumentRequest) (*EtfResponse, error)
-	// Получить список инвестиционных фондов.
+	// Получить список инвестиционных фондов
 	Etfs(context.Context, *InstrumentsRequest) (*EtfsResponse, error)
-	// Получить фьючерс по его идентификатору.
+	// Получить фьючерс по его идентификатору
 	FutureBy(context.Context, *InstrumentRequest) (*FutureResponse, error)
-	// Получить список фьючерсов.
+	// Получить список фьючерсов
 	Futures(context.Context, *InstrumentsRequest) (*FuturesResponse, error)
-	// Получить опцион по его идентификатору.
+	// Получить опцион по его идентификатору
 	OptionBy(context.Context, *InstrumentRequest) (*OptionResponse, error)
 	// Deprecated: Do not use.
-	// Deprecated Получить списка опционов.
+	// Deprecated Получить список опционов
 	Options(context.Context, *InstrumentsRequest) (*OptionsResponse, error)
-	// Получить список опционов.
+	// Получить список опционов
 	OptionsBy(context.Context, *FilterOptionsRequest) (*OptionsResponse, error)
-	// Получить акцию по её идентификатору.
+	// Получить акцию по ее идентификатору
 	ShareBy(context.Context, *InstrumentRequest) (*ShareResponse, error)
-	// Получить список акций.
+	// Получить список акций
 	Shares(context.Context, *InstrumentsRequest) (*SharesResponse, error)
-	// Получить индикативные инструменты — индексы, товары и другие.
+	// Получить индикативные инструменты — индексы, товары и другие
 	Indicatives(context.Context, *IndicativesRequest) (*IndicativesResponse, error)
-	// Получить накопленный купонный доход по облигации.
+	// Получить накопленный купонный доход по облигации
 	GetAccruedInterests(context.Context, *GetAccruedInterestsRequest) (*GetAccruedInterestsResponse, error)
-	// Получить размера гарантийного обеспечения по фьючерсам.
+	// Получить размера гарантийного обеспечения по фьючерсам
 	GetFuturesMargin(context.Context, *GetFuturesMarginRequest) (*GetFuturesMarginResponse, error)
-	// Получить основную информацию об инструменте.
+	// Получить основную информацию об инструменте
 	GetInstrumentBy(context.Context, *InstrumentRequest) (*InstrumentResponse, error)
-	// Получить события выплаты дивидендов по инструменту.
+	// Получить события выплаты дивидендов по инструменту
 	GetDividends(context.Context, *GetDividendsRequest) (*GetDividendsResponse, error)
-	// Получить актив по его идентификатору.
+	// Получить актив по его идентификатору
 	GetAssetBy(context.Context, *AssetRequest) (*AssetResponse, error)
-	// Получить список активов. Метод работает для всех инструментов, кроме срочных — опционов и фьючерсов.
+	// Получить список активов. Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов
 	GetAssets(context.Context, *AssetsRequest) (*AssetsResponse, error)
-	// Получить список избранных инструментов.
+	// Получить список избранных инструментов
 	GetFavorites(context.Context, *GetFavoritesRequest) (*GetFavoritesResponse, error)
-	// Отредактировать список избранных инструментов.
+	// Отредактировать список избранных инструментов
 	EditFavorites(context.Context, *EditFavoritesRequest) (*EditFavoritesResponse, error)
-	// Получить список стран.
+	// Получить список стран
 	GetCountries(context.Context, *GetCountriesRequest) (*GetCountriesResponse, error)
-	// Найти инструмент.
+	// Найти инструмент
 	FindInstrument(context.Context, *FindInstrumentRequest) (*FindInstrumentResponse, error)
-	// Получить список брендов.
+	// Получить список брендов
 	GetBrands(context.Context, *GetBrandsRequest) (*GetBrandsResponse, error)
-	// Получить бренд по его идентификатору.
+	// Получить бренд по его идентификатору
 	GetBrandBy(context.Context, *GetBrandRequest) (*Brand, error)
-	// Получить фундаментальные показатели по активу.
+	// Получить фундаментальные показатели по активу
 	GetAssetFundamentals(context.Context, *GetAssetFundamentalsRequest) (*GetAssetFundamentalsResponse, error)
-	// Получить расписания выхода отчётностей эмитентов.
+	// Получить расписания выхода отчетностей эмитентов
 	GetAssetReports(context.Context, *GetAssetReportsRequest) (*GetAssetReportsResponse, error)
-	// Получить мнения аналитиков по инструменту.
+	// Получить мнения аналитиков по инструменту
 	GetConsensusForecasts(context.Context, *GetConsensusForecastsRequest) (*GetConsensusForecastsResponse, error)
-	// Получить прогнозов инвестдомов по инструменту.
+	// Получить прогнозов инвестдомов по инструменту
 	GetForecastBy(context.Context, *GetForecastRequest) (*GetForecastResponse, error)
 	mustEmbedUnimplementedInstrumentsServiceServer()
 }

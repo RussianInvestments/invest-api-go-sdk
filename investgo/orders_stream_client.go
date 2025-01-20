@@ -18,7 +18,7 @@ type OrdersStreamClient struct {
 }
 
 // TradesStream - Стрим сделок по запрашиваемым аккаунтам
-func (o *OrdersStreamClient) TradesStream(accounts []string) (*TradesStream, error) {
+func (o *OrdersStreamClient) TradesStream(accounts []string, pingDelayMs *int32) (*TradesStream, error) {
 	ctx, cancel := context.WithCancel(o.ctx)
 	ts := &TradesStream{
 		stream:       nil,
@@ -28,7 +28,8 @@ func (o *OrdersStreamClient) TradesStream(accounts []string) (*TradesStream, err
 		cancel:       cancel,
 	}
 	stream, err := o.pbClient.TradesStream(ctx, &pb.TradesStreamRequest{
-		Accounts: accounts,
+		Accounts:    accounts,
+		PingDelayMs: pingDelayMs,
 	}, retry.WithOnRetryCallback(ts.restart))
 	if err != nil {
 		cancel()

@@ -275,6 +275,15 @@ func (c *Client) NewOperationsStreamClient() *OperationsStreamClient {
 	}
 }
 
+// NewSignalServiceClient - создание клиента сервиса сигналов
+func (c *Client) NewSignalServiceClient() *SignalServiceClient {
+	pbClient := pb.NewSignalServiceClient(c.Conn)
+	return &SignalServiceClient{
+		ctx:      c.ctx,
+		pbClient: pbClient,
+	}
+}
+
 // Stop - корректное завершение работы клиента
 func (c *Client) Stop() error {
 	c.Logger.Infof("stop client")

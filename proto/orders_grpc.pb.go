@@ -29,7 +29,7 @@ const (
 type OrdersStreamServiceClient interface {
 	// Stream сделок пользователя
 	TradesStream(ctx context.Context, in *TradesStreamRequest, opts ...grpc.CallOption) (OrdersStreamService_TradesStreamClient, error)
-	// Stream поручений пользователя. Перед работой прочитайте [статью](https://russianinvestments.github.io/investAPI/orders_state_stream/).
+	// Stream поручений пользователя. Перед работой прочитайте [статью](./orders_state_stream/).
 	OrderStateStream(ctx context.Context, in *OrderStateStreamRequest, opts ...grpc.CallOption) (OrdersStreamService_OrderStateStreamClient, error)
 }
 
@@ -111,7 +111,7 @@ func (x *ordersStreamServiceOrderStateStreamClient) Recv() (*OrderStateStreamRes
 type OrdersStreamServiceServer interface {
 	// Stream сделок пользователя
 	TradesStream(*TradesStreamRequest, OrdersStreamService_TradesStreamServer) error
-	// Stream поручений пользователя. Перед работой прочитайте [статью](https://russianinvestments.github.io/investAPI/orders_state_stream/).
+	// Stream поручений пользователя. Перед работой прочитайте [статью](./orders_state_stream/).
 	OrderStateStream(*OrderStateStreamRequest, OrdersStreamService_OrderStateStreamServer) error
 	mustEmbedUnimplementedOrdersStreamServiceServer()
 }
@@ -220,12 +220,13 @@ const (
 type OrdersServiceClient interface {
 	// Метод выставления заявки.
 	PostOrder(ctx context.Context, in *PostOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error)
+	// Асинхронный метод выставления заявки.
 	PostOrderAsync(ctx context.Context, in *PostOrderAsyncRequest, opts ...grpc.CallOption) (*PostOrderAsyncResponse, error)
 	// Метод отмены биржевой заявки.
 	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*CancelOrderResponse, error)
 	// Метод получения статуса торгового поручения.
 	GetOrderState(ctx context.Context, in *GetOrderStateRequest, opts ...grpc.CallOption) (*OrderState, error)
-	// Метод получения списка активных заявок по счёту.
+	// Метод получения списка активных заявок по счету.
 	GetOrders(ctx context.Context, in *GetOrdersRequest, opts ...grpc.CallOption) (*GetOrdersResponse, error)
 	// Метод изменения выставленной заявки.
 	ReplaceOrder(ctx context.Context, in *ReplaceOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error)
@@ -321,12 +322,13 @@ func (c *ordersServiceClient) GetOrderPrice(ctx context.Context, in *GetOrderPri
 type OrdersServiceServer interface {
 	// Метод выставления заявки.
 	PostOrder(context.Context, *PostOrderRequest) (*PostOrderResponse, error)
+	// Асинхронный метод выставления заявки.
 	PostOrderAsync(context.Context, *PostOrderAsyncRequest) (*PostOrderAsyncResponse, error)
 	// Метод отмены биржевой заявки.
 	CancelOrder(context.Context, *CancelOrderRequest) (*CancelOrderResponse, error)
 	// Метод получения статуса торгового поручения.
 	GetOrderState(context.Context, *GetOrderStateRequest) (*OrderState, error)
-	// Метод получения списка активных заявок по счёту.
+	// Метод получения списка активных заявок по счету.
 	GetOrders(context.Context, *GetOrdersRequest) (*GetOrdersResponse, error)
 	// Метод изменения выставленной заявки.
 	ReplaceOrder(context.Context, *ReplaceOrderRequest) (*PostOrderResponse, error)

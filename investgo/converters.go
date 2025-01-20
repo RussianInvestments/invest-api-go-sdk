@@ -4,9 +4,10 @@ import (
 	"math"
 	"time"
 
-	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 	"github.com/shopspring/decimal"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	pb "github.com/russianinvestments/invest-api-go-sdk/proto"
 )
 
 const BILLION int64 = 1000000000

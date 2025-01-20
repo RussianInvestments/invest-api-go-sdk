@@ -40,35 +40,35 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SandboxServiceClient interface {
-	// Зарегистрировать счёт.
+	// Зарегистрировать счет.
 	OpenSandboxAccount(ctx context.Context, in *OpenSandboxAccountRequest, opts ...grpc.CallOption) (*OpenSandboxAccountResponse, error)
 	// Получить счета.
 	GetSandboxAccounts(ctx context.Context, in *GetAccountsRequest, opts ...grpc.CallOption) (*GetAccountsResponse, error)
-	// Закрыть счёт.
+	// Закрыть счет.
 	CloseSandboxAccount(ctx context.Context, in *CloseSandboxAccountRequest, opts ...grpc.CallOption) (*CloseSandboxAccountResponse, error)
 	// Выставить торговое поручение.
 	PostSandboxOrder(ctx context.Context, in *PostOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error)
 	// Изменить выставленную заявку.
 	ReplaceSandboxOrder(ctx context.Context, in *ReplaceOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error)
-	// Получить список активных заявок по счёту.
+	// Получить список активных заявок по счету.
 	GetSandboxOrders(ctx context.Context, in *GetOrdersRequest, opts ...grpc.CallOption) (*GetOrdersResponse, error)
 	// Отменить торговое поручение.
 	CancelSandboxOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*CancelOrderResponse, error)
-	// Поулчить статус заявки в песочнице. Заявки хранятся в таблице 7 дней.
+	// Получить статус заявки в песочнице. Заявки хранятся в таблице 7 дней.
 	GetSandboxOrderState(ctx context.Context, in *GetOrderStateRequest, opts ...grpc.CallOption) (*OrderState, error)
-	// Получить позиции по виртуальному счёту.
+	// Получить позиции по виртуальному счету.
 	GetSandboxPositions(ctx context.Context, in *PositionsRequest, opts ...grpc.CallOption) (*PositionsResponse, error)
-	// Получить операции по номеру счёта.
+	// Получить операции по номеру счета.
 	GetSandboxOperations(ctx context.Context, in *OperationsRequest, opts ...grpc.CallOption) (*OperationsResponse, error)
-	// Получить операции по номеру счёта с пагинацией.
+	// Получить операции по номеру счета с пагинацией.
 	GetSandboxOperationsByCursor(ctx context.Context, in *GetOperationsByCursorRequest, opts ...grpc.CallOption) (*GetOperationsByCursorResponse, error)
 	// Получить портфель.
 	GetSandboxPortfolio(ctx context.Context, in *PortfolioRequest, opts ...grpc.CallOption) (*PortfolioResponse, error)
-	// Пополнить счёт.
+	// Пополнить счет.
 	SandboxPayIn(ctx context.Context, in *SandboxPayInRequest, opts ...grpc.CallOption) (*SandboxPayInResponse, error)
 	// Получить доступный остаток для вывода средств.
 	GetSandboxWithdrawLimits(ctx context.Context, in *WithdrawLimitsRequest, opts ...grpc.CallOption) (*WithdrawLimitsResponse, error)
-	// Расчёт количества доступных для покупки/продажи лотов в песочнице.
+	// Расчет количества доступных для покупки/продажи лотов в песочнице.
 	GetSandboxMaxLots(ctx context.Context, in *GetMaxLotsRequest, opts ...grpc.CallOption) (*GetMaxLotsResponse, error)
 }
 
@@ -219,35 +219,35 @@ func (c *sandboxServiceClient) GetSandboxMaxLots(ctx context.Context, in *GetMax
 // All implementations must embed UnimplementedSandboxServiceServer
 // for forward compatibility
 type SandboxServiceServer interface {
-	// Зарегистрировать счёт.
+	// Зарегистрировать счет.
 	OpenSandboxAccount(context.Context, *OpenSandboxAccountRequest) (*OpenSandboxAccountResponse, error)
 	// Получить счета.
 	GetSandboxAccounts(context.Context, *GetAccountsRequest) (*GetAccountsResponse, error)
-	// Закрыть счёт.
+	// Закрыть счет.
 	CloseSandboxAccount(context.Context, *CloseSandboxAccountRequest) (*CloseSandboxAccountResponse, error)
 	// Выставить торговое поручение.
 	PostSandboxOrder(context.Context, *PostOrderRequest) (*PostOrderResponse, error)
 	// Изменить выставленную заявку.
 	ReplaceSandboxOrder(context.Context, *ReplaceOrderRequest) (*PostOrderResponse, error)
-	// Получить список активных заявок по счёту.
+	// Получить список активных заявок по счету.
 	GetSandboxOrders(context.Context, *GetOrdersRequest) (*GetOrdersResponse, error)
 	// Отменить торговое поручение.
 	CancelSandboxOrder(context.Context, *CancelOrderRequest) (*CancelOrderResponse, error)
-	// Поулчить статус заявки в песочнице. Заявки хранятся в таблице 7 дней.
+	// Получить статус заявки в песочнице. Заявки хранятся в таблице 7 дней.
 	GetSandboxOrderState(context.Context, *GetOrderStateRequest) (*OrderState, error)
-	// Получить позиции по виртуальному счёту.
+	// Получить позиции по виртуальному счету.
 	GetSandboxPositions(context.Context, *PositionsRequest) (*PositionsResponse, error)
-	// Получить операции по номеру счёта.
+	// Получить операции по номеру счета.
 	GetSandboxOperations(context.Context, *OperationsRequest) (*OperationsResponse, error)
-	// Получить операции по номеру счёта с пагинацией.
+	// Получить операции по номеру счета с пагинацией.
 	GetSandboxOperationsByCursor(context.Context, *GetOperationsByCursorRequest) (*GetOperationsByCursorResponse, error)
 	// Получить портфель.
 	GetSandboxPortfolio(context.Context, *PortfolioRequest) (*PortfolioResponse, error)
-	// Пополнить счёт.
+	// Пополнить счет.
 	SandboxPayIn(context.Context, *SandboxPayInRequest) (*SandboxPayInResponse, error)
 	// Получить доступный остаток для вывода средств.
 	GetSandboxWithdrawLimits(context.Context, *WithdrawLimitsRequest) (*WithdrawLimitsResponse, error)
-	// Расчёт количества доступных для покупки/продажи лотов в песочнице.
+	// Расчет количества доступных для покупки/продажи лотов в песочнице.
 	GetSandboxMaxLots(context.Context, *GetMaxLotsRequest) (*GetMaxLotsResponse, error)
 	mustEmbedUnimplementedSandboxServiceServer()
 }

@@ -649,6 +649,24 @@ func (p *GetForecastResponse) GetHeader() metadata.MD {
 	return p.Header
 }
 
+type GetStrategiesResponse struct {
+	*pb.GetStrategiesResponse
+	Header metadata.MD
+}
+
+func (p *GetStrategiesResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
+type GetSignalsResponse struct {
+	*pb.GetSignalsResponse
+	Header metadata.MD
+}
+
+func (p *GetSignalsResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
 // custom request models
 
 type GetOperationsRequest struct {
@@ -717,4 +735,16 @@ type GetTechAnalysisRequest struct {
 	Length        int32
 	Deviation     *pb.GetTechAnalysisRequest_Deviation
 	Smoothing     *pb.GetTechAnalysisRequest_Smoothing
+}
+
+type GetSignalsRequest struct {
+	SignalID      *string
+	StrategyID    *string
+	StrategyType  *pb.StrategyType
+	InstrumentUID *string
+	From          time.Time
+	To            time.Time
+	Direction     *pb.SignalDirection
+	Active        *pb.SignalState
+	Paging        *pb.Page
 }

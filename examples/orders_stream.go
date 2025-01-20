@@ -59,7 +59,7 @@ func main() {
 
 	ordersStreamClient := client.NewOrdersStreamClient()
 
-	tradesStream, err := ordersStreamClient.TradesStream([]string{config.AccountId})
+	tradesStream, err := ordersStreamClient.TradesStream([]string{config.AccountId}, nil)
 	if err != nil {
 		logger.Fatalf(err.Error())
 	}

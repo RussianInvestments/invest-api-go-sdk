@@ -2,6 +2,7 @@ package investgo
 
 import (
 	"context"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -28,6 +29,8 @@ type MarketDataStream struct {
 	lastPrice     chan *pb.LastPrice
 	tradingStatus chan *pb.TradingStatus
 
+	tech chan *pb.MarketDataResponse
+
 	subs subscriptions
 }
 
@@ -45,8 +48,8 @@ type subscriptions struct {
 }
 
 // SubscribeCandle - Метод подписки на свечи с заданным интервалом
-func (mds *MarketDataStream) SubscribeCandle(ids []string, interval pb.SubscriptionInterval, waitingClose bool) (<-chan *pb.Candle, error) {
-	err := mds.sendCandlesReq(ids, interval, pb.SubscriptionAction_SUBSCRIPTION_ACTION_SUBSCRIBE, waitingClose)
+func (mds *MarketDataStream) SubscribeCandle(ids []string, interval pb.SubscriptionInterval, waitingClose bool, candleSrc *pb.GetCandlesRequest_CandleSource) (<-chan *pb.Candle, error) {
+	err := mds.sendCandlesReq(ids, interval, pb.SubscriptionAction_SUBSCRIPTION_ACTION_SUBSCRIBE, waitingClose, candleSrc)
 	if err != nil {
 		return nil, err
 	}
@@ -57,8 +60,8 @@ func (mds *MarketDataStream) SubscribeCandle(ids []string, interval pb.Subscript
 }
 
 // UnSubscribeCandle - Метод отписки от свечей
-func (mds *MarketDataStream) UnSubscribeCandle(ids []string, interval pb.SubscriptionInterval, waitingClose bool) error {
-	err := mds.sendCandlesReq(ids, interval, pb.SubscriptionAction_SUBSCRIPTION_ACTION_UNSUBSCRIBE, waitingClose)
+func (mds *MarketDataStream) UnSubscribeCandle(ids []string, interval pb.SubscriptionInterval, waitingClose bool, candleSrc *pb.GetCandlesRequest_CandleSource) error {
+	err := mds.sendCandlesReq(ids, interval, pb.SubscriptionAction_SUBSCRIPTION_ACTION_UNSUBSCRIBE, waitingClose, candleSrc)
 	if err != nil {
 		return err
 	}
@@ -68,7 +71,7 @@ func (mds *MarketDataStream) UnSubscribeCandle(ids []string, interval pb.Subscri
 	return nil
 }
 
-func (mds *MarketDataStream) sendCandlesReq(ids []string, interval pb.SubscriptionInterval, act pb.SubscriptionAction, waitingClose bool) error {
+func (mds *MarketDataStream) sendCandlesReq(ids []string, interval pb.SubscriptionInterval, act pb.SubscriptionAction, waitingClose bool, candleSrc *pb.GetCandlesRequest_CandleSource) error {
 	instruments := make([]*pb.CandleInstrument, 0, len(ids))
 	for _, id := range ids {
 		instruments = append(instruments, &pb.CandleInstrument{
@@ -83,7 +86,10 @@ func (mds *MarketDataStream) sendCandlesReq(ids []string, interval pb.Subscripti
 				SubscriptionAction: act,
 				Instruments:        instruments,
 				WaitingClose:       waitingClose,
-			}}})
+				CandleSourceType:   candleSrc,
+			},
+		},
+	})
 }
 
 // SubscribeOrderBook - метод подписки на стаканы инструментов с одинаковой глубиной
@@ -162,7 +168,7 @@ func (mds *MarketDataStream) sendTradesReq(ids []string, act pb.SubscriptionActi
 			SubscribeTradesRequest: &pb.SubscribeTradesRequest{
 				SubscriptionAction: act,
 				Instruments:        instruments,
-				TradeType:          tradeSrc,
+				TradeSource:        tradeSrc,
 			}}})
 }
 
@@ -291,6 +297,7 @@ func (mds *MarketDataStream) sendRespToChannel(resp *pb.MarketDataResponse) {
 	case *pb.MarketDataResponse_TradingStatus:
 		mds.tradingStatus <- resp.GetTradingStatus()
 	default:
+		mds.tech <- resp
 		mds.mdsClient.logger.Infof("info from MD stream %v", resp.String())
 	}
 }
@@ -302,6 +309,7 @@ func (mds *MarketDataStream) shutdown() {
 	close(mds.lastPrice)
 	close(mds.orderBook)
 	close(mds.tradingStatus)
+	close(mds.tech)
 }
 
 // Stop - Завершение работы стрима
@@ -320,7 +328,7 @@ func (mds *MarketDataStream) UnSubscribeAll() error {
 			delete(mds.subs.candles, id)
 		}
 		for c, ids := range candleSubs {
-			err := mds.UnSubscribeCandle(ids, c.interval, c.waitingClose)
+			err := mds.UnSubscribeCandle(ids, c.interval, c.waitingClose, nil)
 			if err != nil {
 				return err
 			}
@@ -388,4 +396,29 @@ func (mds *MarketDataStream) UnSubscribeAll() error {
 
 func (mds *MarketDataStream) restart(_ context.Context, attempt uint, err error) {
 	mds.mdsClient.logger.Infof("try to restart md stream err = %v, attempt = %v", err.Error(), attempt)
+}
+
+func (mds *MarketDataStream) Ping(time time.Time) error {
+	return mds.stream.Send(&pb.MarketDataRequest{
+		Payload: &pb.MarketDataRequest_Ping{
+			Ping: &pb.PingRequest{
+				Time: TimeToTimestamp(time),
+			},
+		},
+	})
+}
+
+func (mds *MarketDataStream) PingSettings(pingDelayMs int32) error {
+	return mds.stream.Send(&pb.MarketDataRequest{
+		Payload: &pb.MarketDataRequest_PingSettings{
+			PingSettings: &pb.PingDelaySettings{
+				PingDelayMs: &pingDelayMs,
+			},
+		},
+	})
+}
+
+// GetTechChan - Канал для получения результатов подписки, пинга
+func (mds *MarketDataStream) GetTechChan() <-chan *pb.MarketDataResponse {
+	return mds.tech
 }

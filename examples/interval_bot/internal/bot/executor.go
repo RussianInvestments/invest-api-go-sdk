@@ -528,7 +528,7 @@ func (e *Executor) updatePositionsUnary() error {
 // тут же выставляется лимитная заявка на продажу, и наоборот.
 func (e *Executor) listenTrades(ctx context.Context) error {
 	ordersStreamClient := e.client.NewOrdersStreamClient()
-	stream, err := ordersStreamClient.TradesStream([]string{e.client.Config.AccountId})
+	stream, err := ordersStreamClient.TradesStream([]string{e.client.Config.AccountId}, nil)
 	if err != nil {
 		return err
 	}

@@ -297,7 +297,7 @@ func (mds *MarketDataStream) sendRespToChannel(resp *pb.MarketDataResponse) {
 	case *pb.MarketDataResponse_TradingStatus:
 		mds.tradingStatus <- resp.GetTradingStatus()
 	default:
-		mds.tech <- resp
+		// mds.tech <- resp
 		mds.mdsClient.logger.Infof("info from MD stream %v", resp.String())
 	}
 }
@@ -418,7 +418,7 @@ func (mds *MarketDataStream) PingSettings(pingDelayMs int32) error {
 	})
 }
 
-// GetTechChan - Канал для получения результатов подписки, пинга
-func (mds *MarketDataStream) GetTechChan() <-chan *pb.MarketDataResponse {
-	return mds.tech
-}
+//// GetTechChan - Канал для получения результатов подписки, пинга
+//func (mds *MarketDataStream) GetTechChan() <-chan *pb.MarketDataResponse {
+//	return mds.tech
+//}

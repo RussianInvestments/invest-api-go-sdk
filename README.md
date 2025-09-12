@@ -46,7 +46,7 @@ SDK предназначен для упрощения работы с API Ин�
 ```yaml
 AccountId: ""
 APIToken: <your_token>
-EndPoint: sandbox-invest-public-api.tinkoff.ru:443
+EndPoint: sandbox-invest-public-api.tbank.ru:443
 AppName: invest-api-go-sdk
 DisableResourceExhaustedRetry: false
 DisableAllRetry: false

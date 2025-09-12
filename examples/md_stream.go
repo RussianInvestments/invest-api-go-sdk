@@ -79,7 +79,11 @@ func main() {
 		logger.Errorf(err.Error())
 	}
 
-	tradesChan, err := firstMDStream.SubscribeTrade(firstInstrumetsGroup, pb.TradeSourceType_TRADE_SOURCE_EXCHANGE)
+	tradesChan, err := firstMDStream.SubscribeTrade(
+		firstInstrumetsGroup,
+		pb.TradeSourceType_TRADE_SOURCE_EXCHANGE,
+		false,
+	)
 	if err != nil {
 		logger.Errorf(err.Error())
 	}

@@ -29,13 +29,17 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UsersServiceClient interface {
-	// Получить счета пользователя.
+	// GetAccounts — счета пользователя
+	// Получить список счетов.
 	GetAccounts(ctx context.Context, in *GetAccountsRequest, opts ...grpc.CallOption) (*GetAccountsResponse, error)
-	// Рассчитать маржинальные показатели по счёту.
+	// GetMarginAttributes — маржинальные показатели по счeту
+	// Метод позволяет получить маржинальные показатели и ликвидность по заданному счeту.
 	GetMarginAttributes(ctx context.Context, in *GetMarginAttributesRequest, opts ...grpc.CallOption) (*GetMarginAttributesResponse, error)
-	// Запросить тариф пользователя.
+	// GetUserTariff — тариф пользователя
+	// Получить информацию о текущих лимитах на подклчение, согласно текущему тарифу пользователя.
 	GetUserTariff(ctx context.Context, in *GetUserTariffRequest, opts ...grpc.CallOption) (*GetUserTariffResponse, error)
-	// Получить информацию о пользователе.
+	// GetInfo — информация о пользователе
+	// Получить информацию о пользователе: тариф, признак квалификации, пройденные тесты и др.
 	GetInfo(ctx context.Context, in *GetInfoRequest, opts ...grpc.CallOption) (*GetInfoResponse, error)
 }
 
@@ -87,13 +91,17 @@ func (c *usersServiceClient) GetInfo(ctx context.Context, in *GetInfoRequest, op
 // All implementations must embed UnimplementedUsersServiceServer
 // for forward compatibility
 type UsersServiceServer interface {
-	// Получить счета пользователя.
+	// GetAccounts — счета пользователя
+	// Получить список счетов.
 	GetAccounts(context.Context, *GetAccountsRequest) (*GetAccountsResponse, error)
-	// Рассчитать маржинальные показатели по счёту.
+	// GetMarginAttributes — маржинальные показатели по счeту
+	// Метод позволяет получить маржинальные показатели и ликвидность по заданному счeту.
 	GetMarginAttributes(context.Context, *GetMarginAttributesRequest) (*GetMarginAttributesResponse, error)
-	// Запросить тариф пользователя.
+	// GetUserTariff — тариф пользователя
+	// Получить информацию о текущих лимитах на подклчение, согласно текущему тарифу пользователя.
 	GetUserTariff(context.Context, *GetUserTariffRequest) (*GetUserTariffResponse, error)
-	// Получить информацию о пользователе.
+	// GetInfo — информация о пользователе
+	// Получить информацию о пользователе: тариф, признак квалификации, пройденные тесты и др.
 	GetInfo(context.Context, *GetInfoRequest) (*GetInfoResponse, error)
 	mustEmbedUnimplementedUsersServiceServer()
 }

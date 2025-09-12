@@ -28,11 +28,11 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StopOrdersServiceClient interface {
-	// Выставить стоп-заявку.
+	// PostStopOrder — выставить стоп-заявку
 	PostStopOrder(ctx context.Context, in *PostStopOrderRequest, opts ...grpc.CallOption) (*PostStopOrderResponse, error)
-	// Получить список активных стоп-заявок по счету.
+	// GetStopOrders — получить список активных стоп-заявок по счету
 	GetStopOrders(ctx context.Context, in *GetStopOrdersRequest, opts ...grpc.CallOption) (*GetStopOrdersResponse, error)
-	// Отменить стоп-заявку.
+	// CancelStopOrder — отменить стоп-заявку
 	CancelStopOrder(ctx context.Context, in *CancelStopOrderRequest, opts ...grpc.CallOption) (*CancelStopOrderResponse, error)
 }
 
@@ -75,11 +75,11 @@ func (c *stopOrdersServiceClient) CancelStopOrder(ctx context.Context, in *Cance
 // All implementations must embed UnimplementedStopOrdersServiceServer
 // for forward compatibility
 type StopOrdersServiceServer interface {
-	// Выставить стоп-заявку.
+	// PostStopOrder — выставить стоп-заявку
 	PostStopOrder(context.Context, *PostStopOrderRequest) (*PostStopOrderResponse, error)
-	// Получить список активных стоп-заявок по счету.
+	// GetStopOrders — получить список активных стоп-заявок по счету
 	GetStopOrders(context.Context, *GetStopOrdersRequest) (*GetStopOrdersResponse, error)
-	// Отменить стоп-заявку.
+	// CancelStopOrder — отменить стоп-заявку
 	CancelStopOrder(context.Context, *CancelStopOrderRequest) (*CancelStopOrderResponse, error)
 	mustEmbedUnimplementedStopOrdersServiceServer()
 }

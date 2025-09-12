@@ -27,9 +27,10 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrdersStreamServiceClient interface {
-	// Stream сделок пользователя
+	// TradesStream — стрим сделок пользователя
 	TradesStream(ctx context.Context, in *TradesStreamRequest, opts ...grpc.CallOption) (OrdersStreamService_TradesStreamClient, error)
-	// Stream поручений пользователя. Перед работой прочитайте [статью](./orders_state_stream/).
+	// OrderStateStream — стрим поручений пользователя
+	// Перед работой прочитайте [статью](/invest/services/orders/orders_state_stream).
 	OrderStateStream(ctx context.Context, in *OrderStateStreamRequest, opts ...grpc.CallOption) (OrdersStreamService_OrderStateStreamClient, error)
 }
 
@@ -109,9 +110,10 @@ func (x *ordersStreamServiceOrderStateStreamClient) Recv() (*OrderStateStreamRes
 // All implementations must embed UnimplementedOrdersStreamServiceServer
 // for forward compatibility
 type OrdersStreamServiceServer interface {
-	// Stream сделок пользователя
+	// TradesStream — стрим сделок пользователя
 	TradesStream(*TradesStreamRequest, OrdersStreamService_TradesStreamServer) error
-	// Stream поручений пользователя. Перед работой прочитайте [статью](./orders_state_stream/).
+	// OrderStateStream — стрим поручений пользователя
+	// Перед работой прочитайте [статью](/invest/services/orders/orders_state_stream).
 	OrderStateStream(*OrderStateStreamRequest, OrdersStreamService_OrderStateStreamServer) error
 	mustEmbedUnimplementedOrdersStreamServiceServer()
 }
@@ -218,21 +220,22 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrdersServiceClient interface {
-	// Метод выставления заявки.
+	// PostOrder — выставить заявку
 	PostOrder(ctx context.Context, in *PostOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error)
-	// Асинхронный метод выставления заявки.
+	// PostOrderAsync — выставить заявку асинхронным методом
+	// Особенности работы приведены в [статье](/invest/services/orders/async).
 	PostOrderAsync(ctx context.Context, in *PostOrderAsyncRequest, opts ...grpc.CallOption) (*PostOrderAsyncResponse, error)
-	// Метод отмены биржевой заявки.
+	// CancelOrder — отменить заявку
 	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*CancelOrderResponse, error)
-	// Метод получения статуса торгового поручения.
+	// GetOrderState — получить статус торгового поручения
 	GetOrderState(ctx context.Context, in *GetOrderStateRequest, opts ...grpc.CallOption) (*OrderState, error)
-	// Метод получения списка активных заявок по счету.
+	// GetOrders — получить список активных заявок по счету
 	GetOrders(ctx context.Context, in *GetOrdersRequest, opts ...grpc.CallOption) (*GetOrdersResponse, error)
-	// Метод изменения выставленной заявки.
+	// ReplaceOrder — изменить выставленную заявку
 	ReplaceOrder(ctx context.Context, in *ReplaceOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error)
-	// расчет количества доступных для покупки/продажи лотов
+	// GetMaxLots — расчет количества доступных для покупки/продажи лотов
 	GetMaxLots(ctx context.Context, in *GetMaxLotsRequest, opts ...grpc.CallOption) (*GetMaxLotsResponse, error)
-	// Метод получения предварительной стоимости для лимитной заявки
+	// GetOrderPrice — получить предварительную стоимость для лимитной заявки
 	GetOrderPrice(ctx context.Context, in *GetOrderPriceRequest, opts ...grpc.CallOption) (*GetOrderPriceResponse, error)
 }
 
@@ -320,21 +323,22 @@ func (c *ordersServiceClient) GetOrderPrice(ctx context.Context, in *GetOrderPri
 // All implementations must embed UnimplementedOrdersServiceServer
 // for forward compatibility
 type OrdersServiceServer interface {
-	// Метод выставления заявки.
+	// PostOrder — выставить заявку
 	PostOrder(context.Context, *PostOrderRequest) (*PostOrderResponse, error)
-	// Асинхронный метод выставления заявки.
+	// PostOrderAsync — выставить заявку асинхронным методом
+	// Особенности работы приведены в [статье](/invest/services/orders/async).
 	PostOrderAsync(context.Context, *PostOrderAsyncRequest) (*PostOrderAsyncResponse, error)
-	// Метод отмены биржевой заявки.
+	// CancelOrder — отменить заявку
 	CancelOrder(context.Context, *CancelOrderRequest) (*CancelOrderResponse, error)
-	// Метод получения статуса торгового поручения.
+	// GetOrderState — получить статус торгового поручения
 	GetOrderState(context.Context, *GetOrderStateRequest) (*OrderState, error)
-	// Метод получения списка активных заявок по счету.
+	// GetOrders — получить список активных заявок по счету
 	GetOrders(context.Context, *GetOrdersRequest) (*GetOrdersResponse, error)
-	// Метод изменения выставленной заявки.
+	// ReplaceOrder — изменить выставленную заявку
 	ReplaceOrder(context.Context, *ReplaceOrderRequest) (*PostOrderResponse, error)
-	// расчет количества доступных для покупки/продажи лотов
+	// GetMaxLots — расчет количества доступных для покупки/продажи лотов
 	GetMaxLots(context.Context, *GetMaxLotsRequest) (*GetMaxLotsResponse, error)
-	// Метод получения предварительной стоимости для лимитной заявки
+	// GetOrderPrice — получить предварительную стоимость для лимитной заявки
 	GetOrderPrice(context.Context, *GetOrderPriceRequest) (*GetOrderPriceResponse, error)
 	mustEmbedUnimplementedOrdersServiceServer()
 }

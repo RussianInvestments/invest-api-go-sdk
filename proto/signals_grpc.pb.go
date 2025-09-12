@@ -27,9 +27,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SignalServiceClient interface {
-	// Запросить стратегии.
+	// GetStrategies — стратегии
 	GetStrategies(ctx context.Context, in *GetStrategiesRequest, opts ...grpc.CallOption) (*GetStrategiesResponse, error)
-	// Запросить сигналы.
+	// GetSignals — сигналы
 	GetSignals(ctx context.Context, in *GetSignalsRequest, opts ...grpc.CallOption) (*GetSignalsResponse, error)
 }
 
@@ -63,9 +63,9 @@ func (c *signalServiceClient) GetSignals(ctx context.Context, in *GetSignalsRequ
 // All implementations must embed UnimplementedSignalServiceServer
 // for forward compatibility
 type SignalServiceServer interface {
-	// Запросить стратегии.
+	// GetStrategies — стратегии
 	GetStrategies(context.Context, *GetStrategiesRequest) (*GetStrategiesResponse, error)
-	// Запросить сигналы.
+	// GetSignals — сигналы
 	GetSignals(context.Context, *GetSignalsRequest) (*GetSignalsResponse, error)
 	mustEmbedUnimplementedSignalServiceServer()
 }

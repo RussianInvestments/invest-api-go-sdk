@@ -336,6 +336,62 @@ func (ResultSubscriptionStatus) EnumDescriptor() ([]byte, []int) {
 	return file_common_proto_rawDescGZIP(), []int{4}
 }
 
+// Реальная площадка исполнения расчетов.
+type RealExchange int32
+
+const (
+	RealExchange_REAL_EXCHANGE_UNSPECIFIED RealExchange = 0 //Тип не определен.
+	RealExchange_REAL_EXCHANGE_MOEX        RealExchange = 1 //Московская биржа.
+	RealExchange_REAL_EXCHANGE_RTS         RealExchange = 2 //Санкт-Петербургская биржа.
+	RealExchange_REAL_EXCHANGE_OTC         RealExchange = 3 //Внебиржевой инструмент.
+	RealExchange_REAL_EXCHANGE_DEALER      RealExchange = 4 //Инструмент, торгуемый на площадке брокера.
+)
+
+// Enum value maps for RealExchange.
+var (
+	RealExchange_name = map[int32]string{
+		0: "REAL_EXCHANGE_UNSPECIFIED",
+		1: "REAL_EXCHANGE_MOEX",
+		2: "REAL_EXCHANGE_RTS",
+		3: "REAL_EXCHANGE_OTC",
+		4: "REAL_EXCHANGE_DEALER",
+	}
+	RealExchange_value = map[string]int32{
+		"REAL_EXCHANGE_UNSPECIFIED": 0,
+		"REAL_EXCHANGE_MOEX":        1,
+		"REAL_EXCHANGE_RTS":         2,
+		"REAL_EXCHANGE_OTC":         3,
+		"REAL_EXCHANGE_DEALER":      4,
+	}
+)
+
+func (x RealExchange) Enum() *RealExchange {
+	p := new(RealExchange)
+	*p = x
+	return p
+}
+
+func (x RealExchange) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RealExchange) Descriptor() protoreflect.EnumDescriptor {
+	return file_common_proto_enumTypes[5].Descriptor()
+}
+
+func (RealExchange) Type() protoreflect.EnumType {
+	return &file_common_proto_enumTypes[5]
+}
+
+func (x RealExchange) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RealExchange.Descriptor instead.
+func (RealExchange) EnumDescriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{5}
+}
+
 // Денежная сумма в определенной валюте.
 type MoneyValue struct {
 	state         protoimpl.MessageState
@@ -1072,7 +1128,16 @@ var file_common_proto_rawDesc = []byte{
 	0x42, 0x53, 0x43, 0x52, 0x49, 0x50, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55,
 	0x53, 0x5f, 0x4f, 0x4b, 0x10, 0x01, 0x12, 0x24, 0x0a, 0x20, 0x52, 0x45, 0x53, 0x55, 0x4c, 0x54,
 	0x5f, 0x53, 0x55, 0x42, 0x53, 0x43, 0x52, 0x49, 0x50, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x53, 0x54,
-	0x41, 0x54, 0x55, 0x53, 0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x10, 0x0d, 0x42, 0x61, 0x0a, 0x1c,
+	0x41, 0x54, 0x55, 0x53, 0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x10, 0x0d, 0x2a, 0x8d, 0x01, 0x0a,
+	0x0c, 0x52, 0x65, 0x61, 0x6c, 0x45, 0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x12, 0x1d, 0x0a,
+	0x19, 0x52, 0x45, 0x41, 0x4c, 0x5f, 0x45, 0x58, 0x43, 0x48, 0x41, 0x4e, 0x47, 0x45, 0x5f, 0x55,
+	0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x16, 0x0a, 0x12,
+	0x52, 0x45, 0x41, 0x4c, 0x5f, 0x45, 0x58, 0x43, 0x48, 0x41, 0x4e, 0x47, 0x45, 0x5f, 0x4d, 0x4f,
+	0x45, 0x58, 0x10, 0x01, 0x12, 0x15, 0x0a, 0x11, 0x52, 0x45, 0x41, 0x4c, 0x5f, 0x45, 0x58, 0x43,
+	0x48, 0x41, 0x4e, 0x47, 0x45, 0x5f, 0x52, 0x54, 0x53, 0x10, 0x02, 0x12, 0x15, 0x0a, 0x11, 0x52,
+	0x45, 0x41, 0x4c, 0x5f, 0x45, 0x58, 0x43, 0x48, 0x41, 0x4e, 0x47, 0x45, 0x5f, 0x4f, 0x54, 0x43,
+	0x10, 0x03, 0x12, 0x18, 0x0a, 0x14, 0x52, 0x45, 0x41, 0x4c, 0x5f, 0x45, 0x58, 0x43, 0x48, 0x41,
+	0x4e, 0x47, 0x45, 0x5f, 0x44, 0x45, 0x41, 0x4c, 0x45, 0x52, 0x10, 0x04, 0x42, 0x61, 0x0a, 0x1c,
 	0x72, 0x75, 0x2e, 0x74, 0x69, 0x6e, 0x6b, 0x6f, 0x66, 0x66, 0x2e, 0x70, 0x69, 0x61, 0x70, 0x69,
 	0x2e, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x50, 0x01, 0x5a, 0x0c,
 	0x2e, 0x2f, 0x3b, 0x69, 0x6e, 0x76, 0x65, 0x73, 0x74, 0x61, 0x70, 0x69, 0xa2, 0x02, 0x05, 0x54,
@@ -1094,7 +1159,7 @@ func file_common_proto_rawDescGZIP() []byte {
 	return file_common_proto_rawDescData
 }
 
-var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
 var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_common_proto_goTypes = []interface{}{
 	(InstrumentType)(0),           // 0: tinkoff.public.invest.api.contract.v1.InstrumentType
@@ -1102,23 +1167,24 @@ var file_common_proto_goTypes = []interface{}{
 	(SecurityTradingStatus)(0),    // 2: tinkoff.public.invest.api.contract.v1.SecurityTradingStatus
 	(PriceType)(0),                // 3: tinkoff.public.invest.api.contract.v1.PriceType
 	(ResultSubscriptionStatus)(0), // 4: tinkoff.public.invest.api.contract.v1.ResultSubscriptionStatus
-	(*MoneyValue)(nil),            // 5: tinkoff.public.invest.api.contract.v1.MoneyValue
-	(*Quotation)(nil),             // 6: tinkoff.public.invest.api.contract.v1.Quotation
-	(*PingRequest)(nil),           // 7: tinkoff.public.invest.api.contract.v1.PingRequest
-	(*PingDelaySettings)(nil),     // 8: tinkoff.public.invest.api.contract.v1.PingDelaySettings
-	(*Ping)(nil),                  // 9: tinkoff.public.invest.api.contract.v1.Ping
-	(*Page)(nil),                  // 10: tinkoff.public.invest.api.contract.v1.Page
-	(*PageResponse)(nil),          // 11: tinkoff.public.invest.api.contract.v1.PageResponse
-	(*ResponseMetadata)(nil),      // 12: tinkoff.public.invest.api.contract.v1.ResponseMetadata
-	(*BrandData)(nil),             // 13: tinkoff.public.invest.api.contract.v1.BrandData
-	(*ErrorDetail)(nil),           // 14: tinkoff.public.invest.api.contract.v1.ErrorDetail
-	(*timestamppb.Timestamp)(nil), // 15: google.protobuf.Timestamp
+	(RealExchange)(0),             // 5: tinkoff.public.invest.api.contract.v1.RealExchange
+	(*MoneyValue)(nil),            // 6: tinkoff.public.invest.api.contract.v1.MoneyValue
+	(*Quotation)(nil),             // 7: tinkoff.public.invest.api.contract.v1.Quotation
+	(*PingRequest)(nil),           // 8: tinkoff.public.invest.api.contract.v1.PingRequest
+	(*PingDelaySettings)(nil),     // 9: tinkoff.public.invest.api.contract.v1.PingDelaySettings
+	(*Ping)(nil),                  // 10: tinkoff.public.invest.api.contract.v1.Ping
+	(*Page)(nil),                  // 11: tinkoff.public.invest.api.contract.v1.Page
+	(*PageResponse)(nil),          // 12: tinkoff.public.invest.api.contract.v1.PageResponse
+	(*ResponseMetadata)(nil),      // 13: tinkoff.public.invest.api.contract.v1.ResponseMetadata
+	(*BrandData)(nil),             // 14: tinkoff.public.invest.api.contract.v1.BrandData
+	(*ErrorDetail)(nil),           // 15: tinkoff.public.invest.api.contract.v1.ErrorDetail
+	(*timestamppb.Timestamp)(nil), // 16: google.protobuf.Timestamp
 }
 var file_common_proto_depIdxs = []int32{
-	15, // 0: tinkoff.public.invest.api.contract.v1.PingRequest.time:type_name -> google.protobuf.Timestamp
-	15, // 1: tinkoff.public.invest.api.contract.v1.Ping.time:type_name -> google.protobuf.Timestamp
-	15, // 2: tinkoff.public.invest.api.contract.v1.Ping.ping_request_time:type_name -> google.protobuf.Timestamp
-	15, // 3: tinkoff.public.invest.api.contract.v1.ResponseMetadata.server_time:type_name -> google.protobuf.Timestamp
+	16, // 0: tinkoff.public.invest.api.contract.v1.PingRequest.time:type_name -> google.protobuf.Timestamp
+	16, // 1: tinkoff.public.invest.api.contract.v1.Ping.time:type_name -> google.protobuf.Timestamp
+	16, // 2: tinkoff.public.invest.api.contract.v1.Ping.ping_request_time:type_name -> google.protobuf.Timestamp
+	16, // 3: tinkoff.public.invest.api.contract.v1.ResponseMetadata.server_time:type_name -> google.protobuf.Timestamp
 	4,  // [4:4] is the sub-list for method output_type
 	4,  // [4:4] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name
@@ -1261,7 +1327,7 @@ func file_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
-			NumEnums:      5,
+			NumEnums:      6,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,

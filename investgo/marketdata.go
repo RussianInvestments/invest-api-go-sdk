@@ -319,3 +319,19 @@ func (md *MarketDataServiceClient) writeCandlesToFile(candles []*pb.HistoricCand
 	}
 	return nil
 }
+
+// GetMarketValues - рыночные данные по инструментам
+func (md *MarketDataServiceClient) GetMarketValues(instrumentIDs []string, values []pb.MarketValueType) (*GetMarketValuesResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := md.pbClient.GetMarketValues(md.ctx, &pb.GetMarketValuesRequest{
+		InstrumentId: instrumentIDs,
+		Values:       values,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetMarketValuesResponse{
+		GetMarketValuesResponse: resp,
+		Header:                  header,
+	}, err
+}

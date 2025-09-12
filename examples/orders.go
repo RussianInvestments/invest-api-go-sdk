@@ -118,7 +118,7 @@ func main() {
 			orderResp.GetOrderId(), orderResp.GetDirection(), orderResp.GetLotsExecuted())
 	}
 
-	ordersResp, err := OrdersService.GetOrders(config.AccountId)
+	ordersResp, err := OrdersService.GetOrders(config.AccountId, nil)
 	if err != nil {
 		logger.Errorf(err.Error())
 	} else {

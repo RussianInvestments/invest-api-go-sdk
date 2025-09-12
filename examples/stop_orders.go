@@ -80,12 +80,13 @@ func main() {
 			Units: price.Units + 1000,
 			Nano:  price.Nano,
 		},
-		Direction:      pb.StopOrderDirection_STOP_ORDER_DIRECTION_SELL,
-		AccountId:      config.AccountId,
-		ExpirationType: pb.StopOrderExpirationType_STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_CANCEL,
-		StopOrderType:  pb.StopOrderType_STOP_ORDER_TYPE_TAKE_PROFIT,
-		ExpireDate:     time.Time{},
-		OrderID:        investgo.CreateUid(),
+		Direction:          pb.StopOrderDirection_STOP_ORDER_DIRECTION_SELL,
+		AccountId:          config.AccountId,
+		ExpirationType:     pb.StopOrderExpirationType_STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_CANCEL,
+		StopOrderType:      pb.StopOrderType_STOP_ORDER_TYPE_TAKE_PROFIT,
+		ExpireDate:         time.Time{},
+		OrderID:            investgo.CreateUid(),
+		ConfirmMarginTrade: false,
 	})
 	if err != nil {
 		logger.Errorf(err.Error())

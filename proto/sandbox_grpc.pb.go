@@ -23,6 +23,7 @@ const (
 	SandboxService_GetSandboxAccounts_FullMethodName           = "/tinkoff.public.invest.api.contract.v1.SandboxService/GetSandboxAccounts"
 	SandboxService_CloseSandboxAccount_FullMethodName          = "/tinkoff.public.invest.api.contract.v1.SandboxService/CloseSandboxAccount"
 	SandboxService_PostSandboxOrder_FullMethodName             = "/tinkoff.public.invest.api.contract.v1.SandboxService/PostSandboxOrder"
+	SandboxService_PostSandboxOrderAsync_FullMethodName        = "/tinkoff.public.invest.api.contract.v1.SandboxService/PostSandboxOrderAsync"
 	SandboxService_ReplaceSandboxOrder_FullMethodName          = "/tinkoff.public.invest.api.contract.v1.SandboxService/ReplaceSandboxOrder"
 	SandboxService_GetSandboxOrders_FullMethodName             = "/tinkoff.public.invest.api.contract.v1.SandboxService/GetSandboxOrders"
 	SandboxService_CancelSandboxOrder_FullMethodName           = "/tinkoff.public.invest.api.contract.v1.SandboxService/CancelSandboxOrder"
@@ -40,35 +41,40 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SandboxServiceClient interface {
-	// Зарегистрировать счет.
+	// OpenSandboxAccount — зарегистрировать счет
 	OpenSandboxAccount(ctx context.Context, in *OpenSandboxAccountRequest, opts ...grpc.CallOption) (*OpenSandboxAccountResponse, error)
-	// Получить счета.
+	// GetSandboxAccounts — счета пользователя
 	GetSandboxAccounts(ctx context.Context, in *GetAccountsRequest, opts ...grpc.CallOption) (*GetAccountsResponse, error)
-	// Закрыть счет.
+	// CloseSandboxAccount — закрыть счет
 	CloseSandboxAccount(ctx context.Context, in *CloseSandboxAccountRequest, opts ...grpc.CallOption) (*CloseSandboxAccountResponse, error)
-	// Выставить торговое поручение.
+	// PostSandboxOrder — выставить заявку
 	PostSandboxOrder(ctx context.Context, in *PostOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error)
-	// Изменить выставленную заявку.
+	// PostSandboxOrderAsync — выставить заявку асинхронным методом
+	// Особенности работы приведены в [статье](/invest/services/orders/async).
+	PostSandboxOrderAsync(ctx context.Context, in *PostOrderAsyncRequest, opts ...grpc.CallOption) (*PostOrderAsyncResponse, error)
+	// ReplaceSandboxOrder — изменить выставленную заявку
 	ReplaceSandboxOrder(ctx context.Context, in *ReplaceOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error)
-	// Получить список активных заявок по счету.
+	// GetSandboxOrders — получить список активных заявок по счету
 	GetSandboxOrders(ctx context.Context, in *GetOrdersRequest, opts ...grpc.CallOption) (*GetOrdersResponse, error)
-	// Отменить торговое поручение.
+	// CancelSandboxOrder — отменить заявку
 	CancelSandboxOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*CancelOrderResponse, error)
-	// Получить статус заявки в песочнице. Заявки хранятся в таблице 7 дней.
+	// GetSandboxOrderState — получить статус торгового поручения
 	GetSandboxOrderState(ctx context.Context, in *GetOrderStateRequest, opts ...grpc.CallOption) (*OrderState, error)
-	// Получить позиции по виртуальному счету.
+	// GetSandboxPositions — список позиций по счету
 	GetSandboxPositions(ctx context.Context, in *PositionsRequest, opts ...grpc.CallOption) (*PositionsResponse, error)
-	// Получить операции по номеру счета.
+	// GetSandboxOperations — список операций по счету
+	// При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
 	GetSandboxOperations(ctx context.Context, in *OperationsRequest, opts ...grpc.CallOption) (*OperationsResponse, error)
-	// Получить операции по номеру счета с пагинацией.
+	// GetSandboxOperationsByCursor — список операций по счету с пагинацией
+	// При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
 	GetSandboxOperationsByCursor(ctx context.Context, in *GetOperationsByCursorRequest, opts ...grpc.CallOption) (*GetOperationsByCursorResponse, error)
-	// Получить портфель.
+	// GetSandboxPortfolio — портфель по счету
 	GetSandboxPortfolio(ctx context.Context, in *PortfolioRequest, opts ...grpc.CallOption) (*PortfolioResponse, error)
-	// Пополнить счет.
+	// SandboxPayIn — пополнить счет.
 	SandboxPayIn(ctx context.Context, in *SandboxPayInRequest, opts ...grpc.CallOption) (*SandboxPayInResponse, error)
-	// Получить доступный остаток для вывода средств.
+	// GetSandboxWithdrawLimits — доступный остаток для вывода средств
 	GetSandboxWithdrawLimits(ctx context.Context, in *WithdrawLimitsRequest, opts ...grpc.CallOption) (*WithdrawLimitsResponse, error)
-	// Расчет количества доступных для покупки/продажи лотов в песочнице.
+	// GetSandboxMaxLots — расчет количества доступных для покупки/продажи лотов
 	GetSandboxMaxLots(ctx context.Context, in *GetMaxLotsRequest, opts ...grpc.CallOption) (*GetMaxLotsResponse, error)
 }
 
@@ -110,6 +116,15 @@ func (c *sandboxServiceClient) CloseSandboxAccount(ctx context.Context, in *Clos
 func (c *sandboxServiceClient) PostSandboxOrder(ctx context.Context, in *PostOrderRequest, opts ...grpc.CallOption) (*PostOrderResponse, error) {
 	out := new(PostOrderResponse)
 	err := c.cc.Invoke(ctx, SandboxService_PostSandboxOrder_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sandboxServiceClient) PostSandboxOrderAsync(ctx context.Context, in *PostOrderAsyncRequest, opts ...grpc.CallOption) (*PostOrderAsyncResponse, error) {
+	out := new(PostOrderAsyncResponse)
+	err := c.cc.Invoke(ctx, SandboxService_PostSandboxOrderAsync_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -219,35 +234,40 @@ func (c *sandboxServiceClient) GetSandboxMaxLots(ctx context.Context, in *GetMax
 // All implementations must embed UnimplementedSandboxServiceServer
 // for forward compatibility
 type SandboxServiceServer interface {
-	// Зарегистрировать счет.
+	// OpenSandboxAccount — зарегистрировать счет
 	OpenSandboxAccount(context.Context, *OpenSandboxAccountRequest) (*OpenSandboxAccountResponse, error)
-	// Получить счета.
+	// GetSandboxAccounts — счета пользователя
 	GetSandboxAccounts(context.Context, *GetAccountsRequest) (*GetAccountsResponse, error)
-	// Закрыть счет.
+	// CloseSandboxAccount — закрыть счет
 	CloseSandboxAccount(context.Context, *CloseSandboxAccountRequest) (*CloseSandboxAccountResponse, error)
-	// Выставить торговое поручение.
+	// PostSandboxOrder — выставить заявку
 	PostSandboxOrder(context.Context, *PostOrderRequest) (*PostOrderResponse, error)
-	// Изменить выставленную заявку.
+	// PostSandboxOrderAsync — выставить заявку асинхронным методом
+	// Особенности работы приведены в [статье](/invest/services/orders/async).
+	PostSandboxOrderAsync(context.Context, *PostOrderAsyncRequest) (*PostOrderAsyncResponse, error)
+	// ReplaceSandboxOrder — изменить выставленную заявку
 	ReplaceSandboxOrder(context.Context, *ReplaceOrderRequest) (*PostOrderResponse, error)
-	// Получить список активных заявок по счету.
+	// GetSandboxOrders — получить список активных заявок по счету
 	GetSandboxOrders(context.Context, *GetOrdersRequest) (*GetOrdersResponse, error)
-	// Отменить торговое поручение.
+	// CancelSandboxOrder — отменить заявку
 	CancelSandboxOrder(context.Context, *CancelOrderRequest) (*CancelOrderResponse, error)
-	// Получить статус заявки в песочнице. Заявки хранятся в таблице 7 дней.
+	// GetSandboxOrderState — получить статус торгового поручения
 	GetSandboxOrderState(context.Context, *GetOrderStateRequest) (*OrderState, error)
-	// Получить позиции по виртуальному счету.
+	// GetSandboxPositions — список позиций по счету
 	GetSandboxPositions(context.Context, *PositionsRequest) (*PositionsResponse, error)
-	// Получить операции по номеру счета.
+	// GetSandboxOperations — список операций по счету
+	// При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
 	GetSandboxOperations(context.Context, *OperationsRequest) (*OperationsResponse, error)
-	// Получить операции по номеру счета с пагинацией.
+	// GetSandboxOperationsByCursor — список операций по счету с пагинацией
+	// При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
 	GetSandboxOperationsByCursor(context.Context, *GetOperationsByCursorRequest) (*GetOperationsByCursorResponse, error)
-	// Получить портфель.
+	// GetSandboxPortfolio — портфель по счету
 	GetSandboxPortfolio(context.Context, *PortfolioRequest) (*PortfolioResponse, error)
-	// Пополнить счет.
+	// SandboxPayIn — пополнить счет.
 	SandboxPayIn(context.Context, *SandboxPayInRequest) (*SandboxPayInResponse, error)
-	// Получить доступный остаток для вывода средств.
+	// GetSandboxWithdrawLimits — доступный остаток для вывода средств
 	GetSandboxWithdrawLimits(context.Context, *WithdrawLimitsRequest) (*WithdrawLimitsResponse, error)
-	// Расчет количества доступных для покупки/продажи лотов в песочнице.
+	// GetSandboxMaxLots — расчет количества доступных для покупки/продажи лотов
 	GetSandboxMaxLots(context.Context, *GetMaxLotsRequest) (*GetMaxLotsResponse, error)
 	mustEmbedUnimplementedSandboxServiceServer()
 }
@@ -267,6 +287,9 @@ func (UnimplementedSandboxServiceServer) CloseSandboxAccount(context.Context, *C
 }
 func (UnimplementedSandboxServiceServer) PostSandboxOrder(context.Context, *PostOrderRequest) (*PostOrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostSandboxOrder not implemented")
+}
+func (UnimplementedSandboxServiceServer) PostSandboxOrderAsync(context.Context, *PostOrderAsyncRequest) (*PostOrderAsyncResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostSandboxOrderAsync not implemented")
 }
 func (UnimplementedSandboxServiceServer) ReplaceSandboxOrder(context.Context, *ReplaceOrderRequest) (*PostOrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReplaceSandboxOrder not implemented")
@@ -382,6 +405,24 @@ func _SandboxService_PostSandboxOrder_Handler(srv interface{}, ctx context.Conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SandboxServiceServer).PostSandboxOrder(ctx, req.(*PostOrderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SandboxService_PostSandboxOrderAsync_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostOrderAsyncRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SandboxServiceServer).PostSandboxOrderAsync(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SandboxService_PostSandboxOrderAsync_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SandboxServiceServer).PostSandboxOrderAsync(ctx, req.(*PostOrderAsyncRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -606,6 +647,10 @@ var SandboxService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PostSandboxOrder",
 			Handler:    _SandboxService_PostSandboxOrder_Handler,
+		},
+		{
+			MethodName: "PostSandboxOrderAsync",
+			Handler:    _SandboxService_PostSandboxOrderAsync_Handler,
 		},
 		{
 			MethodName: "ReplaceSandboxOrder",

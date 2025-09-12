@@ -133,8 +133,8 @@ func (mds *MarketDataStream) sendOrderBookReq(ids []string, depth int32, act pb.
 }
 
 // SubscribeTrade - метод подписки на ленту обезличенных сделок
-func (mds *MarketDataStream) SubscribeTrade(ids []string, tradeSrc pb.TradeSourceType) (<-chan *pb.Trade, error) {
-	err := mds.sendTradesReq(ids, pb.SubscriptionAction_SUBSCRIPTION_ACTION_SUBSCRIBE, tradeSrc)
+func (mds *MarketDataStream) SubscribeTrade(ids []string, tradeSrc pb.TradeSourceType, openInterest bool) (<-chan *pb.Trade, error) {
+	err := mds.sendTradesReq(ids, pb.SubscriptionAction_SUBSCRIPTION_ACTION_SUBSCRIBE, tradeSrc, openInterest)
 	if err != nil {
 		return nil, err
 	}
@@ -145,8 +145,8 @@ func (mds *MarketDataStream) SubscribeTrade(ids []string, tradeSrc pb.TradeSourc
 }
 
 // UnSubscribeTrade - метод отписки от ленты обезличенных сделок
-func (mds *MarketDataStream) UnSubscribeTrade(ids []string, tradeSrc pb.TradeSourceType) error {
-	err := mds.sendTradesReq(ids, pb.SubscriptionAction_SUBSCRIPTION_ACTION_UNSUBSCRIBE, tradeSrc)
+func (mds *MarketDataStream) UnSubscribeTrade(ids []string, tradeSrc pb.TradeSourceType, openInterest bool) error {
+	err := mds.sendTradesReq(ids, pb.SubscriptionAction_SUBSCRIPTION_ACTION_UNSUBSCRIBE, tradeSrc, openInterest)
 	if err != nil {
 		return err
 	}
@@ -156,7 +156,14 @@ func (mds *MarketDataStream) UnSubscribeTrade(ids []string, tradeSrc pb.TradeSou
 	return nil
 }
 
-func (mds *MarketDataStream) sendTradesReq(ids []string, act pb.SubscriptionAction, tradeSrc pb.TradeSourceType) error {
+//
+
+func (mds *MarketDataStream) sendTradesReq(
+	ids []string,
+	act pb.SubscriptionAction,
+	tradeSrc pb.TradeSourceType,
+	openInterest bool,
+) error {
 	instruments := make([]*pb.TradeInstrument, 0, len(ids))
 	for _, id := range ids {
 		instruments = append(instruments, &pb.TradeInstrument{
@@ -169,7 +176,10 @@ func (mds *MarketDataStream) sendTradesReq(ids []string, act pb.SubscriptionActi
 				SubscriptionAction: act,
 				Instruments:        instruments,
 				TradeSource:        tradeSrc,
-			}}})
+				WithOpenInterest:   openInterest,
+			},
+		},
+	})
 }
 
 // SubscribeInfo - метод подписки на торговые статусы инструментов
@@ -343,7 +353,7 @@ func (mds *MarketDataStream) UnSubscribeAll() error {
 			delete(mds.subs.trades, id)
 		}
 		for src, ids := range srcs {
-			err := mds.UnSubscribeTrade(ids, src)
+			err := mds.UnSubscribeTrade(ids, src, false)
 			if err != nil {
 				return err
 			}

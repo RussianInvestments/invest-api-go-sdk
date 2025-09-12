@@ -27,28 +27,32 @@ const (
 	MarketDataService_GetLastTrades_FullMethodName      = "/tinkoff.public.invest.api.contract.v1.MarketDataService/GetLastTrades"
 	MarketDataService_GetClosePrices_FullMethodName     = "/tinkoff.public.invest.api.contract.v1.MarketDataService/GetClosePrices"
 	MarketDataService_GetTechAnalysis_FullMethodName    = "/tinkoff.public.invest.api.contract.v1.MarketDataService/GetTechAnalysis"
+	MarketDataService_GetMarketValues_FullMethodName    = "/tinkoff.public.invest.api.contract.v1.MarketDataService/GetMarketValues"
 )
 
 // MarketDataServiceClient is the client API for MarketDataService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MarketDataServiceClient interface {
-	// Запросить исторические свечи по инструменту.
+	// GetCandles — исторические свечи по инструменту
 	GetCandles(ctx context.Context, in *GetCandlesRequest, opts ...grpc.CallOption) (*GetCandlesResponse, error)
-	// Запросить цены последних сделок по инструментам.
+	// GetLastPrices — цены последних сделок по инструментам
 	GetLastPrices(ctx context.Context, in *GetLastPricesRequest, opts ...grpc.CallOption) (*GetLastPricesResponse, error)
-	// Получить стакан по инструменту.
+	// GetOrderBook — стакан по инструменту
 	GetOrderBook(ctx context.Context, in *GetOrderBookRequest, opts ...grpc.CallOption) (*GetOrderBookResponse, error)
-	// Запросить статус торгов по инструментам.
+	// GetTradingStatus — статус торгов по инструменту
 	GetTradingStatus(ctx context.Context, in *GetTradingStatusRequest, opts ...grpc.CallOption) (*GetTradingStatusResponse, error)
-	// Запросить статус торгов по инструментам.
+	// GetTradingStatuses — статус торгов по инструментам
 	GetTradingStatuses(ctx context.Context, in *GetTradingStatusesRequest, opts ...grpc.CallOption) (*GetTradingStatusesResponse, error)
-	// Запросить обезличенные сделки за последний час.
+	// GetLastTrades — обезличенные сделки
+	// Обезличенные сделки по инструменту. Метод гарантирует получение информации за последний час.
 	GetLastTrades(ctx context.Context, in *GetLastTradesRequest, opts ...grpc.CallOption) (*GetLastTradesResponse, error)
-	// Запросить цены закрытия торговой сессии по инструментам.
+	// GetClosePrices — цены закрытия торговой сессии по инструментам
 	GetClosePrices(ctx context.Context, in *GetClosePricesRequest, opts ...grpc.CallOption) (*GetClosePricesResponse, error)
-	// Получить технические индикаторы по инструменту.
+	// GetTechAnalysis — технические индикаторы по инструменту
 	GetTechAnalysis(ctx context.Context, in *GetTechAnalysisRequest, opts ...grpc.CallOption) (*GetTechAnalysisResponse, error)
+	// GetMarketValues — рыночные данные по инструментам
+	GetMarketValues(ctx context.Context, in *GetMarketValuesRequest, opts ...grpc.CallOption) (*GetMarketValuesResponse, error)
 }
 
 type marketDataServiceClient struct {
@@ -131,26 +135,38 @@ func (c *marketDataServiceClient) GetTechAnalysis(ctx context.Context, in *GetTe
 	return out, nil
 }
 
+func (c *marketDataServiceClient) GetMarketValues(ctx context.Context, in *GetMarketValuesRequest, opts ...grpc.CallOption) (*GetMarketValuesResponse, error) {
+	out := new(GetMarketValuesResponse)
+	err := c.cc.Invoke(ctx, MarketDataService_GetMarketValues_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MarketDataServiceServer is the server API for MarketDataService service.
 // All implementations must embed UnimplementedMarketDataServiceServer
 // for forward compatibility
 type MarketDataServiceServer interface {
-	// Запросить исторические свечи по инструменту.
+	// GetCandles — исторические свечи по инструменту
 	GetCandles(context.Context, *GetCandlesRequest) (*GetCandlesResponse, error)
-	// Запросить цены последних сделок по инструментам.
+	// GetLastPrices — цены последних сделок по инструментам
 	GetLastPrices(context.Context, *GetLastPricesRequest) (*GetLastPricesResponse, error)
-	// Получить стакан по инструменту.
+	// GetOrderBook — стакан по инструменту
 	GetOrderBook(context.Context, *GetOrderBookRequest) (*GetOrderBookResponse, error)
-	// Запросить статус торгов по инструментам.
+	// GetTradingStatus — статус торгов по инструменту
 	GetTradingStatus(context.Context, *GetTradingStatusRequest) (*GetTradingStatusResponse, error)
-	// Запросить статус торгов по инструментам.
+	// GetTradingStatuses — статус торгов по инструментам
 	GetTradingStatuses(context.Context, *GetTradingStatusesRequest) (*GetTradingStatusesResponse, error)
-	// Запросить обезличенные сделки за последний час.
+	// GetLastTrades — обезличенные сделки
+	// Обезличенные сделки по инструменту. Метод гарантирует получение информации за последний час.
 	GetLastTrades(context.Context, *GetLastTradesRequest) (*GetLastTradesResponse, error)
-	// Запросить цены закрытия торговой сессии по инструментам.
+	// GetClosePrices — цены закрытия торговой сессии по инструментам
 	GetClosePrices(context.Context, *GetClosePricesRequest) (*GetClosePricesResponse, error)
-	// Получить технические индикаторы по инструменту.
+	// GetTechAnalysis — технические индикаторы по инструменту
 	GetTechAnalysis(context.Context, *GetTechAnalysisRequest) (*GetTechAnalysisResponse, error)
+	// GetMarketValues — рыночные данные по инструментам
+	GetMarketValues(context.Context, *GetMarketValuesRequest) (*GetMarketValuesResponse, error)
 	mustEmbedUnimplementedMarketDataServiceServer()
 }
 
@@ -181,6 +197,9 @@ func (UnimplementedMarketDataServiceServer) GetClosePrices(context.Context, *Get
 }
 func (UnimplementedMarketDataServiceServer) GetTechAnalysis(context.Context, *GetTechAnalysisRequest) (*GetTechAnalysisResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTechAnalysis not implemented")
+}
+func (UnimplementedMarketDataServiceServer) GetMarketValues(context.Context, *GetMarketValuesRequest) (*GetMarketValuesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMarketValues not implemented")
 }
 func (UnimplementedMarketDataServiceServer) mustEmbedUnimplementedMarketDataServiceServer() {}
 
@@ -339,6 +358,24 @@ func _MarketDataService_GetTechAnalysis_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MarketDataService_GetMarketValues_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMarketValuesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MarketDataServiceServer).GetMarketValues(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MarketDataService_GetMarketValues_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MarketDataServiceServer).GetMarketValues(ctx, req.(*GetMarketValuesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MarketDataService_ServiceDesc is the grpc.ServiceDesc for MarketDataService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -378,6 +415,10 @@ var MarketDataService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetTechAnalysis",
 			Handler:    _MarketDataService_GetTechAnalysis_Handler,
 		},
+		{
+			MethodName: "GetMarketValues",
+			Handler:    _MarketDataService_GetMarketValues_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "marketdata.proto",
@@ -392,9 +433,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MarketDataStreamServiceClient interface {
-	// Bidirectional-стрим предоставления биржевой информации.
+	// MarketDataStream — bidirectional стрим предоставления биржевой информации
 	MarketDataStream(ctx context.Context, opts ...grpc.CallOption) (MarketDataStreamService_MarketDataStreamClient, error)
-	// Server-side стрим предоставления биржевой информации.
+	// MarketDataServerSideStream — server-side стрим предоставления биржевой информации
 	MarketDataServerSideStream(ctx context.Context, in *MarketDataServerSideStreamRequest, opts ...grpc.CallOption) (MarketDataStreamService_MarketDataServerSideStreamClient, error)
 }
 
@@ -473,9 +514,9 @@ func (x *marketDataStreamServiceMarketDataServerSideStreamClient) Recv() (*Marke
 // All implementations must embed UnimplementedMarketDataStreamServiceServer
 // for forward compatibility
 type MarketDataStreamServiceServer interface {
-	// Bidirectional-стрим предоставления биржевой информации.
+	// MarketDataStream — bidirectional стрим предоставления биржевой информации
 	MarketDataStream(MarketDataStreamService_MarketDataStreamServer) error
-	// Server-side стрим предоставления биржевой информации.
+	// MarketDataServerSideStream — server-side стрим предоставления биржевой информации
 	MarketDataServerSideStream(*MarketDataServerSideStreamRequest, MarketDataStreamService_MarketDataServerSideStreamServer) error
 	mustEmbedUnimplementedMarketDataStreamServiceServer()
 }

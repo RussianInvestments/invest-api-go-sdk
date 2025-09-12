@@ -118,10 +118,11 @@ func (os *OrdersServiceClient) GetOrderState(accountId, orderId string, priceTyp
 }
 
 // GetOrders - Метод получения списка активных заявок по счёту
-func (os *OrdersServiceClient) GetOrders(accountId string) (*GetOrdersResponse, error) {
+func (os *OrdersServiceClient) GetOrders(accountId string, filters *pb.GetOrdersRequest_GetOrdersRequestFilters) (*GetOrdersResponse, error) {
 	var header, trailer metadata.MD
 	resp, err := os.pbClient.GetOrders(os.ctx, &pb.GetOrdersRequest{
-		AccountId: accountId,
+		AccountId:       accountId,
+		AdvancedFilters: filters,
 	}, grpc.Header(&header), grpc.Trailer(&trailer))
 	if err != nil {
 		header = trailer

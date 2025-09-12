@@ -44,6 +44,9 @@ const (
 	InstrumentsService_GetAssets_FullMethodName             = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAssets"
 	InstrumentsService_GetFavorites_FullMethodName          = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetFavorites"
 	InstrumentsService_EditFavorites_FullMethodName         = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/EditFavorites"
+	InstrumentsService_CreateFavoriteGroup_FullMethodName   = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/CreateFavoriteGroup"
+	InstrumentsService_DeleteFavoriteGroup_FullMethodName   = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/DeleteFavoriteGroup"
+	InstrumentsService_GetFavoriteGroups_FullMethodName     = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetFavoriteGroups"
 	InstrumentsService_GetCountries_FullMethodName          = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetCountries"
 	InstrumentsService_FindInstrument_FullMethodName        = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/FindInstrument"
 	InstrumentsService_GetBrands_FullMethodName             = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetBrands"
@@ -52,79 +55,92 @@ const (
 	InstrumentsService_GetAssetReports_FullMethodName       = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetAssetReports"
 	InstrumentsService_GetConsensusForecasts_FullMethodName = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetConsensusForecasts"
 	InstrumentsService_GetForecastBy_FullMethodName         = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetForecastBy"
+	InstrumentsService_GetRiskRates_FullMethodName          = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetRiskRates"
+	InstrumentsService_GetInsiderDeals_FullMethodName       = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/GetInsiderDeals"
 )
 
 // InstrumentsServiceClient is the client API for InstrumentsService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type InstrumentsServiceClient interface {
-	// Получить расписания торгов торговых площадок
+	// TradingSchedules — расписания торговых площадок
 	TradingSchedules(ctx context.Context, in *TradingSchedulesRequest, opts ...grpc.CallOption) (*TradingSchedulesResponse, error)
-	// Получить облигации по ее идентификатору
+	// BondBy — получить облигацию по ее идентификатору
 	BondBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*BondResponse, error)
-	// Получить список облигаций
+	// Bonds — список облигаций
 	Bonds(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*BondsResponse, error)
-	// Получить график выплат купонов по облигации
+	// GetBondCoupons — график выплат купонов по облигации
 	GetBondCoupons(ctx context.Context, in *GetBondCouponsRequest, opts ...grpc.CallOption) (*GetBondCouponsResponse, error)
-	// Получить события по облигации
+	// GetBondEvents — события по облигации
 	GetBondEvents(ctx context.Context, in *GetBondEventsRequest, opts ...grpc.CallOption) (*GetBondEventsResponse, error)
-	// Получить валюту по ее идентификатору
+	// CurrencyBy — получить валюту по ее идентификатору
 	CurrencyBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*CurrencyResponse, error)
-	// Получить список валют
+	// Currencies — список валют
 	Currencies(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*CurrenciesResponse, error)
-	// Получить инвестиционный фонд по его идентификатору
+	// EtfBy — получить инвестиционный фонд по его идентификатору
 	EtfBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*EtfResponse, error)
-	// Получить список инвестиционных фондов
+	// Etfs — список инвестиционных фондов
 	Etfs(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*EtfsResponse, error)
-	// Получить фьючерс по его идентификатору
+	// FutureBy — получить фьючерс по его идентификатору
 	FutureBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*FutureResponse, error)
-	// Получить список фьючерсов
+	// Futures — список фьючерсов
 	Futures(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*FuturesResponse, error)
-	// Получить опцион по его идентификатору
+	// OptionBy — получить опцион по его идентификатору
 	OptionBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*OptionResponse, error)
 	// Deprecated: Do not use.
-	// Deprecated Получить список опционов
+	// Deprecated Options — список опционов
 	Options(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*OptionsResponse, error)
-	// Получить список опционов
+	// OptionsBy — список опционов
 	OptionsBy(ctx context.Context, in *FilterOptionsRequest, opts ...grpc.CallOption) (*OptionsResponse, error)
-	// Получить акцию по ее идентификатору
+	// ShareBy — получить акцию по ее идентификатору
 	ShareBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*ShareResponse, error)
-	// Получить список акций
+	// Shares — список акций
 	Shares(ctx context.Context, in *InstrumentsRequest, opts ...grpc.CallOption) (*SharesResponse, error)
-	// Получить индикативные инструменты — индексы, товары и другие
+	// Indicatives — индикативные инструменты — индексы, товары и другие
 	Indicatives(ctx context.Context, in *IndicativesRequest, opts ...grpc.CallOption) (*IndicativesResponse, error)
-	// Получить накопленный купонный доход по облигации
+	// GetAccruedInterests — накопленный купонный доход по облигации
 	GetAccruedInterests(ctx context.Context, in *GetAccruedInterestsRequest, opts ...grpc.CallOption) (*GetAccruedInterestsResponse, error)
-	// Получить размера гарантийного обеспечения по фьючерсам
+	// GetFuturesMargin — размера гарантийного обеспечения по фьючерсам
 	GetFuturesMargin(ctx context.Context, in *GetFuturesMarginRequest, opts ...grpc.CallOption) (*GetFuturesMarginResponse, error)
-	// Получить основную информацию об инструменте
+	// GetInstrumentBy — основная информация об инструменте
 	GetInstrumentBy(ctx context.Context, in *InstrumentRequest, opts ...grpc.CallOption) (*InstrumentResponse, error)
-	// Получить события выплаты дивидендов по инструменту
+	// GetDividends — события выплаты дивидендов по инструменту
 	GetDividends(ctx context.Context, in *GetDividendsRequest, opts ...grpc.CallOption) (*GetDividendsResponse, error)
-	// Получить актив по его идентификатору
+	// GetAssetBy — получить актив по его идентификатору
 	GetAssetBy(ctx context.Context, in *AssetRequest, opts ...grpc.CallOption) (*AssetResponse, error)
-	// Получить список активов. Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов
+	// GetAssets — список активов
+	// Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов
 	GetAssets(ctx context.Context, in *AssetsRequest, opts ...grpc.CallOption) (*AssetsResponse, error)
-	// Получить список избранных инструментов
+	// GetFavorites — получить список избранных инструментов
 	GetFavorites(ctx context.Context, in *GetFavoritesRequest, opts ...grpc.CallOption) (*GetFavoritesResponse, error)
-	// Отредактировать список избранных инструментов
+	// EditFavorites — отредактировать список избранных инструментов
 	EditFavorites(ctx context.Context, in *EditFavoritesRequest, opts ...grpc.CallOption) (*EditFavoritesResponse, error)
-	// Получить список стран
+	// CreateFavoriteGroup — создать новую группу избранных инструментов
+	CreateFavoriteGroup(ctx context.Context, in *CreateFavoriteGroupRequest, opts ...grpc.CallOption) (*CreateFavoriteGroupResponse, error)
+	// DeleteFavoriteGroup — удалить группу избранных инструментов
+	DeleteFavoriteGroup(ctx context.Context, in *DeleteFavoriteGroupRequest, opts ...grpc.CallOption) (*DeleteFavoriteGroupResponse, error)
+	// GetFavoriteGroups — список групп избранных инструментов
+	GetFavoriteGroups(ctx context.Context, in *GetFavoriteGroupsRequest, opts ...grpc.CallOption) (*GetFavoriteGroupsResponse, error)
+	// GetCountries — список стран
 	GetCountries(ctx context.Context, in *GetCountriesRequest, opts ...grpc.CallOption) (*GetCountriesResponse, error)
-	// Найти инструмент
+	// FindInstrument — найти инструмент
 	FindInstrument(ctx context.Context, in *FindInstrumentRequest, opts ...grpc.CallOption) (*FindInstrumentResponse, error)
-	// Получить список брендов
+	// GetBrands — список брендов
 	GetBrands(ctx context.Context, in *GetBrandsRequest, opts ...grpc.CallOption) (*GetBrandsResponse, error)
-	// Получить бренд по его идентификатору
+	// GetBrandBy — получить бренд по его идентификатору
 	GetBrandBy(ctx context.Context, in *GetBrandRequest, opts ...grpc.CallOption) (*Brand, error)
-	// Получить фундаментальные показатели по активу
+	// GetAssetFundamentals — фундаментальные показатели по активу
 	GetAssetFundamentals(ctx context.Context, in *GetAssetFundamentalsRequest, opts ...grpc.CallOption) (*GetAssetFundamentalsResponse, error)
-	// Получить расписания выхода отчетностей эмитентов
+	// GetAssetReports — расписания выхода отчетностей эмитентов
 	GetAssetReports(ctx context.Context, in *GetAssetReportsRequest, opts ...grpc.CallOption) (*GetAssetReportsResponse, error)
-	// Получить мнения аналитиков по инструменту
+	// GetConsensusForecasts — мнения аналитиков по инструменту
 	GetConsensusForecasts(ctx context.Context, in *GetConsensusForecastsRequest, opts ...grpc.CallOption) (*GetConsensusForecastsResponse, error)
-	// Получить прогнозов инвестдомов по инструменту
+	// GetForecastBy — прогнозы инвестдомов по инструменту
 	GetForecastBy(ctx context.Context, in *GetForecastRequest, opts ...grpc.CallOption) (*GetForecastResponse, error)
+	// GetRiskRates — ставки риска по инструменту
+	GetRiskRates(ctx context.Context, in *RiskRatesRequest, opts ...grpc.CallOption) (*RiskRatesResponse, error)
+	// GetInsiderDeals —  сделки инсайдеров по инструментам
+	GetInsiderDeals(ctx context.Context, in *GetInsiderDealsRequest, opts ...grpc.CallOption) (*GetInsiderDealsResponse, error)
 }
 
 type instrumentsServiceClient struct {
@@ -361,6 +377,33 @@ func (c *instrumentsServiceClient) EditFavorites(ctx context.Context, in *EditFa
 	return out, nil
 }
 
+func (c *instrumentsServiceClient) CreateFavoriteGroup(ctx context.Context, in *CreateFavoriteGroupRequest, opts ...grpc.CallOption) (*CreateFavoriteGroupResponse, error) {
+	out := new(CreateFavoriteGroupResponse)
+	err := c.cc.Invoke(ctx, InstrumentsService_CreateFavoriteGroup_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instrumentsServiceClient) DeleteFavoriteGroup(ctx context.Context, in *DeleteFavoriteGroupRequest, opts ...grpc.CallOption) (*DeleteFavoriteGroupResponse, error) {
+	out := new(DeleteFavoriteGroupResponse)
+	err := c.cc.Invoke(ctx, InstrumentsService_DeleteFavoriteGroup_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instrumentsServiceClient) GetFavoriteGroups(ctx context.Context, in *GetFavoriteGroupsRequest, opts ...grpc.CallOption) (*GetFavoriteGroupsResponse, error) {
+	out := new(GetFavoriteGroupsResponse)
+	err := c.cc.Invoke(ctx, InstrumentsService_GetFavoriteGroups_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *instrumentsServiceClient) GetCountries(ctx context.Context, in *GetCountriesRequest, opts ...grpc.CallOption) (*GetCountriesResponse, error) {
 	out := new(GetCountriesResponse)
 	err := c.cc.Invoke(ctx, InstrumentsService_GetCountries_FullMethodName, in, out, opts...)
@@ -433,77 +476,106 @@ func (c *instrumentsServiceClient) GetForecastBy(ctx context.Context, in *GetFor
 	return out, nil
 }
 
+func (c *instrumentsServiceClient) GetRiskRates(ctx context.Context, in *RiskRatesRequest, opts ...grpc.CallOption) (*RiskRatesResponse, error) {
+	out := new(RiskRatesResponse)
+	err := c.cc.Invoke(ctx, InstrumentsService_GetRiskRates_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instrumentsServiceClient) GetInsiderDeals(ctx context.Context, in *GetInsiderDealsRequest, opts ...grpc.CallOption) (*GetInsiderDealsResponse, error) {
+	out := new(GetInsiderDealsResponse)
+	err := c.cc.Invoke(ctx, InstrumentsService_GetInsiderDeals_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // InstrumentsServiceServer is the server API for InstrumentsService service.
 // All implementations must embed UnimplementedInstrumentsServiceServer
 // for forward compatibility
 type InstrumentsServiceServer interface {
-	// Получить расписания торгов торговых площадок
+	// TradingSchedules — расписания торговых площадок
 	TradingSchedules(context.Context, *TradingSchedulesRequest) (*TradingSchedulesResponse, error)
-	// Получить облигации по ее идентификатору
+	// BondBy — получить облигацию по ее идентификатору
 	BondBy(context.Context, *InstrumentRequest) (*BondResponse, error)
-	// Получить список облигаций
+	// Bonds — список облигаций
 	Bonds(context.Context, *InstrumentsRequest) (*BondsResponse, error)
-	// Получить график выплат купонов по облигации
+	// GetBondCoupons — график выплат купонов по облигации
 	GetBondCoupons(context.Context, *GetBondCouponsRequest) (*GetBondCouponsResponse, error)
-	// Получить события по облигации
+	// GetBondEvents — события по облигации
 	GetBondEvents(context.Context, *GetBondEventsRequest) (*GetBondEventsResponse, error)
-	// Получить валюту по ее идентификатору
+	// CurrencyBy — получить валюту по ее идентификатору
 	CurrencyBy(context.Context, *InstrumentRequest) (*CurrencyResponse, error)
-	// Получить список валют
+	// Currencies — список валют
 	Currencies(context.Context, *InstrumentsRequest) (*CurrenciesResponse, error)
-	// Получить инвестиционный фонд по его идентификатору
+	// EtfBy — получить инвестиционный фонд по его идентификатору
 	EtfBy(context.Context, *InstrumentRequest) (*EtfResponse, error)
-	// Получить список инвестиционных фондов
+	// Etfs — список инвестиционных фондов
 	Etfs(context.Context, *InstrumentsRequest) (*EtfsResponse, error)
-	// Получить фьючерс по его идентификатору
+	// FutureBy — получить фьючерс по его идентификатору
 	FutureBy(context.Context, *InstrumentRequest) (*FutureResponse, error)
-	// Получить список фьючерсов
+	// Futures — список фьючерсов
 	Futures(context.Context, *InstrumentsRequest) (*FuturesResponse, error)
-	// Получить опцион по его идентификатору
+	// OptionBy — получить опцион по его идентификатору
 	OptionBy(context.Context, *InstrumentRequest) (*OptionResponse, error)
 	// Deprecated: Do not use.
-	// Deprecated Получить список опционов
+	// Deprecated Options — список опционов
 	Options(context.Context, *InstrumentsRequest) (*OptionsResponse, error)
-	// Получить список опционов
+	// OptionsBy — список опционов
 	OptionsBy(context.Context, *FilterOptionsRequest) (*OptionsResponse, error)
-	// Получить акцию по ее идентификатору
+	// ShareBy — получить акцию по ее идентификатору
 	ShareBy(context.Context, *InstrumentRequest) (*ShareResponse, error)
-	// Получить список акций
+	// Shares — список акций
 	Shares(context.Context, *InstrumentsRequest) (*SharesResponse, error)
-	// Получить индикативные инструменты — индексы, товары и другие
+	// Indicatives — индикативные инструменты — индексы, товары и другие
 	Indicatives(context.Context, *IndicativesRequest) (*IndicativesResponse, error)
-	// Получить накопленный купонный доход по облигации
+	// GetAccruedInterests — накопленный купонный доход по облигации
 	GetAccruedInterests(context.Context, *GetAccruedInterestsRequest) (*GetAccruedInterestsResponse, error)
-	// Получить размера гарантийного обеспечения по фьючерсам
+	// GetFuturesMargin — размера гарантийного обеспечения по фьючерсам
 	GetFuturesMargin(context.Context, *GetFuturesMarginRequest) (*GetFuturesMarginResponse, error)
-	// Получить основную информацию об инструменте
+	// GetInstrumentBy — основная информация об инструменте
 	GetInstrumentBy(context.Context, *InstrumentRequest) (*InstrumentResponse, error)
-	// Получить события выплаты дивидендов по инструменту
+	// GetDividends — события выплаты дивидендов по инструменту
 	GetDividends(context.Context, *GetDividendsRequest) (*GetDividendsResponse, error)
-	// Получить актив по его идентификатору
+	// GetAssetBy — получить актив по его идентификатору
 	GetAssetBy(context.Context, *AssetRequest) (*AssetResponse, error)
-	// Получить список активов. Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов
+	// GetAssets — список активов
+	// Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов
 	GetAssets(context.Context, *AssetsRequest) (*AssetsResponse, error)
-	// Получить список избранных инструментов
+	// GetFavorites — получить список избранных инструментов
 	GetFavorites(context.Context, *GetFavoritesRequest) (*GetFavoritesResponse, error)
-	// Отредактировать список избранных инструментов
+	// EditFavorites — отредактировать список избранных инструментов
 	EditFavorites(context.Context, *EditFavoritesRequest) (*EditFavoritesResponse, error)
-	// Получить список стран
+	// CreateFavoriteGroup — создать новую группу избранных инструментов
+	CreateFavoriteGroup(context.Context, *CreateFavoriteGroupRequest) (*CreateFavoriteGroupResponse, error)
+	// DeleteFavoriteGroup — удалить группу избранных инструментов
+	DeleteFavoriteGroup(context.Context, *DeleteFavoriteGroupRequest) (*DeleteFavoriteGroupResponse, error)
+	// GetFavoriteGroups — список групп избранных инструментов
+	GetFavoriteGroups(context.Context, *GetFavoriteGroupsRequest) (*GetFavoriteGroupsResponse, error)
+	// GetCountries — список стран
 	GetCountries(context.Context, *GetCountriesRequest) (*GetCountriesResponse, error)
-	// Найти инструмент
+	// FindInstrument — найти инструмент
 	FindInstrument(context.Context, *FindInstrumentRequest) (*FindInstrumentResponse, error)
-	// Получить список брендов
+	// GetBrands — список брендов
 	GetBrands(context.Context, *GetBrandsRequest) (*GetBrandsResponse, error)
-	// Получить бренд по его идентификатору
+	// GetBrandBy — получить бренд по его идентификатору
 	GetBrandBy(context.Context, *GetBrandRequest) (*Brand, error)
-	// Получить фундаментальные показатели по активу
+	// GetAssetFundamentals — фундаментальные показатели по активу
 	GetAssetFundamentals(context.Context, *GetAssetFundamentalsRequest) (*GetAssetFundamentalsResponse, error)
-	// Получить расписания выхода отчетностей эмитентов
+	// GetAssetReports — расписания выхода отчетностей эмитентов
 	GetAssetReports(context.Context, *GetAssetReportsRequest) (*GetAssetReportsResponse, error)
-	// Получить мнения аналитиков по инструменту
+	// GetConsensusForecasts — мнения аналитиков по инструменту
 	GetConsensusForecasts(context.Context, *GetConsensusForecastsRequest) (*GetConsensusForecastsResponse, error)
-	// Получить прогнозов инвестдомов по инструменту
+	// GetForecastBy — прогнозы инвестдомов по инструменту
 	GetForecastBy(context.Context, *GetForecastRequest) (*GetForecastResponse, error)
+	// GetRiskRates — ставки риска по инструменту
+	GetRiskRates(context.Context, *RiskRatesRequest) (*RiskRatesResponse, error)
+	// GetInsiderDeals —  сделки инсайдеров по инструментам
+	GetInsiderDeals(context.Context, *GetInsiderDealsRequest) (*GetInsiderDealsResponse, error)
 	mustEmbedUnimplementedInstrumentsServiceServer()
 }
 
@@ -586,6 +658,15 @@ func (UnimplementedInstrumentsServiceServer) GetFavorites(context.Context, *GetF
 func (UnimplementedInstrumentsServiceServer) EditFavorites(context.Context, *EditFavoritesRequest) (*EditFavoritesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EditFavorites not implemented")
 }
+func (UnimplementedInstrumentsServiceServer) CreateFavoriteGroup(context.Context, *CreateFavoriteGroupRequest) (*CreateFavoriteGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateFavoriteGroup not implemented")
+}
+func (UnimplementedInstrumentsServiceServer) DeleteFavoriteGroup(context.Context, *DeleteFavoriteGroupRequest) (*DeleteFavoriteGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteFavoriteGroup not implemented")
+}
+func (UnimplementedInstrumentsServiceServer) GetFavoriteGroups(context.Context, *GetFavoriteGroupsRequest) (*GetFavoriteGroupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFavoriteGroups not implemented")
+}
 func (UnimplementedInstrumentsServiceServer) GetCountries(context.Context, *GetCountriesRequest) (*GetCountriesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCountries not implemented")
 }
@@ -609,6 +690,12 @@ func (UnimplementedInstrumentsServiceServer) GetConsensusForecasts(context.Conte
 }
 func (UnimplementedInstrumentsServiceServer) GetForecastBy(context.Context, *GetForecastRequest) (*GetForecastResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetForecastBy not implemented")
+}
+func (UnimplementedInstrumentsServiceServer) GetRiskRates(context.Context, *RiskRatesRequest) (*RiskRatesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRiskRates not implemented")
+}
+func (UnimplementedInstrumentsServiceServer) GetInsiderDeals(context.Context, *GetInsiderDealsRequest) (*GetInsiderDealsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInsiderDeals not implemented")
 }
 func (UnimplementedInstrumentsServiceServer) mustEmbedUnimplementedInstrumentsServiceServer() {}
 
@@ -1073,6 +1160,60 @@ func _InstrumentsService_EditFavorites_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _InstrumentsService_CreateFavoriteGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateFavoriteGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstrumentsServiceServer).CreateFavoriteGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstrumentsService_CreateFavoriteGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstrumentsServiceServer).CreateFavoriteGroup(ctx, req.(*CreateFavoriteGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstrumentsService_DeleteFavoriteGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFavoriteGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstrumentsServiceServer).DeleteFavoriteGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstrumentsService_DeleteFavoriteGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstrumentsServiceServer).DeleteFavoriteGroup(ctx, req.(*DeleteFavoriteGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstrumentsService_GetFavoriteGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFavoriteGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstrumentsServiceServer).GetFavoriteGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstrumentsService_GetFavoriteGroups_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstrumentsServiceServer).GetFavoriteGroups(ctx, req.(*GetFavoriteGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _InstrumentsService_GetCountries_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetCountriesRequest)
 	if err := dec(in); err != nil {
@@ -1217,6 +1358,42 @@ func _InstrumentsService_GetForecastBy_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _InstrumentsService_GetRiskRates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RiskRatesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstrumentsServiceServer).GetRiskRates(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstrumentsService_GetRiskRates_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstrumentsServiceServer).GetRiskRates(ctx, req.(*RiskRatesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstrumentsService_GetInsiderDeals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetInsiderDealsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstrumentsServiceServer).GetInsiderDeals(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InstrumentsService_GetInsiderDeals_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstrumentsServiceServer).GetInsiderDeals(ctx, req.(*GetInsiderDealsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // InstrumentsService_ServiceDesc is the grpc.ServiceDesc for InstrumentsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1325,6 +1502,18 @@ var InstrumentsService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _InstrumentsService_EditFavorites_Handler,
 		},
 		{
+			MethodName: "CreateFavoriteGroup",
+			Handler:    _InstrumentsService_CreateFavoriteGroup_Handler,
+		},
+		{
+			MethodName: "DeleteFavoriteGroup",
+			Handler:    _InstrumentsService_DeleteFavoriteGroup_Handler,
+		},
+		{
+			MethodName: "GetFavoriteGroups",
+			Handler:    _InstrumentsService_GetFavoriteGroups_Handler,
+		},
+		{
 			MethodName: "GetCountries",
 			Handler:    _InstrumentsService_GetCountries_Handler,
 		},
@@ -1355,6 +1544,14 @@ var InstrumentsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetForecastBy",
 			Handler:    _InstrumentsService_GetForecastBy_Handler,
+		},
+		{
+			MethodName: "GetRiskRates",
+			Handler:    _InstrumentsService_GetRiskRates_Handler,
+		},
+		{
+			MethodName: "GetInsiderDeals",
+			Handler:    _InstrumentsService_GetInsiderDeals_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

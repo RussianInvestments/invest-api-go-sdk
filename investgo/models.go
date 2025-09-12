@@ -135,6 +135,15 @@ func (p *GetTradingStatusResponse) GetHeader() metadata.MD {
 	return p.Header
 }
 
+type GetMarketValuesResponse struct {
+	*pb.GetMarketValuesResponse
+	Header metadata.MD
+}
+
+func (p *GetMarketValuesResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
 type GetTradingStatusesResponse struct {
 	*pb.GetTradingStatusesResponse
 	Header metadata.MD
@@ -667,6 +676,24 @@ func (p *GetSignalsResponse) GetHeader() metadata.MD {
 	return p.Header
 }
 
+type RiskRatesResponse struct {
+	*pb.RiskRatesResponse
+	Header metadata.MD
+}
+
+func (p *RiskRatesResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
+type GetInsiderDealsResponse struct {
+	*pb.GetInsiderDealsResponse
+	Header metadata.MD
+}
+
+func (p *GetInsiderDealsResponse) GetHeader() metadata.MD {
+	return p.Header
+}
+
 // custom request models
 
 type GetOperationsRequest struct {
@@ -692,20 +719,21 @@ type GetOperationsByCursorRequest struct {
 }
 
 type PostStopOrderRequest struct {
-	InstrumentId      string
-	Quantity          int64
-	Price             *pb.Quotation
-	StopPrice         *pb.Quotation
-	Direction         pb.StopOrderDirection
-	AccountId         string
-	ExpirationType    pb.StopOrderExpirationType
-	StopOrderType     pb.StopOrderType
-	ExpireDate        time.Time
-	ExchangeOrderType pb.ExchangeOrderType
-	TakeProfitType    pb.TakeProfitType
-	TrailingData      *pb.PostStopOrderRequest_TrailingData
-	PriceType         pb.PriceType
-	OrderID           string
+	InstrumentId       string
+	Quantity           int64
+	Price              *pb.Quotation
+	StopPrice          *pb.Quotation
+	Direction          pb.StopOrderDirection
+	AccountId          string
+	ExpirationType     pb.StopOrderExpirationType
+	StopOrderType      pb.StopOrderType
+	ExpireDate         time.Time
+	ExchangeOrderType  pb.ExchangeOrderType
+	TakeProfitType     pb.TakeProfitType
+	TrailingData       *pb.PostStopOrderRequest_TrailingData
+	PriceType          pb.PriceType
+	OrderID            string
+	ConfirmMarginTrade bool
 }
 
 type SandboxPayInRequest struct {

@@ -673,3 +673,35 @@ func (is *InstrumentsServiceClient) GetForecastBy(instrumentID string) (*GetFore
 		Header:              header,
 	}, err
 }
+
+// GetRiskRates - ставки риска по инструменту
+func (is *InstrumentsServiceClient) GetRiskRates(instrumentIDs []string) (*RiskRatesResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := is.pbClient.GetRiskRates(is.ctx, &pb.RiskRatesRequest{
+		InstrumentId: instrumentIDs,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &RiskRatesResponse{
+		RiskRatesResponse: resp,
+		Header:            header,
+	}, err
+}
+
+// GetInsiderDeals - сделки инсайдеров по инструментам
+func (is *InstrumentsServiceClient) GetInsiderDeals(instrumentID string, limit int32, cursor *string) (*GetInsiderDealsResponse, error) {
+	var header, trailer metadata.MD
+	resp, err := is.pbClient.GetInsiderDeals(is.ctx, &pb.GetInsiderDealsRequest{
+		InstrumentId: instrumentID,
+		Limit:        limit,
+		NextCursor:   cursor,
+	}, grpc.Header(&header), grpc.Trailer(&trailer))
+	if err != nil {
+		header = trailer
+	}
+	return &GetInsiderDealsResponse{
+		GetInsiderDealsResponse: resp,
+		Header:                  header,
+	}, err
+}

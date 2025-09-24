@@ -2,7 +2,6 @@ package investgo
 
 import (
 	"context"
-	"crypto/tls"
 	"fmt"
 	"time"
 
@@ -74,9 +73,15 @@ func NewClient(ctx context.Context, conf Config, l Logger, dialOpts ...grpc.Dial
 		}
 	}
 
+	// Создание TLS конфигурации
+	tlsConfig, err := conf.BuildTLSConfig()
+	if err != nil {
+		return nil, fmt.Errorf("failed to build TLS config: %w", err)
+	}
+
 	dialOpts = append(
 		dialOpts,
-		grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{})),
+		grpc.WithTransportCredentials(credentials.NewTLS(tlsConfig)),
 		grpc.WithPerRPCCredentials(oauth.TokenSource{
 			TokenSource: oauth2.StaticTokenSource(&oauth2.Token{AccessToken: conf.Token}),
 		}),

@@ -5,3 +5,8 @@ AppName: invest-api-go-sdk
 DisableResourceExhaustedRetry: false
 DisableAllRetry: false
 MaxRetries: 3
+# TLS Configuration (optional)
+# TLSCertFile: /path/to/client.crt
+# TLSKeyFile: /path/to/client.key
+# TLSCACertFile: /path/to/ca.crt
+# InsecureSkipVerify: false
